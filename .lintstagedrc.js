@@ -5,7 +5,7 @@ module.exports = {
   // Lint & Prettify TS and JS files
   '**/*.(ts|tsx)': (filenames) => {
     return [
-      `npx eslint --fix ${filenames.join(' ')}`,
+      `npx eslint --cache --fix ${filenames.join(' ')}`,
       `npx prettier --write ${filenames.join(' ')}`,
       // `npx stylelint --ignore-path .gitignore ${filenames.join(' ')}`,
     ];
