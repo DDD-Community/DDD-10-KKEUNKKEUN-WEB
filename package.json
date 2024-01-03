@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gitconfig": "git config --local include.path ./.gitconfig",
+    "gitcase": "git rm -r --cached . && git add ."
   },
   "dependencies": {
     "next": "14.0.4",
