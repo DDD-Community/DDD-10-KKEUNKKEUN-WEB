@@ -50,6 +50,14 @@
   border: 1px solid black;
   border-radius: 20px;
 
+  .pptImage {
+    border-radius: inherit;
+  }
+
+  .changePptImageButton {
+    display: none;
+  }
+
   &:hover {
     .changePptImageButton {
       display: block;
@@ -64,8 +72,4 @@
       transition: filter 0.3s ease;
     }
   }
-}
-
-.changePptImageButton {
-  display: none;
 }

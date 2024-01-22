@@ -1,8 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Dispatch, Fragment, MouseEvent, RefObject, SetStateAction } from 'react';
-import { getCurrentRefsData } from '../_utils/getCurrentPageData';
+import { Dispatch, MouseEvent, SetStateAction } from 'react';
 import Button from '@/app/_components/_elements/Button';
 import { PagesDataType } from '@/types/service';
 import styles from './ControlButtons.module.scss';
@@ -16,8 +15,7 @@ interface ControlButtonsProps {
   currentPageIndex: number;
   setCurrpentPageIndex: Dispatch<SetStateAction<number>>;
   initialState: PagesDataType;
-
-  slug: string;
+  slug?: string;
 }
 
 const ControlButtons = ({

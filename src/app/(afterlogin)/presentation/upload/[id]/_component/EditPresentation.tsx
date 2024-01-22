@@ -1,17 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import UploadPpt from './UploadPpt';
 import UploadTitle from './UploadTitle';
 import UploadScript from './UploadScript';
 import UploadTimer from './UploadTimer';
 import ControlButtons from './ControlButtons';
-import { usePathname } from 'next/navigation';
-import { PagesDataType } from '@/types/service';
+
+import { userApi } from '@/services/user';
+import { PagesDataType, PresentInfoType } from '@/types/service';
 import styles from './CreatePresentation.module.scss';
 import UploadDday from './UploadDday';
+import { useGetPresentationData } from '../_hooks/presentation';
 
-const CreatePresentation = () => {
+interface EditPresentationProps {
+  slug: string;
+}
+const EditPresentation = ({ slug }: EditPresentationProps) => {
   const initialState: PagesDataType = {
     title: null,
     dDay: null,
@@ -21,6 +26,23 @@ const CreatePresentation = () => {
 
   const [presentationData, setPresentationData] = useState<PagesDataType>(initialState);
   const [currentPageIndex, setCurrpentPageIndex] = useState(0);
+
+  const value = useGetPresentationData(slug);
+  useEffect(() => {
+    const initailSetting = async () => {
+      const { data: originData, id: originId } = value;
+      setPresentationData(() => {
+        const shallow = [...originData.scripts];
+        shallow.push(...initialState.scripts);
+        return {
+          ...originData,
+          scripts: shallow,
+        };
+      });
+    };
+
+    initailSetting();
+  }, [value]);
 
   return (
     <div className={styles.container}>
@@ -35,6 +57,7 @@ const CreatePresentation = () => {
           setPresentationData={setPresentationData}
           currentPageIndex={currentPageIndex}
           setCurrpentPageIndex={setCurrpentPageIndex}
+          slug={slug as string}
           initialState={initialState}
         />
       </div>
@@ -58,4 +81,4 @@ const CreatePresentation = () => {
   );
 };
 
-export default CreatePresentation;
+export default EditPresentation;
