@@ -10,14 +10,8 @@ interface UploadPptProps {
   pptInfo: PagesDataType['scripts'][0]['ppt'];
   setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   currentPageIndex: number;
-  dataLength: number;
 }
-const UploadPpt = ({
-  pptInfo,
-  setPresentationData,
-  currentPageIndex,
-  dataLength,
-}: UploadPptProps) => {
+const UploadPpt = ({ pptInfo, setPresentationData, currentPageIndex }: UploadPptProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
 
   const onClickButton = () => {
@@ -65,7 +59,7 @@ const UploadPpt = ({
         ref={imageRef}
       />
       <div className={styles.pptUpdateSection}>
-        {currentPageIndex === dataLength || !!pptInfo.dataURL || !!pptInfo.file ? (
+        {pptInfo.dataURL === null || pptInfo.file === null ? (
           <div className={styles.newPptSection}>
             <div>LOGO</div>
             <Button
@@ -75,14 +69,19 @@ const UploadPpt = ({
             />
           </div>
         ) : (
-          <div className={styles.existedPptSection}>
+          <div className={styles.pptImageSection}>
             <Image
               src={pptInfo.dataURL as string}
               alt="ppt image"
-              layout="fill"
-              objectFit="contain"
+              fill
+              style={{ objectFit: 'contain' }}
+              className={styles.pptImage}
             />
-            <button>이미지 변경</button>
+            <Button
+              _content={'이미지 변경'}
+              className={styles.changePptImageButton}
+              onClick={onClickButton}
+            />
           </div>
         )}
       </div>

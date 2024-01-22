@@ -52,7 +52,6 @@ const CreatePresentation = () => {
           pptInfo={presentationData.scripts[currentPageIndex].ppt}
           setPresentationData={setPresentationData}
           currentPageIndex={currentPageIndex}
-          dataLength={presentationData.scripts.length - 1}
         />
         <ControlButtons
           presentationData={presentationData}

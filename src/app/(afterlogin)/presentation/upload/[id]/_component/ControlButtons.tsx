@@ -76,10 +76,9 @@ const ControlButtons = ({
           >
             <Image
               src={i.ppt!.dataURL as string}
-              layout="fill"
-              objectFit="contain"
+              fill
               alt="ppt이미지"
-              className={styles.boxButton}
+              style={{ objectFit: 'contain' }}
             />
             <Button
               onClick={(e) => remove(e, index)}
