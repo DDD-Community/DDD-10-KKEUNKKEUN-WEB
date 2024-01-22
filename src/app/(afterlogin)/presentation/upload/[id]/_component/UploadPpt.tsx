@@ -35,8 +35,8 @@ const UploadPpt = ({ pptInfo, setPptInfo }: UploadPptProps) => {
   };
 
   return (
-    <div>
-      <p>발표 자료 추가</p>
+    <div className={styles.container}>
+      <p className={styles.description}>발표 자료 추가</p>
       <input
         type="file"
         accept="image/png, image/jpeg"
@@ -45,14 +45,18 @@ const UploadPpt = ({ pptInfo, setPptInfo }: UploadPptProps) => {
         hidden
         ref={imageRef}
       />
-      <div>
+      <div className={styles.pptUpdateSection}>
         {pptInfo === null ? (
-          <div>
+          <div className={styles.newPptSection}>
             <div>LOGO</div>
-            <Button onClick={onClickButton} _content={<p>PPT 이미지 등록하기</p>} />
+            <Button
+              onClick={onClickButton}
+              _content={<p>PPT 이미지 등록하기</p>}
+              className={styles.updateButton}
+            />
           </div>
         ) : (
-          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <div className={styles.existedPptSection}>
             <Image src={pptInfo.dataURL} alt="ppt image" layout="fill" objectFit="contain" />
             <button>이미지 변경</button>
           </div>

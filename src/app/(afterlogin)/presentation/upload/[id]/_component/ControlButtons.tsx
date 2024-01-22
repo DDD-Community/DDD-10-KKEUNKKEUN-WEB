@@ -1,10 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { Dispatch, Fragment, RefObject, SetStateAction } from 'react';
+import { Dispatch, Fragment, MouseEvent, RefObject, SetStateAction } from 'react';
 import { getCurrentRefsData } from '../_utils/getCurrentPageData';
 import Button from '@/app/_components/_elements/Button';
 import { PagesDataType } from '@/types/service';
+import styles from './ControlButtons.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(styles);
 
 interface ControlButtonsProps {
   currentPresentData: PagesDataType;
@@ -123,7 +127,8 @@ const ControlButtons = ({
     setCurrpentPageIndex(index);
   };
 
-  const remove = (index: number) => {
+  const remove = (e: MouseEvent<HTMLButtonElement>, index: number) => {
+    e.stopPropagation();
     setCurrentPresentData((prev) => {
       const shallow = [...prev.scripts];
       shallow.splice(index, 1);
@@ -141,19 +146,37 @@ const ControlButtons = ({
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       {currentPresentData.scripts.map((i, index) => {
         return (
-          <Fragment key={index}>
-            <Button onClick={() => remove(index)} _content={'x'} />
-            <Button
-              onClick={() => moveOtherPage(index)}
-              _content={<Image src={i.ppt!.dataURL} width={50} height={50} alt="ppt이미지" />}
+          <div
+            key={index}
+            onClick={() => moveOtherPage(index)}
+            className={cx('singlePptPage', { selected: currentPageIndex === index })}
+          >
+            <Image
+              src={i.ppt!.dataURL}
+              layout="fill"
+              objectFit="contain"
+              alt="ppt이미지"
+              className={styles.boxButton}
             />
-          </Fragment>
+            <Button
+              onClick={(e) => remove(e, index)}
+              _content={'x'}
+              className={styles.closeButton}
+            />
+          </div>
         );
       })}
-      <Button onClick={addButton} disabled={pptInfo === null} _content={'+'} />
+      <Button
+        onClick={addButton}
+        disabled={pptInfo === null}
+        _content={'+'}
+        className={cx('addButton', {
+          selected: currentPageIndex === currentPresentData.scripts.length,
+        })}
+      />
     </div>
   );
 };

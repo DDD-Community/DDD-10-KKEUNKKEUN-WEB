@@ -58,6 +58,10 @@ const CreatePresentation = () => {
         });
       }
 
+      // 2개의 페이지가 있을 때  currentPresentData.scripts를 보면 [0,1]은 페이지 데이터, [2]는 현재 작성중
+      // 그러므로 currentPresentData.scripts.length는 + 버튼에서 현재 작성중인 내용이므로
+      // currentPageIndex가 작성중인 내용이 아닐 때만 기존 페이지 데이터를 불러옴
+      // 새로 데이터를 추가할 때, currentPageIndex가 1이 증가 되는데 이때 발생하는 에러 방지
       if (
         currentPresentData.scripts.length &&
         currentPageIndex < currentPresentData.scripts.length
@@ -80,8 +84,8 @@ const CreatePresentation = () => {
   }, [currentPageIndex, currentPresentData]);
 
   return (
-    <div>
-      <div>
+    <div className={styles.container}>
+      <div className={styles.left}>
         <UploadPpt pptInfo={pptInfo} setPptInfo={setPptInfo} />
         <ControlButtons
           currentPresentData={currentPresentData}
@@ -94,7 +98,7 @@ const CreatePresentation = () => {
           slug={slug as string}
         />
       </div>
-      <div>
+      <div className={styles.right}>
         <UploadTitle ref={inputRefs.get('title')} />
         <UploadScript ref={inputRefs.get('script')} currentPageIndex={currentPageIndex} />
         <UploadDay ref={inputRefs.get('day')} />
