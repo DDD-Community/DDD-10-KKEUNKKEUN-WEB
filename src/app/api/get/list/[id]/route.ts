@@ -13,6 +13,8 @@ const mockPresentData: PresentInfoType[] = [
     id: 11111,
     data: {
       title: '발표1',
+      dDay: '2024.8.3',
+      timer: '200',
       scripts: [
         {
           ppt: {
@@ -21,8 +23,6 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '첫번째 내용내용내용내용내용내용',
-          day: '2024.8.3',
-          timer: '200',
         },
         {
           ppt: {
@@ -31,8 +31,6 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '두번째 내용내용내용내용내용내용',
-          day: '2024.8.3',
-          timer: '200',
         },
         {
           ppt: {
@@ -41,8 +39,6 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '세번째 내용내용내용내용내용내용',
-          day: '2024.8.3',
-          timer: '200',
         },
       ],
     },
@@ -51,6 +47,8 @@ const mockPresentData: PresentInfoType[] = [
     id: 22222,
     data: {
       title: '발표2',
+      dDay: '2024.8.3',
+      timer: '200',
       scripts: [
         {
           ppt: {
@@ -59,8 +57,6 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '첫번째 내용내용내용내용내용내용',
-          day: '2024.8.3',
-          timer: '200',
         },
         {
           ppt: {
@@ -69,8 +65,6 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '두번째 내용내용내용내용내용내용',
-          day: '2024.8.3',
-          timer: '200',
         },
         {
           ppt: {
@@ -79,8 +73,6 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '세번째 내용내용내용내용내용내용',
-          day: '2024.8.3',
-          timer: '200',
         },
       ],
     },

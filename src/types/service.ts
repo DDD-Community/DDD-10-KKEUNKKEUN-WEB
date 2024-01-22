@@ -1,10 +1,10 @@
 export interface PagesDataType {
   title: string | null;
+  dDay: any; // 임시
+  timer: any; // 임시
   scripts: {
-    ppt: { dataURL: string; file: File } | null;
+    ppt: { dataURL: string | null; file: File | null };
     script: string | null;
-    day: any;
-    timer: any;
   }[];
 }
 

@@ -4,12 +4,20 @@ import Button from '@/app/_components/_elements/Button';
 import Image from 'next/image';
 import { ChangeEventHandler, Dispatch, SetStateAction, useRef } from 'react';
 import styles from './UploadPpt.module.scss';
+import { PagesDataType } from '@/types/service';
 
 interface UploadPptProps {
-  pptInfo: { dataURL: string; file: File } | null;
-  setPptInfo: Dispatch<SetStateAction<{ dataURL: string; file: File } | null>>;
+  pptInfo: PagesDataType['scripts'][0]['ppt'];
+  setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
+  currentPageIndex: number;
+  dataLength: number;
 }
-const UploadPpt = ({ pptInfo, setPptInfo }: UploadPptProps) => {
+const UploadPpt = ({
+  pptInfo,
+  setPresentationData,
+  currentPageIndex,
+  dataLength,
+}: UploadPptProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
 
   const onClickButton = () => {
@@ -24,9 +32,20 @@ const UploadPpt = ({ pptInfo, setPptInfo }: UploadPptProps) => {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        setPptInfo({
-          dataURL: reader.result as string, // 미리보기용
-          file, // 서버용
+        setPresentationData((prev) => {
+          const shallow = [...prev.scripts];
+          shallow[currentPageIndex] = {
+            ...shallow[currentPageIndex],
+            ppt: {
+              dataURL: reader.result as string, // 미리보기용
+              file, // 서버용
+            },
+          };
+
+          return {
+            ...prev,
+            scripts: shallow,
+          };
         });
       };
 
@@ -46,7 +65,7 @@ const UploadPpt = ({ pptInfo, setPptInfo }: UploadPptProps) => {
         ref={imageRef}
       />
       <div className={styles.pptUpdateSection}>
-        {pptInfo === null ? (
+        {currentPageIndex === dataLength || !!pptInfo.dataURL || !!pptInfo.file ? (
           <div className={styles.newPptSection}>
             <div>LOGO</div>
             <Button
@@ -57,7 +76,12 @@ const UploadPpt = ({ pptInfo, setPptInfo }: UploadPptProps) => {
           </div>
         ) : (
           <div className={styles.existedPptSection}>
-            <Image src={pptInfo.dataURL} alt="ppt image" layout="fill" objectFit="contain" />
+            <Image
+              src={pptInfo.dataURL as string}
+              alt="ppt image"
+              layout="fill"
+              objectFit="contain"
+            />
             <button>이미지 변경</button>
           </div>
         )}

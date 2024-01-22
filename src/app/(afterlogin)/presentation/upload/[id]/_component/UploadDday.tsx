@@ -4,28 +4,29 @@ import Input from '@/app/_components/_elements/Input';
 import { PagesDataType } from '@/types/service';
 import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef } from 'react';
 
-interface UploadTimerProps {
-  timer: any;
+interface UploadDdayProps {
+  dDay: any;
   setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
 }
-const UploadTimer = forwardRef<HTMLInputElement, UploadTimerProps>(
-  ({ timer, setPresentationData }, ref) => {
+
+const UploadDday = forwardRef<HTMLInputElement, UploadDdayProps>(
+  ({ dDay, setPresentationData }, ref) => {
     const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
       setPresentationData((prev) => {
         return {
           ...prev,
-          timer: e.target.value,
+          dDay: e.target.value,
         };
       });
     };
     return (
       <div>
-        <p>발표시간 설정</p>
-        <Input value={timer || ''} onChange={onChange} />
+        <p>D-day 설정</p>
+        <Input value={dDay || ''} onChange={onChange} />
       </div>
     );
   },
 );
-UploadTimer.displayName = 'UploadTimer';
+UploadDday.displayName = 'UploadDay';
 
-export default UploadTimer;
+export default UploadDday;

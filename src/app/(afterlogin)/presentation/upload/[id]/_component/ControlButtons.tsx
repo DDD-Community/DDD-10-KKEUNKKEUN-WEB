@@ -11,125 +11,45 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 interface ControlButtonsProps {
-  currentPresentData: PagesDataType;
-  setCurrentPresentData: Dispatch<SetStateAction<PagesDataType>>;
+  presentationData: PagesDataType;
+  setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   currentPageIndex: number;
   setCurrpentPageIndex: Dispatch<SetStateAction<number>>;
-  inputRefs: Map<string, RefObject<HTMLInputElement>>;
-  pptInfo: { dataURL: string; file: File } | null;
-  setPptInfo: Dispatch<SetStateAction<{ dataURL: string; file: File } | null>>;
+  initialState: PagesDataType;
+
   slug: string;
 }
 
 const ControlButtons = ({
-  currentPresentData,
-  setCurrentPresentData,
+  presentationData,
+  setPresentationData,
   currentPageIndex,
   setCurrpentPageIndex,
-  pptInfo,
-  setPptInfo,
   slug,
-  inputRefs,
+  initialState,
 }: ControlButtonsProps) => {
   const addButton = () => {
-    // 마지막 페이지에서(=작성 중이던 페이지) 눌렀다면 새로 추가
-    if (currentPageIndex === currentPresentData.scripts.length) {
-      const refs = getCurrentRefsData(inputRefs);
-
-      setCurrentPresentData((prev) => {
-        const newScripts: PagesDataType['scripts'][0] = {
-          ppt: {
-            dataURL: pptInfo!.dataURL,
-            file: pptInfo!.file,
-          },
-          script: refs.script,
-          day: refs.day,
-          timer: refs.timer,
-        };
-
+    // 마지막 페이지(=작성 중이던 페이지)에서 눌렀다면 새로 추가
+    if (currentPageIndex === presentationData.scripts.length - 1) {
+      setPresentationData((prev) => {
         const shallow = [...prev.scripts];
-        shallow.push(newScripts);
+        shallow.push(initialState.scripts[0]);
 
         return {
           ...prev,
-          title: refs.title, // 타이틀 변경
-          scripts: shallow, // 새 데이터 추가
+          scripts: shallow,
         };
       });
       setCurrpentPageIndex((prev) => prev + 1);
     } else {
-      // 다른 페이지에 있었다면 다시 복귀
-      setCurrpentPageIndex(currentPresentData.scripts.length);
-
-      // + 버튼으로 새 페이지로 이동했을 때 역시 기존 페이지에서 작성하던 내용 저장
-      const refs = getCurrentRefsData(inputRefs);
-
-      setCurrentPresentData((prev) => {
-        const shallow = [...prev.scripts];
-
-        shallow[currentPageIndex] = {
-          ...shallow[currentPageIndex],
-          ppt: {
-            ...shallow[currentPageIndex].ppt,
-            dataURL: pptInfo!.dataURL,
-            file: pptInfo!.file,
-          },
-          script: refs.script,
-          day: refs.day,
-          timer: refs.timer,
-        };
-
-        return {
-          ...prev,
-          title: refs.title,
-          scripts: shallow,
-        };
-      });
+      // 다른 페이지에 있었다면 마지막 페이지로 다시 복귀
+      setCurrpentPageIndex(presentationData.scripts.length - 1);
     }
-
-    // 현재 입력창 초기화
-    setPptInfo(null);
-    inputRefs.forEach((refValue, refKey) => {
-      if (refValue.current && refKey !== 'title') {
-        refValue.current.value = '';
-      }
-    });
-  };
-
-  const moveOtherPage = (index: number) => {
-    // 현재 페이지 내용 저장 후 페이지 이동
-    if (currentPageIndex !== currentPresentData.scripts.length) {
-      const refs = getCurrentRefsData(inputRefs);
-
-      setCurrentPresentData((prev) => {
-        const shallow = [...prev.scripts];
-
-        shallow[currentPageIndex] = {
-          ...shallow[currentPageIndex],
-          ppt: {
-            ...shallow[currentPageIndex].ppt,
-            dataURL: pptInfo!.dataURL,
-            file: pptInfo!.file,
-          },
-          script: refs.script,
-          day: refs.day,
-          timer: refs.timer,
-        };
-
-        return {
-          ...prev,
-          title: refs.title,
-          scripts: shallow,
-        };
-      });
-    }
-
-    setCurrpentPageIndex(index);
   };
 
   const remove = (e: MouseEvent<HTMLButtonElement>, index: number) => {
     e.stopPropagation();
-    setCurrentPresentData((prev) => {
+    setPresentationData((prev) => {
       const shallow = [...prev.scripts];
       shallow.splice(index, 1);
 
@@ -147,15 +67,15 @@ const ControlButtons = ({
 
   return (
     <div className={styles.container}>
-      {currentPresentData.scripts.map((i, index) => {
+      {presentationData.scripts.slice(0, -1).map((i, index) => {
         return (
           <div
             key={index}
-            onClick={() => moveOtherPage(index)}
+            onClick={() => setCurrpentPageIndex(index)}
             className={cx('singlePptPage', { selected: currentPageIndex === index })}
           >
             <Image
-              src={i.ppt!.dataURL}
+              src={i.ppt!.dataURL as string}
               layout="fill"
               objectFit="contain"
               alt="ppt이미지"
@@ -171,10 +91,13 @@ const ControlButtons = ({
       })}
       <Button
         onClick={addButton}
-        disabled={pptInfo === null}
+        disabled={
+          presentationData.scripts[currentPageIndex].ppt.dataURL === null ||
+          presentationData.scripts[currentPageIndex].ppt.file === null
+        }
         _content={'+'}
         className={cx('addButton', {
-          selected: currentPageIndex === currentPresentData.scripts.length,
+          selected: currentPageIndex === presentationData.scripts.length - 1,
         })}
       />
     </div>
