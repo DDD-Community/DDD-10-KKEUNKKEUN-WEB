@@ -16,7 +16,16 @@
 
 .right {
   flex: 1;
+}
+
+.inputSection {
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+.saveButtons {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
 }

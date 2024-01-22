@@ -23,6 +23,7 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '첫번째 내용내용내용내용내용내용',
+          memo: '첫번째 메모메모메모메모메모',
         },
         {
           ppt: {
@@ -31,6 +32,7 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '두번째 내용내용내용내용내용내용',
+          memo: '두번째 메모메모메모메모메모',
         },
         {
           ppt: {
@@ -39,6 +41,7 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '세번째 내용내용내용내용내용내용',
+          memo: '세번째 메모메모메모메모메모',
         },
       ],
     },
@@ -57,6 +60,7 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '첫번째 내용내용내용내용내용내용',
+          memo: '첫번째 메모메모메모메모메모',
         },
         {
           ppt: {
@@ -65,6 +69,7 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '두번째 내용내용내용내용내용내용',
+          memo: '두번째 메모메모메모메모메모',
         },
         {
           ppt: {
@@ -73,6 +78,7 @@ const mockPresentData: PresentInfoType[] = [
             file: dummyFile,
           },
           script: '세번째 내용내용내용내용내용내용',
+          memo: '세번째 메모메모메모메모메모',
         },
       ],
     },

@@ -83,27 +83,6 @@ const ControlButtons = ({
 
   return (
     <div className={styles.container}>
-      {/* {presentationData.scripts.slice(0, -1).map((i, index) => {
-        return (
-          <div
-            key={index}
-            onClick={() => setCurrpentPageIndex(index)}
-            className={cx('singlePptPage', { selected: currentPageIndex === index })}
-          >
-            <Image
-              src={i.ppt!.dataURL as string}
-              fill
-              alt="ppt이미지"
-              style={{ objectFit: 'contain' }}
-            />
-            <Button
-              onClick={(e) => remove(e, index)}
-              _content={'x'}
-              className={styles.closeButton}
-            />
-          </div>
-        );
-      })} */}
       <DragDropContext onDragEnd={handleChange}>
         <Droppable droppableId="cardlists" direction="horizontal">
           {(provided) => (

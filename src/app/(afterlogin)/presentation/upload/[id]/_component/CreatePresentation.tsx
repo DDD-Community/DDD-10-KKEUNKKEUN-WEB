@@ -9,13 +9,15 @@ import ControlButtons from './ControlButtons';
 import { PagesDataType } from '@/types/service';
 import styles from './CreatePresentation.module.scss';
 import UploadDday from './UploadDday';
+import Button from '@/app/_components/_elements/Button';
+import UploadMemo from './UploadMemo';
 
 const CreatePresentation = () => {
   const initialState: PagesDataType = {
     title: null,
     dDay: null,
     timer: null,
-    scripts: [{ ppt: { dataURL: null, file: null }, script: null }],
+    scripts: [{ ppt: { dataURL: null, file: null }, script: null, memo: null }],
   };
 
   const [presentationData, setPresentationData] = useState<PagesDataType>(initialState);
@@ -38,20 +40,34 @@ const CreatePresentation = () => {
         />
       </div>
       <div className={styles.right}>
-        <UploadTitle
-          title={presentationData.title || ''}
-          setPresentationData={setPresentationData}
-        />
-        <UploadScript
-          script={presentationData.scripts[currentPageIndex].script || ''}
-          setPresentationData={setPresentationData}
-          currentPageIndex={currentPageIndex}
-        />
-        <UploadDday dDay={presentationData.dDay || ''} setPresentationData={setPresentationData} />
-        <UploadTimer
-          timer={presentationData.timer || ''}
-          setPresentationData={setPresentationData}
-        />
+        <div className={styles.inputSection}>
+          <UploadTitle
+            title={presentationData.title || ''}
+            setPresentationData={setPresentationData}
+          />
+          <UploadScript
+            script={presentationData.scripts[currentPageIndex].script || ''}
+            setPresentationData={setPresentationData}
+            currentPageIndex={currentPageIndex}
+          />
+          <UploadMemo
+            memo={presentationData.scripts[currentPageIndex].memo || ''}
+            setPresentationData={setPresentationData}
+            currentPageIndex={currentPageIndex}
+          />
+          <UploadDday
+            dDay={presentationData.dDay || ''}
+            setPresentationData={setPresentationData}
+          />
+          <UploadTimer
+            timer={presentationData.timer || ''}
+            setPresentationData={setPresentationData}
+          />
+        </div>
+        <div className={styles.saveButtons}>
+          <Button _content={'저장'} onClick={() => {}} />
+          <Button _content={'발표 연습 시작하기'} onClick={() => {}} />
+        </div>
       </div>
     </div>
   );

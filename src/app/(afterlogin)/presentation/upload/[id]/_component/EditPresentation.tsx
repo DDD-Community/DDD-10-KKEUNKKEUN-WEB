@@ -1,17 +1,18 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import UploadPpt from './UploadPpt';
 import UploadTitle from './UploadTitle';
 import UploadScript from './UploadScript';
 import UploadTimer from './UploadTimer';
 import ControlButtons from './ControlButtons';
 
-import { userApi } from '@/services/user';
-import { PagesDataType, PresentInfoType } from '@/types/service';
+import { PagesDataType } from '@/types/service';
 import styles from './CreatePresentation.module.scss';
 import UploadDday from './UploadDday';
 import { useGetPresentationData } from '../_hooks/presentation';
+import Button from '@/app/_components/_elements/Button';
+import UploadMemo from './UploadMemo';
 
 interface EditPresentationProps {
   slug: string;
@@ -21,7 +22,7 @@ const EditPresentation = ({ slug }: EditPresentationProps) => {
     title: null,
     dDay: null,
     timer: null,
-    scripts: [{ ppt: { dataURL: null, file: null }, script: null }],
+    scripts: [{ ppt: { dataURL: null, file: null }, script: null, memo: null }],
   };
 
   const [presentationData, setPresentationData] = useState<PagesDataType>(initialState);
@@ -57,25 +58,39 @@ const EditPresentation = ({ slug }: EditPresentationProps) => {
           setPresentationData={setPresentationData}
           currentPageIndex={currentPageIndex}
           setCurrpentPageIndex={setCurrpentPageIndex}
-          slug={slug as string}
           initialState={initialState}
+          slug={slug}
         />
       </div>
       <div className={styles.right}>
-        <UploadTitle
-          title={presentationData.title || ''}
-          setPresentationData={setPresentationData}
-        />
-        <UploadScript
-          script={presentationData.scripts[currentPageIndex].script || ''}
-          setPresentationData={setPresentationData}
-          currentPageIndex={currentPageIndex}
-        />
-        <UploadDday dDay={presentationData.dDay || ''} setPresentationData={setPresentationData} />
-        <UploadTimer
-          timer={presentationData.timer || ''}
-          setPresentationData={setPresentationData}
-        />
+        <div className={styles.inputSection}>
+          <UploadTitle
+            title={presentationData.title || ''}
+            setPresentationData={setPresentationData}
+          />
+          <UploadScript
+            script={presentationData.scripts[currentPageIndex].script || ''}
+            setPresentationData={setPresentationData}
+            currentPageIndex={currentPageIndex}
+          />
+          <UploadMemo
+            memo={presentationData.scripts[currentPageIndex].memo || ''}
+            setPresentationData={setPresentationData}
+            currentPageIndex={currentPageIndex}
+          />
+          <UploadDday
+            dDay={presentationData.dDay || ''}
+            setPresentationData={setPresentationData}
+          />
+          <UploadTimer
+            timer={presentationData.timer || ''}
+            setPresentationData={setPresentationData}
+          />
+        </div>
+        <div className={styles.saveButtons}>
+          <Button _content={'저장'} onClick={() => {}} />
+          <Button _content={'발표 연습 시작하기'} onClick={() => {}} />
+        </div>
       </div>
     </div>
   );

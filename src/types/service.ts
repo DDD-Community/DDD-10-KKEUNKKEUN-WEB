@@ -5,6 +5,7 @@ export interface PagesDataType {
   scripts: {
     ppt: { dataURL: string | null; file: File | null };
     script: string | null;
+    memo: string | null;
   }[];
 }
 
