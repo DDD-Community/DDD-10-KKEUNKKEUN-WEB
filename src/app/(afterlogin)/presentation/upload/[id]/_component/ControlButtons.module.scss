@@ -2,6 +2,14 @@
 
 .container {
   display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+
+.buttons {
+  display: flex;
   gap: 20px;
 }
 
@@ -40,6 +48,7 @@
   @include pure-button;
   @include flex-center;
 
+  display: inline-block;
   width: 85px;
   height: 70px;
   border: 1px solid black;

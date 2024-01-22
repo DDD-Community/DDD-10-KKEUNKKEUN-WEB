@@ -6,7 +6,6 @@ import UploadTitle from './UploadTitle';
 import UploadScript from './UploadScript';
 import UploadTimer from './UploadTimer';
 import ControlButtons from './ControlButtons';
-import { usePathname } from 'next/navigation';
 import { PagesDataType } from '@/types/service';
 import styles from './CreatePresentation.module.scss';
 import UploadDday from './UploadDday';

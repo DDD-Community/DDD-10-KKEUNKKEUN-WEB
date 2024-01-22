@@ -6,6 +6,7 @@ import Button from '@/app/_components/_elements/Button';
 import { PagesDataType } from '@/types/service';
 import styles from './ControlButtons.module.scss';
 import classNames from 'classnames/bind';
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 
 const cx = classNames.bind(styles);
 
@@ -63,9 +64,26 @@ const ControlButtons = ({
     }
   };
 
+  const handleChange = (result: DropResult) => {
+    if (!result.destination) return;
+    const to = result.destination?.index;
+    const from = result.source.index;
+
+    setPresentationData((prev) => {
+      const shallow = [...prev.scripts];
+      const moveTarget = shallow.splice(from, 1);
+      shallow.splice(to, 0, ...moveTarget);
+
+      return {
+        ...prev,
+        scripts: shallow,
+      };
+    });
+  };
+
   return (
     <div className={styles.container}>
-      {presentationData.scripts.slice(0, -1).map((i, index) => {
+      {/* {presentationData.scripts.slice(0, -1).map((i, index) => {
         return (
           <div
             key={index}
@@ -85,18 +103,62 @@ const ControlButtons = ({
             />
           </div>
         );
-      })}
-      <Button
-        onClick={addButton}
-        disabled={
-          presentationData.scripts[currentPageIndex].ppt.dataURL === null ||
-          presentationData.scripts[currentPageIndex].ppt.file === null
-        }
-        _content={'+'}
-        className={cx('addButton', {
-          selected: currentPageIndex === presentationData.scripts.length - 1,
-        })}
-      />
+      })} */}
+      <DragDropContext onDragEnd={handleChange}>
+        <Droppable droppableId="cardlists" direction="horizontal">
+          {(provided) => (
+            <div className="cardlists" {...provided.droppableProps} ref={provided.innerRef}>
+              <div className={styles.buttons}>
+                {presentationData.scripts.slice(0, -1).map((item, index) => (
+                  <Draggable draggableId={`test-${index}`} index={index} key={`test-${index}`}>
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                        >
+                          <div
+                            key={index}
+                            onClick={() => setCurrpentPageIndex(index)}
+                            className={cx('singlePptPage', {
+                              selected: currentPageIndex === index,
+                            })}
+                          >
+                            <Image
+                              src={item.ppt!.dataURL as string}
+                              fill
+                              alt="ppt이미지"
+                              style={{ objectFit: 'contain' }}
+                            />
+                            <Button
+                              onClick={(e) => remove(e, index)}
+                              _content={'x'}
+                              className={styles.closeButton}
+                            />
+                          </div>
+                        </div>
+                      );
+                    }}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+                <Button
+                  onClick={addButton}
+                  disabled={
+                    presentationData.scripts[currentPageIndex].ppt.dataURL === null ||
+                    presentationData.scripts[currentPageIndex].ppt.file === null
+                  }
+                  _content={'+'}
+                  className={cx('addButton', {
+                    selected: currentPageIndex === presentationData.scripts.length - 1,
+                  })}
+                />
+              </div>
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };
