@@ -1,12 +1,6 @@
-import { InputHTMLAttributes } from 'react';
+import { CheckboxProp } from '@/types/element';
 
-interface Prop extends InputHTMLAttributes<HTMLInputElement> {
-  _label?: string;
-  _isChecked: boolean;
-  _onChange: () => void;
-}
-
-const Checkbox = ({ _label, _isChecked, _onChange, ...rest }: Prop) => {
+const Checkbox = ({ _label, _isChecked, _onChange, ...rest }: CheckboxProp) => {
   return (
     <label htmlFor="checkbox">
       <input id="checkbox" type="checkbox" checked={_isChecked} onChange={_onChange} {...rest} />
