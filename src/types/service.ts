@@ -1,7 +1,14 @@
 export interface PagesDataType {
   title: string | null;
-  dDay: any; // 임시
-  timer: any; // 임시
+  dDay: {
+    date: any;
+    repeat: any;
+    includeToday: any;
+  };
+  time: {
+    timer: any;
+    alramTime: any;
+  };
   scripts: {
     ppt: { dataURL: string | null; file: File | null };
     script: string | null;

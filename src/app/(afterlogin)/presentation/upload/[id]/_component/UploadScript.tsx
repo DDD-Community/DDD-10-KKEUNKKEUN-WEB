@@ -1,8 +1,10 @@
 'use client';
 
-import Input from '@/app/_components/_elements/Input';
-import { PagesDataType } from '@/types/service';
 import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef } from 'react';
+
+import { PagesDataType } from '@/types/service';
+
+import styles from './UploadScript.module.scss';
 
 interface UploadScriptProps {
   script: string | null;
@@ -26,9 +28,14 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
       });
     };
     return (
-      <div>
+      <div className={styles.container}>
         <p>{currentPageIndex + 1} 페이지 대본 붙여넣기</p>
-        <textarea value={script || ''} onChange={onChange}></textarea>
+        <textarea
+          className={styles.scriptInput}
+          value={script || ''}
+          onChange={onChange}
+          placeholder="가지고 있는 대본을 이곳에 복사하여 붙여 넣어주세요."
+        ></textarea>
       </div>
     );
   },

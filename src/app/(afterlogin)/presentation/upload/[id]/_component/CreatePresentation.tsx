@@ -9,8 +9,15 @@ import InputSection from './InputSection';
 const CreatePresentation = () => {
   const initialState: PagesDataType = {
     title: null,
-    dDay: null,
-    timer: null,
+    dDay: {
+      date: null,
+      repeat: null,
+      includeToday: null,
+    },
+    time: {
+      timer: null,
+      alramTime: null,
+    },
     scripts: [{ ppt: { dataURL: null, file: null }, script: null, memo: null }],
   };
 

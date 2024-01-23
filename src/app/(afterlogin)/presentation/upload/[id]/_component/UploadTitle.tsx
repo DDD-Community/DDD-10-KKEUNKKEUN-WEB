@@ -1,8 +1,12 @@
 'use client';
 
-import Input from '@/app/_components/_elements/Input';
-import { PagesDataType } from '@/types/service';
 import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef } from 'react';
+
+import { PagesDataType } from '@/types/service';
+
+import Input from '@/app/_components/_elements/Input';
+
+import styles from './UploadTitle.module.scss';
 
 interface UploadTitleProps {
   title: string | null;
@@ -20,9 +24,14 @@ const UploadTitle = forwardRef<HTMLInputElement, UploadTitleProps>(
       });
     };
     return (
-      <div>
+      <div className={styles.container}>
         <p>발표 이름</p>
-        <Input value={title || ''} onChange={onChange} />
+        <Input
+          placeholder="이름을 입력해주세요."
+          value={title || ''}
+          onChange={onChange}
+          className={styles.titleInput}
+        />
       </div>
     );
   },

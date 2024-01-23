@@ -29,22 +29,24 @@ const InputSection = ({
 }: InputSectionProps) => {
   return (
     <div className={styles.container}>
-      <div className={styles.left}>
-        <UploadPpt
-          pptInfo={presentationData.scripts[currentPageIndex].ppt}
-          setPresentationData={setPresentationData}
-          currentPageIndex={currentPageIndex}
-        />
-        <ControlButtons
-          presentationData={presentationData}
-          setPresentationData={setPresentationData}
-          currentPageIndex={currentPageIndex}
-          setCurrpentPageIndex={setCurrpentPageIndex}
-          initialState={initialState}
-        />
+      <div className={styles.leftSectionWrapper}>
+        <div className={styles.leftSection}>
+          <UploadPpt
+            pptInfo={presentationData.scripts[currentPageIndex].ppt}
+            setPresentationData={setPresentationData}
+            currentPageIndex={currentPageIndex}
+          />
+          <ControlButtons
+            presentationData={presentationData}
+            setPresentationData={setPresentationData}
+            currentPageIndex={currentPageIndex}
+            setCurrpentPageIndex={setCurrpentPageIndex}
+            initialState={initialState}
+          />
+        </div>
       </div>
-      <div className={styles.right}>
-        <div className={styles.inputSection}>
+      <div className={styles.rightSectionWrapper}>
+        <div className={styles.rightSection}>
           <UploadTitle
             title={presentationData.title || ''}
             setPresentationData={setPresentationData}
@@ -59,18 +61,18 @@ const InputSection = ({
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
           />
-          <UploadDday
-            dDay={presentationData.dDay || ''}
-            setPresentationData={setPresentationData}
-          />
-          <UploadTimer
-            timer={presentationData.timer || ''}
-            setPresentationData={setPresentationData}
-          />
-        </div>
-        <div className={styles.saveButtons}>
-          <Button _content={'저장'} onClick={() => {}} />
-          <Button _content={'발표 연습 시작하기'} onClick={() => {}} />
+          <div className={styles.line} />
+          <UploadDday dDay={presentationData.dDay} setPresentationData={setPresentationData} />
+          <UploadTimer time={presentationData.time} setPresentationData={setPresentationData} />
+
+          <div className={styles.saveButtons}>
+            <Button _content={<p>저장</p>} onClick={() => {}} className={styles.save} />
+            <Button
+              _content={<p>발표 연습 시작하기</p>}
+              onClick={() => {}}
+              className={styles.start}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -13,8 +13,15 @@ const mockPresentData: PresentInfoType[] = [
     id: 11111,
     data: {
       title: '발표1',
-      dDay: '2024.8.3',
-      timer: '200',
+      dDay: {
+        date: '2024.8.3',
+        repeat: '',
+        includeToday: '',
+      },
+      time: {
+        timer: '200',
+        alramTime: '200',
+      },
       scripts: [
         {
           ppt: {
@@ -50,8 +57,15 @@ const mockPresentData: PresentInfoType[] = [
     id: 22222,
     data: {
       title: '발표2',
-      dDay: '2024.8.3',
-      timer: '200',
+      dDay: {
+        date: '2024.8.3',
+        repeat: '',
+        includeToday: '',
+      },
+      time: {
+        timer: '200',
+        alramTime: '200',
+      },
       scripts: [
         {
           ppt: {

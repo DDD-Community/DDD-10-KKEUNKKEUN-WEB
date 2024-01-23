@@ -2,30 +2,61 @@
 
 .container {
   display: flex;
+  align-items: stretch;
+  gap: 60px;
+}
+
+.leftSectionWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.leftSection {
+  width: 500px;
+}
+
+.rightSectionWrapper {
+  display: flex;
+  justify-content: flex-start;
+  flex-grow: 1;
+}
+
+.rightSection {
+  display: flex;
+  width: 875px;
+  flex-direction: column;
+}
+
+.line {
+  margin-top: 10px;
+  border-top: 2px solid $tmp-backgroud-color;
   width: 100%;
-  gap: 80px;
-}
-
-.left {
-  flex: 1;
-  display: flex;
-  max-width: 650px;
-  align-items: center;
-  flex-direction: column;
-}
-
-.right {
-  flex: 1;
-}
-
-.inputSection {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
 }
 
 .saveButtons {
-  margin-top: 50px;
+  margin-top: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+
+  .save {
+    @include pure-button;
+    @include flex-center;
+
+    width: 100%;
+    max-width: 99px;
+    border-radius: 30px;
+    background-color: #c9c9c9;
+  }
+
+  .start {
+    @include pure-button;
+    @include flex-center;
+
+    width: 100%;
+    max-width: 752px;
+    border-radius: 30px;
+    background-color: #d9d9d9;
+  }
 }

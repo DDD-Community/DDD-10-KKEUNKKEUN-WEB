@@ -11,7 +11,7 @@ const page = ({ params }: PageProps) => {
   const slug = params.id;
 
   return (
-    <div className={styles.container}>
+    <div>
       <Suspense fallback={<Spinner />}>
         {slug === 'new' ? <CreatePresentation /> : <EditPresentation slug={slug} />}
       </Suspense>

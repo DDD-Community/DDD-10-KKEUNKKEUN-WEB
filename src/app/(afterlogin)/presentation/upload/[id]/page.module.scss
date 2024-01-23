@@ -1,9 +1,7 @@
 @import '@/app/_components/globals';
 
 .container {
-  @include flex-center;
+  // @include flex-center;
 
-  display: flex;
-  margin: 0 240px;
-  max-width: 1440px;
+  // margin: 0 240px;
 }

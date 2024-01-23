@@ -11,6 +11,9 @@
 }
 
 .container {
+  @include flex-center;
+
+  width: 100dvw;
   height: 100dvh;
 }
 
