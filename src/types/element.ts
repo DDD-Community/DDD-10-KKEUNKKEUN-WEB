@@ -40,3 +40,19 @@ export interface ToggleButtonProps extends CheckboxProps {
    */
   _activedLabel?: boolean;
 }
+
+/** 타임피커 컴포넌트 prop */
+export interface TimePickerProps {
+  /** 시간 타입 */
+  type: 'hour' | 'minute' | 'second';
+  /** 최소 값 (기본값 : 0)*/
+  min?: number;
+  /** 최대 값 (기본값:  hour-23, minute, second-59)*/
+  max?: number;
+  /** 시간 간격 (기본값:  hour-1, minute, second-30)*/
+  gap?: number;
+  /** 선택된 값 */
+  selectedValue: string;
+  /** 선택 값 변경 핸들러 */
+  onChange: (value: TimePickerProps['selectedValue']) => void;
+}
