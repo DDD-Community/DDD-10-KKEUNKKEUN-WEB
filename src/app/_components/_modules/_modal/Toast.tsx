@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useLayoutEffect, ReactNode } from 'react';
+import { useState, useLayoutEffect } from 'react';
 
 import styles from './Toast.module.scss';
 
 import classNames from 'classnames/bind';
 import { useToastStore } from '@/store/modal';
 
-const ToastProvider = () => {
+const Toast = () => {
   const { isOpen, modalData, closeModal } = useToastStore();
 
   const { content } = modalData;
@@ -35,4 +35,4 @@ const ToastProvider = () => {
   return <div className={cx(['toastContainer', fadeOut && 'fadeOut'])}>{content}</div>;
 };
 
-export default ToastProvider;
+export default Toast;
