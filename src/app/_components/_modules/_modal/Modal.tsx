@@ -9,14 +9,16 @@ import ConfirmModal from './ConfirmModal';
 const Modal = () => {
   const { isOpen, modalData } = useModalStore();
 
-  const { onCancel } = modalData;
+  const { onCancelButton } = modalData;
 
   if (!isOpen) {
     return <></>;
   }
 
   return (
-    <div className={styles.modalContainer}>{onCancel ? <ConfirmModal /> : <AlertModal />}</div>
+    <div className={styles.modalContainer}>
+      {onCancelButton ? <ConfirmModal /> : <AlertModal />}
+    </div>
   );
 };
 

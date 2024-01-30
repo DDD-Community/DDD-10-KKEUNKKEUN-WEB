@@ -7,17 +7,8 @@ import styles from './ConfirmModal.module.scss';
 const ConfirmModal = () => {
   const { modalData, closeModal } = useModalStore();
 
-  const { content, onCancel, onSubmit } = modalData;
+  const { content, onCancelButton, onSubmitButton } = modalData;
 
-  const onCancelInternal = () => {
-    onCancel?.fn();
-    closeModal();
-  };
-
-  const onSubmitInternal = () => {
-    onSubmit?.fn();
-    closeModal();
-  };
   return (
     <div className={styles.modalContent}>
       <div>{content}</div>
@@ -25,8 +16,8 @@ const ConfirmModal = () => {
         x
       </button>
       <div className={styles.actionButtons}>
-        <button onClick={onCancelInternal}>{onCancel?.content}</button>
-        <button onClick={onSubmitInternal}>{onSubmit?.content}</button>
+        {onSubmitButton}
+        {onCancelButton}
       </div>
     </div>
   );
