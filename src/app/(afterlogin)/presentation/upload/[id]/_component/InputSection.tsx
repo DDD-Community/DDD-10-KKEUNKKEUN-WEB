@@ -10,7 +10,7 @@ import UploadTimer from './UploadTimer';
 import Button from '@/app/_components/_elements/Button';
 import UploadPpt from './UploadPpt';
 import ControlButtons from './ControlButtons';
-import { useModalStore, useToastStore } from '@/store/modal';
+import { useToastStore } from '@/store/modal';
 import SaveToast from '@/app/_components/_modules/_modal/SaveToast';
 
 interface InputSectionProps {
