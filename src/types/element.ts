@@ -29,8 +29,6 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   /** 레이블 */
   _label?: string;
-  /** 체크 여부 */
-  _isChecked: boolean;
 }
 
 /** 토글 버튼 컴포넌트 prop */
