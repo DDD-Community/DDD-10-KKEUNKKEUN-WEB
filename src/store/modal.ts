@@ -6,11 +6,21 @@ export type ModalData = {
   /** 모달창 내부에 사용되는 컨텐츠 */
   content?: ReactNode;
 
-  /** 취소버튼 클릭 시 트리거되는 콜백 */
-  onCancel?: () => unknown;
+  /** 취소버튼 관련 데이터(이벤트 콜백, 버튼 컨텐츠)*/
+  onCancel?: {
+    /** 취소버튼 클릭 시 트리거 되는 콜백*/
+    fn: () => unknown;
+    /** 취소버튼의 컨텐츠*/
+    content: ReactNode;
+  };
 
-  /** submit버튼 클릭 시 트리거되는 콜백 */
-  onSubmit?: () => unknown;
+  /** submit버튼 관련 데이터(이벤트 콜백, 버튼 컨텐츠)*/
+  onSubmit?: {
+    /** submit버튼 클릭 시 트리거 되는 콜백*/
+    fn: () => unknown;
+    /** submit버튼의 컨텐츠*/
+    content: ReactNode;
+  };
 };
 
 /** 모달 스토어 타입 */
