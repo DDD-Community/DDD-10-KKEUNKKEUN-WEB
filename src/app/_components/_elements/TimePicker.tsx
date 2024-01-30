@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 import { TimePickerProps } from '@/types/element';
-import { getTimeList } from '@/app/_utils/elements';
+import { getTimeList } from '@/app/_utils/element';
 
 const TimePicker = ({ type, min, max, gap, selectedValue, onChange }: TimePickerProps) => {
   const isHour = type === 'hour';
