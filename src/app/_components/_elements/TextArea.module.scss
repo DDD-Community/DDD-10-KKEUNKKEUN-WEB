@@ -1,0 +1,35 @@
+@import '@/app/_components/globals';
+
+.presentationTextArea {
+  width: 100%;
+  padding: 0 $text-area-padding-sm;
+  border: none;
+  font-size: $text-area-font-size-md;
+  border-radius: $text-area-border-radius-md;
+
+  &.scriptTextarea {
+    height: $text-area-height-lg;
+    padding-top: $text-area-padding-md;
+    padding-bottom: $text-area-padding-md;
+    font-size: $text-area-font-size-lg;
+    background-color: $tmp-backgroud-color;
+
+    &.warning {
+      &:focus {
+        outline: none;
+      }
+
+      border: $text-area-border-warn;
+    }
+  }
+
+  &.scriptMemo {
+    background-color: $tmp-backgroud-color;
+    padding-top: $text-area-padding-md;
+    padding-bottom: $text-area-padding-md;
+    height: $text-area-height-sm;
+    font-size: $text-area-font-size-lg;
+  }
+}
+
+// [data-theme='script']

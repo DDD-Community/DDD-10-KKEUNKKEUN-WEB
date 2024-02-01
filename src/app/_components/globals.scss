@@ -23,4 +23,29 @@
   border-radius: 15px;
 }
 
+// xs (extra small)
+// sm (small)
+// md (medium)
+// lg (large)
+// xl (extra large)
+
 $tmp-backgroud-color: #d5d5d5;
+
+// # textarea
+$text-area-font-size-lg: 1.1rem;
+$text-area-font-size-md: 0.9rem;
+
+// width
+$text-area-width: 100%;
+
+// height
+$text-area-height-lg: 350px;
+$text-area-height-sm: 150px;
+
+// border
+$text-area-border-warn: 2px solid red;
+$text-area-border-radius-md: 15px;
+
+// padding
+$text-area-padding-md: 30px;
+$text-area-padding-sm: 20px;
