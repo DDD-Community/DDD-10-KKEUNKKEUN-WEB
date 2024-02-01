@@ -1,0 +1,37 @@
+@import '@/app/_components/globals';
+
+/** # textarea */
+@mixin presentation-textArea {
+  width: 100%;
+  padding: 0 $text-area-padding-sm;
+  border: none;
+  font-size: $text-area-font-size-md;
+  border-radius: $text-area-border-radius-md;
+}
+@mixin script-textarea-warning {
+  &:focus {
+    outline: none;
+  }
+
+  border: $text-area-border-warn;
+}
+@mixin script-textarea {
+  @include presentation-textArea;
+
+  height: $text-area-height-lg;
+  padding-top: $text-area-padding-md;
+  padding-bottom: $text-area-padding-md;
+  font-size: $text-area-font-size-lg;
+  background-color: $tmp-backgroud-color;
+}
+
+@mixin script-memo {
+  @include presentation-textArea;
+  background-color: $tmp-backgroud-color;
+  padding-top: $text-area-padding-md;
+  padding-bottom: $text-area-padding-md;
+  height: $text-area-height-sm;
+  font-size: $text-area-font-size-lg;
+}
+
+/** # input */
