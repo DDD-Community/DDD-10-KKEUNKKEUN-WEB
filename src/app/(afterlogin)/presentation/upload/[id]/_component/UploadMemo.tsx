@@ -34,8 +34,9 @@ const UploadMemo = forwardRef<HTMLInputElement, UploadMemoProps>(
         <p>메모 작성하기</p>
         <p className={styles.description}>발표하면서 계속 확인해야 하는 내용을 메모해보세요. </p>
         <TextArea
-          // className={styles.memoInput}
-          theme="presentation_memo"
+          size="size_md"
+          width="width_full"
+          theme="theme_gray"
           value={memo || ''}
           onChange={onChange}
           placeholder="ex. 목소리 크기, 바른 자세 등에 관한 메모를 작성해주세요. "

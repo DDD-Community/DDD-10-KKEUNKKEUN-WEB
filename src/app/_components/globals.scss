@@ -23,29 +23,37 @@
   border-radius: 15px;
 }
 
+$tmp-backgroud-color: #d7d7d7;
+
 // xs (extra small)
 // sm (small)
 // md (medium)
 // lg (large)
 // xl (extra large)
-
-$tmp-backgroud-color: #d5d5d5;
+// full (100%)
 
 /** # textarea */
-$text-area-font-size-lg: 1.1rem;
-$text-area-font-size-md: 0.9rem;
 
-// width
-$text-area-width: 100%;
+// 사이즈
+$textarea-size-md: (
+  height: 150px,
+  padding: 20px 20px,
+  font-size: 0.9rem,
+);
+$textarea-size-lg: (
+  height: 350px,
+  padding: 20px 30px,
+  font-size: 1.1rem,
+);
 
-// height
-$text-area-height-lg: 350px;
-$text-area-height-sm: 150px;
+// 너비
+$textarea-width-full: (
+  width: 100%,
+);
 
-// border
-$text-area-border-warn: 2px solid red;
-$text-area-border-radius-md: 15px;
-
-// padding
-$text-area-padding-md: 30px;
-$text-area-padding-sm: 20px;
+// 색상 테마
+$textarea-theme-gray: (
+  background-color: #d7d7d7,
+  color: black,
+  border-radius: 15px,
+);

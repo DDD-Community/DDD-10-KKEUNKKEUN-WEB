@@ -45,7 +45,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 /** textarea 컴포넌트 prop */
 export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   /** textarea 테마 */
-  theme?: 'presentation_memo' | 'presentation_script';
+  // theme?: 'presentation_memo' | 'presentation_script';
+  _className?: string;
+  size?: 'size_lg' | 'size_md';
+  width?: 'width_full';
+  theme?: 'theme_gray';
+  warning?: boolean;
 }
 
 /** 체크박스 컴포넌트 prop */

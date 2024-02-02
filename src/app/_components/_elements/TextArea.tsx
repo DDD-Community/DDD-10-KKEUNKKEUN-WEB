@@ -1,22 +1,18 @@
 import { TextAreaProps } from '@/types/element';
 import { forwardRef } from 'react';
 import styles from './TextArea.module.scss';
-import classNames from 'classnames';
+import classNames from 'classnames/bind';
 
+const cx = classNames.bind(styles);
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ theme, value, ...rest }, ref) => {
-    let themeClassName: string | undefined;
-    if (theme === 'presentation_memo') {
-      themeClassName = classNames(styles.scriptMemo);
-    }
-    if (theme === 'presentation_script') {
-      themeClassName = classNames({
-        [styles.scriptTextarea]: true,
-        [styles.warning]: (value as string[]).length > 5000,
-      });
-    }
-
-    return <textarea ref={ref} className={themeClassName} {...rest} />;
+  ({ _className, size, width, theme, value, warning, ...rest }, ref) => {
+    return (
+      <textarea
+        ref={ref}
+        className={cx(['textarea', `${size}`, `${width}`, `${theme}`, warning && 'warning'])}
+        {...rest}
+      />
+    );
   },
 );
 
