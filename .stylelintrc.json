@@ -41,6 +41,7 @@
       "box-sizing",
       "white-space"
     ],
+    "scss/no-global-function-names": null,
     "selector-class-pattern": null,
     "selector-pseudo-class-no-unknown": [
       true,
