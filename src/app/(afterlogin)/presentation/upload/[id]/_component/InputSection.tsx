@@ -10,7 +10,7 @@ import UploadTimer from './UploadTimer';
 import Button from '@/app/_components/_elements/Button';
 import UploadPpt from './UploadPpt';
 import ControlButtons from './ControlButtons';
-import { useToastStore } from '@/store/modal';
+import { useModalStore, useToastStore } from '@/store/modal';
 import SaveToast from '@/app/_components/_modules/SaveToast';
 import { useForm } from 'react-hook-form';
 
@@ -30,11 +30,43 @@ const InputSection = ({
   initialState,
   slug,
 }: InputSectionProps) => {
-  const { openModal } = useToastStore();
+  // const { openModal } = useToastStore();
 
-  const openModalWithData = (data: ReactNode) =>
+  // const openModalWithData = (data: ReactNode) =>
+  //   openModal({
+  //     content: data,
+  //   });
+
+  const { openModal, closeModal } = useModalStore();
+
+  const openModalWithData = () =>
     openModal({
-      content: data,
+      onCancelButton: (
+        <button
+          onClick={() => {
+            closeModal();
+          }}
+          className={styles.cancelButton}
+        >
+          취소
+        </button>
+      ),
+      onSubmitButton: (
+        <button
+          onClick={() => {
+            closeModal();
+          }}
+          className={styles.confirmButton}
+        >
+          삭제하기
+        </button>
+      ),
+      content: (
+        <div>
+          <p>발표 연습 파일을 삭제하시겠어요?</p>
+          <p>삭제한 파일은 복원할 수 없습니다</p>
+        </div>
+      ),
     });
 
   const {
@@ -82,7 +114,8 @@ const InputSection = ({
             onSubmit={handleSubmit((data) => {
               // mutation의 onSuccess로 모달 띄우기
               console.log(JSON.stringify(data));
-              openModalWithData(<SaveToast />);
+
+              openModalWithData();
             })}
           >
             <UploadTitle
