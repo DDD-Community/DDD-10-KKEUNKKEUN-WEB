@@ -52,6 +52,23 @@ $tmp-backgroud-color: #d7d7d7;
   border-radius: 12px;
   cursor: pointer;
 }
+
+// 발표 목록페이지 재사용 버튼 사이즈
+@mixin button_size_web_presentation_list {
+  width: 117px;
+  height: 56px;
+  font-size: px-to-rem(20px);
+
+  // 내부 글씨 중앙 정렬
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
 // 모바일 모달 confirm 버튼 사이즈
 @mixin button_size_mobile_modal_confirm {
   width: 128px;
@@ -67,7 +84,8 @@ $tmp-backgroud-color: #d7d7d7;
   border-radius: 12px;
   cursor: pointer;
 }
-// 모바일 모달 aleret 버튼 사이즈
+
+// 모바일 모달 alert 버튼 사이즈
 @mixin button_size_mobile_modal_alert {
   width: 264px;
   height: 48px;
