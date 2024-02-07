@@ -13,6 +13,7 @@ import ControlButtons from './ControlButtons';
 import { useModalStore, useToastStore } from '@/store/modal';
 import SaveToast from '@/app/_components/_modules/SaveToast';
 import { useForm } from 'react-hook-form';
+import Required from './Required';
 
 interface InputSectionProps {
   presentationData: PagesDataType;
@@ -60,12 +61,17 @@ const InputSection = ({
       <div className={styles.leftSectionWrapper}>
         <div className={styles.leftSection}>
           <p className={styles.description}>
-            발표 자료 추가 <span>* 필수항목</span>
+            발표 자료 추가
+            <span style={{ color: 'red', margin: 20 }}>
+              <Required />
+              필수항목
+            </span>
           </p>
           <UploadPpt
             pptInfo={presentationData.scripts[currentPageIndex].ppt}
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
+            setCurrpentPageIndex={setCurrpentPageIndex}
           />
           <ControlButtons
             presentationData={presentationData}

@@ -1,6 +1,5 @@
 'use client';
 
-import Button from '@/app/_components/_elements/Button';
 import Image from 'next/image';
 import { ChangeEventHandler, Dispatch, SetStateAction, useRef } from 'react';
 import styles from './UploadPpt.module.scss';
@@ -10,8 +9,14 @@ interface UploadPptProps {
   pptInfo: PagesDataType['scripts'][0]['ppt'];
   setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   currentPageIndex: number;
+  setCurrpentPageIndex: Dispatch<SetStateAction<number>>;
 }
-const UploadPpt = ({ pptInfo, setPresentationData, currentPageIndex }: UploadPptProps) => {
+const UploadPpt = ({
+  pptInfo,
+  setPresentationData,
+  currentPageIndex,
+  setCurrpentPageIndex,
+}: UploadPptProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
 
   const onClickButton = () => {
@@ -62,27 +67,77 @@ const UploadPpt = ({ pptInfo, setPresentationData, currentPageIndex }: UploadPpt
           //  pptInfo.file === null ||
           pptInfo.dataURL === null ? (
             <div className={styles.newPptSection}>
-              <div>LOGO</div>
-              <Button
-                onClick={onClickButton}
-                _content={<p>PPT 이미지 등록하기</p>}
-                className={styles.updateButton}
-              />
+              <svg
+                width="30"
+                height="30"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7 4H21V15H18V7H7V4ZM6 7V3H22V16H18V20H2V7H6ZM17 16V19H3V8H6V16H17ZM17 15H7V8H17V15Z"
+                  fill="black"
+                />
+              </svg>
+
+              <button className={styles.updateButton} onClick={onClickButton}>
+                PPT 이미지 등록하기
+              </button>
             </div>
           ) : (
             <div className={styles.pptImageSection}>
-              <Image
-                src={pptInfo.dataURL as string}
-                alt="ppt image"
-                fill
-                style={{ objectFit: 'contain' }}
-                className={styles.pptImage}
-              />
-              <Button
-                _content={'이미지 변경'}
-                className={styles.changePptImageButton}
-                onClick={onClickButton}
-              />
+              <div className={styles.hoverSection}>
+                <Image
+                  src={pptInfo.dataURL as string}
+                  alt="ppt image"
+                  fill
+                  style={{ objectFit: 'contain' }}
+                  className={styles.pptImage}
+                />
+                <button className={styles.changePptImageButton} onClick={onClickButton}>
+                  이미지 변경
+                </button>
+              </div>
+              {currentPageIndex !== 0 && (
+                <button
+                  className={styles.goLeft}
+                  disabled={currentPageIndex === 0}
+                  onClick={() => setCurrpentPageIndex((prev) => prev - 1)}
+                >
+                  <svg
+                    width="14"
+                    height="22"
+                    viewBox="0 0 14 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M13.034 2.07689L11.1162 0.169922L0.460938 10.836L11.127 21.5021L13.034 19.5951L4.27487 10.836L13.034 2.07689Z"
+                      fill="#4B4B4B"
+                    />
+                  </svg>
+                </button>
+              )}
+
+              <button
+                className={styles.goRight}
+                onClick={() => setCurrpentPageIndex((prev) => prev + 1)}
+              >
+                <svg
+                  width="13"
+                  height="22"
+                  viewBox="0 0 13 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.382812 19.5951L2.28978 21.5021L12.9558 10.836L2.28978 0.169922L0.382812 2.07689L9.14192 10.836L0.382812 19.5951Z"
+                    fill="#1E1E1E"
+                  />
+                </svg>
+              </button>
             </div>
           )
         }
