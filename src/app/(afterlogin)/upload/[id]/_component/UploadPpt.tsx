@@ -9,13 +9,13 @@ interface UploadPptProps {
   pptInfo: PagesDataType['scripts'][0]['ppt'];
   setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   currentPageIndex: number;
-  setCurrpentPageIndex: Dispatch<SetStateAction<number>>;
+  changeCurrentPageIndex: (nextIndex: number) => void;
 }
 const UploadPpt = ({
   pptInfo,
   setPresentationData,
   currentPageIndex,
-  setCurrpentPageIndex,
+  changeCurrentPageIndex,
 }: UploadPptProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
 
@@ -104,7 +104,7 @@ const UploadPpt = ({
                 <button
                   className={styles.goLeft}
                   disabled={currentPageIndex === 0}
-                  onClick={() => setCurrpentPageIndex((prev) => prev - 1)}
+                  onClick={() => changeCurrentPageIndex(currentPageIndex - 1)}
                 >
                   <svg
                     width="14"
@@ -123,7 +123,7 @@ const UploadPpt = ({
 
               <button
                 className={styles.goRight}
-                onClick={() => setCurrpentPageIndex((prev) => prev + 1)}
+                onClick={() => changeCurrentPageIndex(currentPageIndex + 1)}
               >
                 <svg
                   width="13"

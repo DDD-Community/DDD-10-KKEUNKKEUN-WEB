@@ -1,7 +1,7 @@
 'use client';
 import { PagesDataType, ValidtaionType } from '@/types/service';
 import styles from './InputSection.module.scss';
-import { Dispatch, ReactNode, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import UploadTitle from './UploadTitle';
 import UploadScript from './UploadScript';
 import UploadMemo from './UploadMemo';
@@ -10,10 +10,11 @@ import UploadTimer from './UploadTimer';
 import Button from '@/app/_components/_elements/Button';
 import UploadPpt from './UploadPpt';
 import ControlButtons from './ControlButtons';
-import { useModalStore, useToastStore } from '@/store/modal';
+import { useToastStore } from '@/store/modal';
 import SaveToast from '@/app/_components/_modules/SaveToast';
 import { useForm } from 'react-hook-form';
 import Required from './Required';
+import { checkValidtaion } from '../_utils/validation';
 
 interface InputSectionProps {
   presentationData: PagesDataType;
@@ -50,11 +51,23 @@ const InputSection = ({
       reset({
         title: presentationData.title || '',
         script: presentationData.scripts[currentPageIndex].script || '',
+        memo: presentationData.scripts[currentPageIndex].memo || '',
         dDayDate: presentationData.dDay.date,
       });
     };
     resetFormData();
   }, [presentationData, currentPageIndex]);
+
+  const changeCurrentPageIndex = async (nextIndex: number) => {
+    // if (!checkValidtaion(presentationData, currentPageIndex)) {
+    //   alert('유효성!');
+    //   return;
+    // }
+    setCurrpentPageIndex(nextIndex);
+  };
+
+  console.log(presentationData);
+  console.log(currentPageIndex);
 
   return (
     <div className={styles.container}>
@@ -62,7 +75,7 @@ const InputSection = ({
         <div className={styles.leftSection}>
           <p className={styles.description}>
             발표 자료 추가
-            <span style={{ color: 'red', margin: 20 }}>
+            <span style={{ color: '#DE3428', margin: 20 }}>
               <Required />
               필수항목
             </span>
@@ -71,14 +84,14 @@ const InputSection = ({
             pptInfo={presentationData.scripts[currentPageIndex].ppt}
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
-            setCurrpentPageIndex={setCurrpentPageIndex}
+            changeCurrentPageIndex={changeCurrentPageIndex}
           />
           <ControlButtons
             presentationData={presentationData}
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
-            setCurrpentPageIndex={setCurrpentPageIndex}
             initialState={initialState}
+            changeCurrentPageIndex={changeCurrentPageIndex}
           />
         </div>
       </div>
@@ -109,6 +122,7 @@ const InputSection = ({
               memo={presentationData.scripts[currentPageIndex].memo || ''}
               setPresentationData={setPresentationData}
               currentPageIndex={currentPageIndex}
+              register={register}
             />
             <div className={styles.line} />
 

@@ -5,6 +5,7 @@ export type Value = ValuePiece | [ValuePiece, ValuePiece];
 export interface ValidtaionType {
   title: string;
   script: string;
+  memo: string;
   dDayDate: Value;
 }
 
