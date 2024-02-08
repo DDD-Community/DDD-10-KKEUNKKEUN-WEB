@@ -6,7 +6,7 @@ import { PagesDataType, ValidtaionType } from '@/types/service';
 
 import styles from './UploadMemo.module.scss';
 import TextArea from '@/app/_components/_elements/TextArea';
-import { RegisterOptions, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, RegisterOptions, UseFormRegister } from 'react-hook-form';
 import { MAX_LENGTH } from '@/config/const';
 
 interface UploadMemoProps {
@@ -14,16 +14,39 @@ interface UploadMemoProps {
   currentPageIndex: number;
   setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   register: UseFormRegister<ValidtaionType>;
+  errors: FieldErrors<ValidtaionType>;
+  lastDummyPageIndex: number;
+  erroOnEachPage: {
+    memo: boolean;
+    script: {
+      minLength: boolean;
+      maxLength: boolean;
+    };
+  };
 }
 
 const UploadMemo = forwardRef<HTMLInputElement, UploadMemoProps>(
-  ({ memo, currentPageIndex, setPresentationData, register }, ref) => {
-    const registerOptions: RegisterOptions = {
-      maxLength: {
-        value: MAX_LENGTH.MEMO,
-        message: `${MAX_LENGTH.MEMO}자 이내로 작성해 주세요.`,
-      },
-    };
+  (
+    {
+      memo,
+      currentPageIndex,
+      setPresentationData,
+      register,
+      errors,
+      erroOnEachPage,
+      lastDummyPageIndex,
+    },
+    ref,
+  ) => {
+    const registerOptions: RegisterOptions =
+      currentPageIndex === lastDummyPageIndex
+        ? {}
+        : {
+            maxLength: {
+              value: MAX_LENGTH.MEMO,
+              message: `${MAX_LENGTH.MEMO}자 이내로 작성해 주세요.`,
+            },
+          };
 
     const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
       setPresentationData((prev) => {
@@ -42,6 +65,16 @@ const UploadMemo = forwardRef<HTMLInputElement, UploadMemoProps>(
     return (
       <div className={styles.container}>
         <p>메모 작성하기</p>
+        {errors.memo && (
+          <small role="alert" style={{ color: '#DE3428' }}>
+            {errors.memo.message as string}
+          </small>
+        )}
+        {erroOnEachPage.memo && (
+          <small role="alert" style={{ color: '#DE3428' }}>
+            {'다시.'}
+          </small>
+        )}
         <p className={styles.description}>발표하면서 계속 확인해야 하는 내용을 메모해보세요. </p>
         <div className={styles.memoSection}>
           <TextArea

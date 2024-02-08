@@ -3,12 +3,14 @@
 import Image from 'next/image';
 import { ChangeEventHandler, Dispatch, SetStateAction, useRef } from 'react';
 import styles from './UploadPpt.module.scss';
-import { PagesDataType } from '@/types/service';
+import { PagesDataType, ValidtaionType } from '@/types/service';
+import { RegisterOptions, UseFormRegister } from 'react-hook-form';
 
 interface UploadPptProps {
   pptInfo: PagesDataType['scripts'][0]['ppt'];
   setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   currentPageIndex: number;
+  initialState: PagesDataType;
   changeCurrentPageIndex: (nextIndex: number) => void;
 }
 const UploadPpt = ({
@@ -16,6 +18,7 @@ const UploadPpt = ({
   setPresentationData,
   currentPageIndex,
   changeCurrentPageIndex,
+  initialState,
 }: UploadPptProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
 
@@ -41,6 +44,11 @@ const UploadPpt = ({
             },
           };
 
+          // 추가
+          if (currentPageIndex === prev.scripts.length - 1) {
+            shallow.push(initialState.scripts[0]);
+          }
+
           return {
             ...prev,
             scripts: shallow,
@@ -55,6 +63,7 @@ const UploadPpt = ({
   return (
     <div className={styles.container}>
       <input
+        id="ppt"
         type="file"
         accept="image/png, image/jpeg"
         onChange={onUpload}

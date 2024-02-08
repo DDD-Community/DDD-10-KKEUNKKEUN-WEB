@@ -1,7 +1,7 @@
 'use client';
 import { PagesDataType, ValidtaionType } from '@/types/service';
 import styles from './InputSection.module.scss';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import UploadTitle from './UploadTitle';
 import UploadScript from './UploadScript';
 import UploadMemo from './UploadMemo';
@@ -24,6 +24,14 @@ interface InputSectionProps {
   initialState: PagesDataType;
   slug?: string | 'new';
 }
+
+interface ErroOnEachPageType {
+  memo: boolean;
+  script: {
+    minLength: boolean;
+    maxLength: boolean;
+  };
+}
 const InputSection = ({
   presentationData,
   setPresentationData,
@@ -32,6 +40,14 @@ const InputSection = ({
   initialState,
   slug,
 }: InputSectionProps) => {
+  const [erroOnEachPage, setErroOnEachPage] = useState<ErroOnEachPageType>({
+    script: {
+      minLength: false,
+      maxLength: false,
+    },
+    memo: false,
+  });
+
   const { openModal } = useToastStore();
 
   const openModalWithData = () =>
@@ -59,15 +75,27 @@ const InputSection = ({
   }, [presentationData, currentPageIndex]);
 
   const changeCurrentPageIndex = async (nextIndex: number) => {
-    // if (!checkValidtaion(presentationData, currentPageIndex)) {
-    //   alert('유효성!');
-    //   return;
-    // }
-    setCurrpentPageIndex(nextIndex);
-  };
+    if (currentPageIndex === presentationData.scripts.length - 1) {
+      setCurrpentPageIndex(nextIndex);
+    } else {
+      const validateResult = checkValidtaion(presentationData, currentPageIndex);
 
-  console.log(presentationData);
-  console.log(currentPageIndex);
+      setErroOnEachPage({
+        memo: validateResult.memo,
+        script: {
+          minLength: validateResult.script.minLength,
+          maxLength: validateResult.script.maxLength,
+        },
+      });
+
+      if (
+        !validateResult.memo &&
+        !validateResult.script.maxLength &&
+        !validateResult.script.minLength
+      )
+        setCurrpentPageIndex(nextIndex);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -85,12 +113,12 @@ const InputSection = ({
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
             changeCurrentPageIndex={changeCurrentPageIndex}
+            initialState={initialState}
           />
           <ControlButtons
             presentationData={presentationData}
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
-            initialState={initialState}
             changeCurrentPageIndex={changeCurrentPageIndex}
           />
         </div>
@@ -99,6 +127,7 @@ const InputSection = ({
         <div className={styles.rightSection}>
           <form
             onSubmit={handleSubmit((data) => {
+              // 마지막 페이지는 제거
               // mutation의 onSuccess로 모달 띄우기
               console.log(JSON.stringify(data));
 
@@ -113,16 +142,21 @@ const InputSection = ({
             />
             <UploadScript
               script={presentationData.scripts[currentPageIndex].script || ''}
+              lastDummyPageIndex={presentationData.scripts.length - 1}
               setPresentationData={setPresentationData}
               currentPageIndex={currentPageIndex}
               register={register}
               errors={errors}
+              erroOnEachPage={erroOnEachPage}
             />
             <UploadMemo
               memo={presentationData.scripts[currentPageIndex].memo || ''}
+              lastDummyPageIndex={presentationData.scripts.length - 1}
               setPresentationData={setPresentationData}
               currentPageIndex={currentPageIndex}
               register={register}
+              errors={errors}
+              erroOnEachPage={erroOnEachPage}
             />
             <div className={styles.line} />
 
@@ -137,13 +171,14 @@ const InputSection = ({
 
             <div className={styles.saveButtons}>
               <Button
-                _content={<p>저장</p>}
+                _content={<p>임시 저장</p>}
                 type="submit"
                 className={styles.save}
                 disabled={isSubmitting}
               />
               <Button
-                _content={<p>발표 연습 시작하기</p>}
+                _content={<p>저장하고 발표 연습 시작하기</p>}
+                type="submit"
                 onClick={() => {}}
                 className={styles.start}
               />

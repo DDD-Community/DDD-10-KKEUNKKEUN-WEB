@@ -5,7 +5,12 @@ export const checkValidtaion = (presentationData: PagesDataType, currentPageInde
   const memoLength = presentationData.scripts[currentPageIndex].memo?.length || 0;
   const scriptLength = presentationData.scripts[currentPageIndex].script?.length || 0;
 
-  if (memoLength > MAX_LENGTH.MEMO) return false;
-  if (scriptLength === 0 || scriptLength > MAX_LENGTH.SCRIPT) return false;
-  return true;
+  const result = {
+    memo: memoLength > MAX_LENGTH.MEMO,
+    script: {
+      minLength: scriptLength === 0,
+      maxLength: scriptLength > MAX_LENGTH.SCRIPT,
+    },
+  };
+  return result;
 };

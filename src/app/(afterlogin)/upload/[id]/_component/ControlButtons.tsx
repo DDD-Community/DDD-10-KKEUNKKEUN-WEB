@@ -12,8 +12,6 @@ import styles from './ControlButtons.module.scss';
 import classNames from 'classnames/bind';
 
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
-import { checkValidtaion } from '../_utils/validation';
-import { UseFormTrigger } from 'react-hook-form';
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +19,6 @@ interface ControlButtonsProps {
   presentationData: PagesDataType;
   setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   currentPageIndex: number;
-  initialState: PagesDataType;
   slug?: string;
   changeCurrentPageIndex: (nextIndex: number) => void;
 }
@@ -31,31 +28,10 @@ const ControlButtons = ({
   setPresentationData,
   currentPageIndex,
   slug,
-  initialState,
   changeCurrentPageIndex,
 }: ControlButtonsProps) => {
   const addButton = async () => {
-    // 페이지별로 필요한 내용만 검사, 제목, D-day는 저장할때 검사
-    // if (!checkValidtaion(presentationData, currentPageIndex)) return;
-
-    // 마지막 페이지(=작성 중이던 페이지)에서 눌렀다면 새로 추가
-    if (currentPageIndex === presentationData.scripts.length - 1) {
-      setPresentationData((prev) => {
-        const shallow = [...prev.scripts];
-        shallow.push(initialState.scripts[0]);
-
-        return {
-          ...prev,
-          scripts: shallow,
-        };
-      });
-      changeCurrentPageIndex(currentPageIndex + 1);
-      // setCurrpentPageIndex((prev) => prev + 1);
-    } else {
-      // 다른 페이지에 있었다면 마지막 페이지로 다시 복귀
-      // setCurrpentPageIndex(presentationData.scripts.length - 1);
-      changeCurrentPageIndex(presentationData.scripts.length - 1);
-    }
+    changeCurrentPageIndex(presentationData.scripts.length - 1);
   };
 
   const remove = (e: MouseEvent<HTMLButtonElement>, index: number) => {
@@ -74,7 +50,6 @@ const ControlButtons = ({
     if (index <= currentPageIndex) {
       const target = currentPageIndex === 0 ? 0 : currentPageIndex - 1;
       changeCurrentPageIndex(target);
-      // setCurrpentPageIndex((prev) => (prev === 0 ? 0 : prev - 1));
     }
   };
 

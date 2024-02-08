@@ -10,7 +10,7 @@ import { FieldErrors, RegisterOptions, UseFormRegister } from 'react-hook-form';
 
 import classNames from 'classnames/bind';
 import Required from './Required';
-import { MAX_LENGTH } from '@/config/const';
+import { MAX_LENGTH, VALIDATION_MESSAGE } from '@/config/const';
 
 interface UploadScriptProps {
   script: string;
@@ -18,25 +18,48 @@ interface UploadScriptProps {
   setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   register: UseFormRegister<ValidtaionType>;
   errors: FieldErrors<ValidtaionType>;
+  lastDummyPageIndex: number;
+  erroOnEachPage: {
+    memo: boolean;
+    script: {
+      minLength: boolean;
+      maxLength: boolean;
+    };
+  };
 }
 
 const cx = classNames.bind(styles);
 
 const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
-  ({ script, currentPageIndex, setPresentationData, register, errors }, ref) => {
-    const registerOptions: RegisterOptions = {
-      required: '대본은 필수 입력입니다.',
-      maxLength: {
-        value: MAX_LENGTH.SCRIPT,
-        message: `${MAX_LENGTH.SCRIPT}자 이내로 작성해 주세요.`,
-      },
-    };
+  (
+    {
+      script,
+      currentPageIndex,
+      setPresentationData,
+      register,
+      errors,
+      erroOnEachPage,
+      lastDummyPageIndex,
+    },
+    ref,
+  ) => {
+    const registerOptions: RegisterOptions =
+      currentPageIndex === lastDummyPageIndex
+        ? {}
+        : {
+            required: VALIDATION_MESSAGE.SCRIPT.REQUIRED,
+            maxLength: {
+              value: MAX_LENGTH.SCRIPT,
+              message: VALIDATION_MESSAGE.SCRIPT.MAX_LENGTH,
+            },
+          };
 
     const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
       let scriptValue = e.target.value;
       if (scriptValue.length >= MAX_LENGTH.SCRIPT + 1) {
         scriptValue = scriptValue.slice(0, MAX_LENGTH.SCRIPT + 1);
       }
+
       setPresentationData((prev) => {
         const shallow = [...prev.scripts];
         shallow[currentPageIndex] = {
@@ -57,11 +80,26 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
             {currentPageIndex + 1} 페이지 대본 붙여넣기 <Required />
           </label>
 
+          {/* 제출용 훅 폼 유효성 검사 */}
           {errors.script && (
             <small role="alert" style={{ color: '#DE3428' }}>
               {errors.script.message as string}
             </small>
           )}
+          {/* 페이지 이동 유효성 검사 */}
+          {!errors.script && script.length === 0 && erroOnEachPage.script.minLength && (
+            <small role="alert" style={{ color: '#DE3428' }}>
+              {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
+            </small>
+          )}
+          {/* 페이지 이동 유효성 검사 */}
+          {!errors.script &&
+            script.length > MAX_LENGTH.SCRIPT &&
+            erroOnEachPage.script.maxLength && (
+              <small role="alert" style={{ color: '#DE3428' }}>
+                {VALIDATION_MESSAGE.SCRIPT.MAX_LENGTH}
+              </small>
+            )}
         </div>
         <div className={cx(['scriptSection', script.length > MAX_LENGTH.SCRIPT && 'warning'])}>
           <textarea
