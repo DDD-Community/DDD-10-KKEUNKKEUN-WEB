@@ -1,17 +1,18 @@
 @import '@/styles/mixins';
 
 .container {
+  margin-top: 56px;
   display: flex;
   width: 100%;
-  margin: 20px 0;
   flex-direction: column;
   gap: 18px;
 }
 
 .description {
   display: flex;
-  gap: 10px;
   align-items: center;
+  font-weight: bolder;
+  gap: 10px;
 }
 
 .titleSection {
@@ -22,7 +23,7 @@
   border: 1px solid #ddd;
 
   &.warning {
-    border: 2px solid red;
+    border: 2px solid #de3428;
   }
 
   &:focus-within {

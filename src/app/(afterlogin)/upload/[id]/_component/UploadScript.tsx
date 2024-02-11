@@ -86,13 +86,13 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
               {errors.script.message as string}
             </small>
           )}
-          {/* 페이지 이동 유효성 검사 */}
+          {/* 페이지 이동 유효성 검사 - 최대 길이*/}
           {!errors.script && script.length === 0 && erroOnEachPage.script.minLength && (
             <small role="alert" style={{ color: '#DE3428' }}>
               {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
             </small>
           )}
-          {/* 페이지 이동 유효성 검사 */}
+          {/* 페이지 이동 유효성 검사 - 최소 길이*/}
           {!errors.script &&
             script.length > MAX_LENGTH.SCRIPT &&
             erroOnEachPage.script.maxLength && (
@@ -105,7 +105,7 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
           <textarea
             id="script"
             className={styles.scriptTextarea}
-            value={script || ''}
+            value={script}
             {...register('script', registerOptions)}
             onChange={onChange}
             placeholder="가지고 있는 대본을 이곳에 복사하여 붙여 넣어주세요."

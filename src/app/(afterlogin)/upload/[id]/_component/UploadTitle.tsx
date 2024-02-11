@@ -48,7 +48,7 @@ const UploadTitle = forwardRef<HTMLInputElement, UploadTitleProps>(
             발표 이름 <Required />
           </label>
           {errors.title && (
-            <small role="alert" style={{ color: 'red' }}>
+            <small role="alert" style={{ color: '#DE3428' }}>
               {errors.title.message as string}
             </small>
           )}
