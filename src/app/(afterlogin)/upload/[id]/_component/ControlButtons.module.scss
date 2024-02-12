@@ -17,12 +17,12 @@
   width: 107px; // border-box
   height: 62px; // border-box
   background-color: transparent;
-  border: 1px solid #b0b0b0;
+  border: 1px solid $gray-3;
   border-radius: 8px;
   cursor: pointer;
 
   &.selected {
-    border: 3px solid #854cff;
+    border: 3px solid $purple-4;
   }
 }
 
@@ -54,14 +54,14 @@
   bottom: 0;
   width: 20px;
   height: 20px;
-  color: white;
+  color: $white;
   font-size: 13px;
-  background-color: #868686;
+  background-color: $gray-5;
   border-top-left-radius: 8px;
   border-end-end-radius: 4px;
 
   &.selected {
-    background-color: #854cff;
+    background-color: $purple-4;
   }
 }
 
@@ -72,6 +72,6 @@
   display: inline-block;
   min-width: 107px; // border-box
   height: 62px; // border-box
-  border: 1px solid #b0b0b0;
+  border: 1px solid $gray-3;
   border-radius: 15px;
 }

@@ -26,17 +26,17 @@
   border: none;
   font-size: 20px;
   border-radius: 4px;
-  background-color: #f3f3f3;
+  background-color: $gray-0;
 
   p {
     margin: 0;
 
     &.placeholder {
-      color: #b0b0b0;
+      color: $gray-3;
     }
 
     &.selected {
-      color: black;
+      color: $black;
     }
   }
 }

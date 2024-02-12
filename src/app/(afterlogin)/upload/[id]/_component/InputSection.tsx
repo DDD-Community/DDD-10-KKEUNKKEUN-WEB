@@ -97,7 +97,6 @@ const InputSection = ({
     }
   };
 
-  console.log(presentationData);
   return (
     <div className={styles.container}>
       <div className={styles.leftSectionWrapper}>

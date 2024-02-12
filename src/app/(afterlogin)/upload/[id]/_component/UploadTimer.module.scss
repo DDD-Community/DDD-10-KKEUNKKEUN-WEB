@@ -33,17 +33,17 @@
     width: 38px;
     height: 29px;
     border: none;
-    color: black;
+    color: $black;
     text-align: center;
     border-radius: 4px;
-    background-color: #f3f3f3;
+    background-color: $gray-0;
 
     &:focus {
-      color: black;
+      color: $black;
     }
 
     &::placeholder {
-      color: #b0b0b0;
+      color: $gray-3;
     }
   }
 }
