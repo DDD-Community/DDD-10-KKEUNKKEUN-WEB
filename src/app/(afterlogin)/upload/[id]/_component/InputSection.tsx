@@ -97,6 +97,7 @@ const InputSection = ({
     }
   };
 
+  console.log(presentationData);
   return (
     <div className={styles.container}>
       <div className={styles.leftSectionWrapper}>
@@ -174,10 +175,11 @@ const InputSection = ({
                 _content={<p>임시 저장</p>}
                 type="submit"
                 className={styles.save}
-                disabled={isSubmitting}
+                disabled={isSubmitting || presentationData.scripts.length === 1}
               />
               <Button
                 _content={<p>저장하고 발표 연습 시작하기</p>}
+                disabled={isSubmitting || presentationData.scripts.length === 1}
                 type="submit"
                 onClick={() => {}}
                 className={styles.start}

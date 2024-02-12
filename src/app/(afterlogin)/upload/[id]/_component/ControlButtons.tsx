@@ -113,7 +113,14 @@ const ControlButtons = ({
                               />
                             </svg>
                           </button>
-                          <div className={styles.orderNumber}>{index + 1}</div>
+                          <div
+                            className={cx([
+                              'orderNumber',
+                              currentPageIndex === index && 'selected',
+                            ])}
+                          >
+                            {index + 1}
+                          </div>
                         </div>
                       </div>
                     );

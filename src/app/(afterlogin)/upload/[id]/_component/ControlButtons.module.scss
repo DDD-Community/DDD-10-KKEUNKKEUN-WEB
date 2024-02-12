@@ -20,6 +20,10 @@
   border: 1px solid #b0b0b0;
   border-radius: 8px;
   cursor: pointer;
+
+  &.selected {
+    border: 3px solid #854cff;
+  }
 }
 
 .closeButton {
@@ -55,6 +59,10 @@
   background-color: #868686;
   border-top-left-radius: 8px;
   border-end-end-radius: 4px;
+
+  &.selected {
+    background-color: #854cff;
+  }
 }
 
 .addButton {
@@ -66,8 +74,4 @@
   height: 62px; // border-box
   border: 1px solid #b0b0b0;
   border-radius: 15px;
-}
-
-.selected {
-  border: 3px solid #b0b0b0;
 }

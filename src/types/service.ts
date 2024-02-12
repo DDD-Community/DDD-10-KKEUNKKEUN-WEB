@@ -13,12 +13,10 @@ export interface PagesDataType {
   title: string | null;
   dDay: {
     date: Value;
-    repeat: any;
-    includeToday: any;
   };
   time: {
-    timer: any;
-    alramTime: any;
+    timer: number | null;
+    alramTime: number | null;
   };
   scripts: {
     ppt: { dataURL: string | null; file: File | null };

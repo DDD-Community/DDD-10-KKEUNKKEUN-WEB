@@ -5,30 +5,38 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 10px;
+  gap: 12px;
 }
 
 .description {
+  margin: 0;
   font-weight: bolder;
 }
 
 .inputWrapper {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-.dDayInput {
-  width: 100%;
-  width: 60px;
-  height: 40px;
-  padding: 0 20px;
+.calendarButton {
+  width: 148px;
+  height: 29px;
+  padding: 5px 12px;
   border: none;
-  font-size: 0.9rem;
-  border-radius: 15px;
-  background-color: $tmp-backgroud-color;
-}
+  font-size: 20px;
+  border-radius: 4px;
+  background-color: #f3f3f3;
 
-.includeTodayDescription {
-  color: $tmp-backgroud-color;
-  font-size: 0.9rem;
+  p {
+    margin: 0;
+
+    &.placeholder {
+      color: #b0b0b0;
+    }
+
+    &.selected {
+      color: black;
+    }
+  }
 }
