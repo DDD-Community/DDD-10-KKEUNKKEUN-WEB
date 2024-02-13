@@ -67,7 +67,9 @@ const UploadTimer = forwardRef<HTMLInputElement, UploadTimerProps>(
       <div className={styles.container}>
         <p className={styles.description}>발표시간 설정</p>
         <div className={styles.inputWrapper}>
-          <label htmlFor="timer">타이머</label>
+          <label htmlFor="timer" className={styles.label}>
+            타이머
+          </label>
           <div className={styles.timerInput}>
             <input
               type="number"
@@ -97,7 +99,9 @@ const UploadTimer = forwardRef<HTMLInputElement, UploadTimerProps>(
           /> */}
         </div>
         <div className={styles.inputWrapper}>
-          <label htmlFor="alarm">발표 마무리 전 알림</label>
+          <label htmlFor="alarm" className={styles.label}>
+            발표 마무리 전 알림
+          </label>
           {/* <Input
             value={time.alramTime || ''}
             onChange={onChange}

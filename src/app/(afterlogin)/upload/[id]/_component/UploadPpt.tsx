@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { ChangeEventHandler, Dispatch, SetStateAction, useRef } from 'react';
 import styles from './UploadPpt.module.scss';
-import { PagesDataType, ValidtaionType } from '@/types/service';
-import { RegisterOptions, UseFormRegister } from 'react-hook-form';
+import { PagesDataType } from '@/types/service';
+import PptImageSvgs from '@/app/_components/_elements/_svgs/PptImgSvgs';
 
 interface UploadPptProps {
   pptInfo: PagesDataType['scripts'][0]['ppt'];
@@ -76,21 +76,9 @@ const UploadPpt = ({
           //  pptInfo.file === null ||
           pptInfo.dataURL === null ? (
             <div className={styles.newPptSection}>
-              <svg
-                width="30"
-                height="30"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M7 4H21V15H18V7H7V4ZM6 7V3H22V16H18V20H2V7H6ZM17 16V19H3V8H6V16H17ZM17 15H7V8H17V15Z"
-                  fill="black"
-                />
-              </svg>
-
+              <PptImageSvgs>
+                <PptImageSvgs.NewPpt />
+              </PptImageSvgs>
               <button className={styles.updateButton} onClick={onClickButton}>
                 PPT 이미지 등록하기
               </button>
@@ -115,18 +103,9 @@ const UploadPpt = ({
                   disabled={currentPageIndex === 0}
                   onClick={() => changeCurrentPageIndex(currentPageIndex - 1)}
                 >
-                  <svg
-                    width="14"
-                    height="22"
-                    viewBox="0 0 14 22"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M13.034 2.07689L11.1162 0.169922L0.460938 10.836L11.127 21.5021L13.034 19.5951L4.27487 10.836L13.034 2.07689Z"
-                      fill="#4B4B4B"
-                    />
-                  </svg>
+                  <PptImageSvgs>
+                    <PptImageSvgs.GoLeft />
+                  </PptImageSvgs>
                 </button>
               )}
 
@@ -134,18 +113,9 @@ const UploadPpt = ({
                 className={styles.goRight}
                 onClick={() => changeCurrentPageIndex(currentPageIndex + 1)}
               >
-                <svg
-                  width="13"
-                  height="22"
-                  viewBox="0 0 13 22"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0.382812 19.5951L2.28978 21.5021L12.9558 10.836L2.28978 0.169922L0.382812 2.07689L9.14192 10.836L0.382812 19.5951Z"
-                    fill="#1E1E1E"
-                  />
-                </svg>
+                <PptImageSvgs>
+                  <PptImageSvgs.GoRight />
+                </PptImageSvgs>
               </button>
             </div>
           )

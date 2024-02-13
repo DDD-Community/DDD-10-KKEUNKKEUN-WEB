@@ -44,7 +44,7 @@ const UploadDday = forwardRef<HTMLInputElement, UploadDdayProps>(
         <p className={styles.description}>D-day 설정</p>
 
         <div className={styles.inputWrapper}>
-          <label htmlFor="date">
+          <label htmlFor="date" className={styles.label}>
             날짜 <Required />
           </label>
           <div style={{ position: 'relative' }}>

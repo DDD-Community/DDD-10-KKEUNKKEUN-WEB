@@ -3,6 +3,7 @@ import { Value } from '@/types/service';
 export const formatDate = (date: Value) => {
   if (typeof date === 'string') {
     date = new Date(date);
+    return formatDatePiece(date);
   }
   if (date instanceof Date) return formatDatePiece(date);
   // if (Array.isArray(date)) return date[0] ? formatDatePiece(date[0]) : '';

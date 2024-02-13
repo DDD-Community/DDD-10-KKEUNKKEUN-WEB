@@ -1,5 +1,4 @@
 @import '@/styles/mixins';
-@import 'react-calendar/dist/Calendar.css';
 
 .container {
   display: flex;
@@ -10,7 +9,12 @@
 
 .description {
   margin: 0;
+  font-size: px-to-rem(22px);
   font-weight: bolder;
+}
+
+.label {
+  font-size: px-to-rem(20px);
 }
 
 .inputWrapper {
@@ -24,7 +28,7 @@
   height: 29px;
   padding: 5px 12px;
   border: none;
-  font-size: 20px;
+  font-size: px-to-rem(20px);
   border-radius: 4px;
   background-color: $gray-0;
 
@@ -36,7 +40,7 @@
     }
 
     &.selected {
-      color: $black;
+      color: black;
     }
   }
 }

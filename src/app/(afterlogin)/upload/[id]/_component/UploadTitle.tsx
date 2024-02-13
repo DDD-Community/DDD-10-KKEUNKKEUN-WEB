@@ -9,7 +9,7 @@ import { FieldErrors, RegisterOptions, UseFormRegister } from 'react-hook-form';
 import Required from './Required';
 
 import classNames from 'classnames/bind';
-import { MAX_LENGTH } from '@/config/const';
+import { MAX_LENGTH, VALIDATION_MESSAGE } from '@/config/const';
 
 interface UploadTitleProps {
   title: string;
@@ -50,6 +50,12 @@ const UploadTitle = forwardRef<HTMLInputElement, UploadTitleProps>(
           {errors.title && (
             <small role="alert" style={{ color: '#DE3428' }}>
               {errors.title.message as string}
+            </small>
+          )}
+
+          {!errors.title && title.length > MAX_LENGTH.TITLE && (
+            <small role="alert" style={{ color: '#DE3428' }}>
+              {VALIDATION_MESSAGE.TITLE.MAX_LENGTH}
             </small>
           )}
         </div>

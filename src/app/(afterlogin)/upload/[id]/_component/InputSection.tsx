@@ -7,14 +7,16 @@ import UploadScript from './UploadScript';
 import UploadMemo from './UploadMemo';
 import UploadDday from './UploadDday';
 import UploadTimer from './UploadTimer';
-import Button from '@/app/_components/_elements/Button';
 import UploadPpt from './UploadPpt';
 import ControlButtons from './ControlButtons';
-import { useToastStore } from '@/store/modal';
+import { useModalStore, useToastStore } from '@/store/modal';
 import SaveToast from '@/app/_components/_modules/SaveToast';
 import { useForm } from 'react-hook-form';
 import Required from './Required';
 import { checkValidtaion } from '../_utils/validation';
+
+import PptImageSvgs from '@/app/_components/_elements/_svgs/PptImgSvgs';
+import ModalContents from '@/app/_components/_modules/_modal/ModalContents';
 
 interface InputSectionProps {
   presentationData: PagesDataType;
@@ -48,11 +50,32 @@ const InputSection = ({
     memo: false,
   });
 
-  const { openModal } = useToastStore();
+  const { openToast } = useToastStore();
+
+  const openToastWithData = () =>
+    openToast({
+      content: <SaveToast />,
+    });
+
+  const { openModal } = useModalStore();
 
   const openModalWithData = () =>
     openModal({
-      content: <SaveToast />,
+      content: (
+        <ModalContents>
+          <ModalContents.ExitUpload />
+        </ModalContents>
+      ),
+      onCancelButton: (
+        <ModalContents>
+          <ModalContents.ExitUploadCancel />
+        </ModalContents>
+      ),
+      onSubmitButton: (
+        <ModalContents>
+          <ModalContents.ExitUploadSubmit />
+        </ModalContents>
+      ),
     });
 
   const {
@@ -103,7 +126,7 @@ const InputSection = ({
         <div className={styles.leftSection}>
           <p className={styles.description}>
             발표 자료 추가
-            <span style={{ color: '#DE3428', margin: 20 }}>
+            <span style={{ color: '#DE3428', margin: 20, fontWeight: '500' }}>
               <Required />
               필수항목
             </span>
@@ -125,13 +148,17 @@ const InputSection = ({
       </div>
       <div className={styles.rightSectionWrapper}>
         <div className={styles.rightSection}>
+          <button className={styles.cancelButton} onClick={openModalWithData}>
+            <PptImageSvgs>
+              <PptImageSvgs.X />
+            </PptImageSvgs>
+          </button>
           <form
             onSubmit={handleSubmit((data) => {
               // 마지막 페이지는 제거
               // mutation의 onSuccess로 모달 띄우기
               console.log(JSON.stringify(data));
-
-              openModalWithData();
+              openToastWithData();
             })}
           >
             <UploadTitle
@@ -166,23 +193,24 @@ const InputSection = ({
               register={register}
               errors={errors}
             />
-
             <UploadTimer time={presentationData.time} setPresentationData={setPresentationData} />
-
             <div className={styles.saveButtons}>
-              <Button
-                _content={<p>임시 저장</p>}
+              <button
                 type="submit"
+                onClick={() => {}}
                 className={styles.save}
                 disabled={isSubmitting || presentationData.scripts.length === 1}
-              />
-              <Button
-                _content={<p>저장하고 발표 연습 시작하기</p>}
-                disabled={isSubmitting || presentationData.scripts.length === 1}
+              >
+                <p>임시저장</p>
+              </button>
+              <button
                 type="submit"
                 onClick={() => {}}
                 className={styles.start}
-              />
+                disabled={isSubmitting || presentationData.scripts.length === 1}
+              >
+                <p>저장하고 발표 연습 시작하기</p>
+              </button>
             </div>
           </form>
         </div>

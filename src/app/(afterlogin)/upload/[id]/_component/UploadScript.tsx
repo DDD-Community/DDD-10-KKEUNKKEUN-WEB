@@ -86,20 +86,19 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
               {errors.script.message as string}
             </small>
           )}
-          {/* 페이지 이동 유효성 검사 - 최대 길이*/}
-          {!errors.script && script.length === 0 && erroOnEachPage.script.minLength && (
+          {/* 작성 시 유효성 검사 - 최대 길이*/}
+          {!errors.script && script.length === 0 && (
+            // erroOnEachPage.script.minLength && (
             <small role="alert" style={{ color: '#DE3428' }}>
               {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
             </small>
           )}
-          {/* 페이지 이동 유효성 검사 - 최소 길이*/}
-          {!errors.script &&
-            script.length > MAX_LENGTH.SCRIPT &&
-            erroOnEachPage.script.maxLength && (
-              <small role="alert" style={{ color: '#DE3428' }}>
-                {VALIDATION_MESSAGE.SCRIPT.MAX_LENGTH}
-              </small>
-            )}
+          {/* 작성 시 유효성 검사 - 최소 길이*/}
+          {!errors.script && script.length > MAX_LENGTH.SCRIPT && (
+            <small role="alert" style={{ color: '#DE3428' }}>
+              {VALIDATION_MESSAGE.SCRIPT.MAX_LENGTH}
+            </small>
+          )}
         </div>
         <div className={cx(['scriptSection', script.length > MAX_LENGTH.SCRIPT && 'warning'])}>
           <textarea
