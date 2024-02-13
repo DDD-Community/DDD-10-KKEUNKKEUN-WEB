@@ -32,15 +32,7 @@ const cx = classNames.bind(styles);
 
 const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
   (
-    {
-      script,
-      currentPageIndex,
-      setPresentationData,
-      register,
-      errors,
-      erroOnEachPage,
-      lastDummyPageIndex,
-    },
+    { script, currentPageIndex, setPresentationData, register, errors, lastDummyPageIndex },
     ref,
   ) => {
     const registerOptions: RegisterOptions =
@@ -87,18 +79,21 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
             </small>
           )}
           {/* 작성 시 유효성 검사 - 최대 길이*/}
-          {!errors.script && script.length === 0 && (
-            // erroOnEachPage.script.minLength && (
+
+          {/* {!errors.script && script.length === 0 && erroOnEachPage.script.minLength && currentPageIndex !== lastDummyPageIndex &&  ( */}
+          {!errors.script && script.length === 0 && currentPageIndex !== lastDummyPageIndex && (
             <small role="alert" style={{ color: '#DE3428' }}>
               {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
             </small>
           )}
           {/* 작성 시 유효성 검사 - 최소 길이*/}
-          {!errors.script && script.length > MAX_LENGTH.SCRIPT && (
-            <small role="alert" style={{ color: '#DE3428' }}>
-              {VALIDATION_MESSAGE.SCRIPT.MAX_LENGTH}
-            </small>
-          )}
+          {!errors.script &&
+            script.length > MAX_LENGTH.SCRIPT &&
+            currentPageIndex !== lastDummyPageIndex && (
+              <small role="alert" style={{ color: '#DE3428' }}>
+                {VALIDATION_MESSAGE.SCRIPT.MAX_LENGTH}
+              </small>
+            )}
         </div>
         <div className={cx(['scriptSection', script.length > MAX_LENGTH.SCRIPT && 'warning'])}>
           <textarea

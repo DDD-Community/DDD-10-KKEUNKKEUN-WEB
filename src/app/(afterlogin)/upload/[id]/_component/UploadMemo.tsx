@@ -29,18 +29,7 @@ interface UploadMemoProps {
 const cx = classNames.bind(styles);
 
 const UploadMemo = forwardRef<HTMLInputElement, UploadMemoProps>(
-  (
-    {
-      memo,
-      currentPageIndex,
-      setPresentationData,
-      register,
-      errors,
-      erroOnEachPage,
-      lastDummyPageIndex,
-    },
-    ref,
-  ) => {
+  ({ memo, currentPageIndex, setPresentationData, register, errors, lastDummyPageIndex }, ref) => {
     const registerOptions: RegisterOptions =
       currentPageIndex === lastDummyPageIndex
         ? {}
@@ -84,11 +73,13 @@ const UploadMemo = forwardRef<HTMLInputElement, UploadMemoProps>(
             </small>
           )}
           {/* 작성 시 유효성 검사 - 최대 길이*/}
-          {!errors.memo && memo.length > MAX_LENGTH.MEMO && (
-            <small role="alert" style={{ color: '#DE3428' }}>
-              {VALIDATION_MESSAGE.MEMO.MAX_LENGTH}
-            </small>
-          )}
+          {!errors.memo &&
+            memo.length > MAX_LENGTH.MEMO &&
+            currentPageIndex !== lastDummyPageIndex && (
+              <small role="alert" style={{ color: '#DE3428' }}>
+                {VALIDATION_MESSAGE.MEMO.MAX_LENGTH}
+              </small>
+            )}
         </div>
         <p className={styles.guide}>발표하면서 계속 확인해야 하는 내용을 메모해보세요. </p>
         <div className={cx(['memoSection', memo.length > MAX_LENGTH.MEMO && 'warning'])}>

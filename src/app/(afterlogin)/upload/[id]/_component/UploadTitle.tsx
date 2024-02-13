@@ -58,6 +58,11 @@ const UploadTitle = forwardRef<HTMLInputElement, UploadTitleProps>(
               {VALIDATION_MESSAGE.TITLE.MAX_LENGTH}
             </small>
           )}
+          {!errors.title && title.length === 0 && (
+            <small role="alert" style={{ color: '#DE3428' }}>
+              {VALIDATION_MESSAGE.TITLE.REQUIRED}
+            </small>
+          )}
         </div>
         <div className={cx(['titleSection', title.length > MAX_LENGTH.TITLE && 'warning'])}>
           <input
