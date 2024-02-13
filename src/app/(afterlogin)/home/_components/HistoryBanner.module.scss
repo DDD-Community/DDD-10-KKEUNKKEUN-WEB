@@ -33,27 +33,6 @@
     border-radius: 12px;
     margin: 0 36px 0 0;
   }
-
-  &__info {
-    .title {
-      margin: 0 0 12px;
-      font-size: 24px;
-    }
-
-    .desc {
-      display: inline-flex;
-      align-items: center;
-      font-size: 16px;
-    }
-
-    .division {
-      width: 4px;
-      height: 4px;
-      margin: 0 8px;
-      background-color: $white;
-      border-radius: 50%;
-    }
-  }
 }
 
 .action {
