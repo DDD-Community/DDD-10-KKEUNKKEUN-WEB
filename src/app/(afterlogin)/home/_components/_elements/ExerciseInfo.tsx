@@ -6,7 +6,7 @@ const ExerciseInfo = () => {
       <span className={styles.info__title}>발표 이름 발표 이름 발표 이름 발표 이름</span>
       <span className={styles.info__desc}>
         D-3
-        <div className={styles.info__division}></div>
+        <em className={styles.info__division}></em>
         발표 시간 3분
       </span>
     </div>
