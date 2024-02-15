@@ -36,7 +36,7 @@ const UploadMemo = forwardRef<HTMLInputElement, UploadMemoProps>(
         : {
             maxLength: {
               value: MAX_LENGTH.MEMO,
-              message: `${MAX_LENGTH.MEMO}자 이내로 작성해 주세요.`,
+              message: VALIDATION_MESSAGE.MEMO.MAX_LENGTH,
             },
           };
 
