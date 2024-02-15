@@ -1,26 +1,14 @@
+'use client';
 import styles from './Login.module.scss';
 
-import LoginForm from './LoginForm';
-import LoginMenus from './LoginMenus';
-import OAuthMenu from './OAuthMenu';
-
 const Login = () => {
+  const onClick = () => {
+    // window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_DEV}&response_type=code`;
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL_DEV}/oauth2/authorization/kakao`;
+  };
   return (
     <div className={styles.container}>
-      <div className={styles.leftSection}>LOGO</div>
-      <div className={styles.rightSection}>
-        <div className={styles.loginForm}>
-          <p>완벽한 발표를 위한 최고의 선택</p>
-          <p>(서비스 이름)에서 발표 연습을 해보세요</p>
-
-          <LoginForm />
-          <LoginMenus />
-          <div className={styles.text}>
-            <span>또는</span>
-          </div>
-          <OAuthMenu />
-        </div>
-      </div>
+      <button onClick={onClick}>카카오 로그인</button>
     </div>
   );
 };
