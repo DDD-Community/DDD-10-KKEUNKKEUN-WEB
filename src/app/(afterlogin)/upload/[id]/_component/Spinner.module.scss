@@ -15,6 +15,17 @@
 
   width: 100dvw;
   height: 100dvh;
+
+  circle:nth-of-type(1) {
+    stroke: #6822ff;
+    opacity: 0.2;
+  }
+
+  circle:nth-of-type(2) {
+    stroke: #6822ff;
+    stroke-dasharray: 80;
+    stroke-dashoffset: 60;
+  }
 }
 
 .loader {

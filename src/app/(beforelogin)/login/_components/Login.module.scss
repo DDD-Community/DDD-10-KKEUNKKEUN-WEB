@@ -1,9 +1,0 @@
-@import '@/styles/mixins';
-
-.container {
-  @include flex-center;
-
-  width: 100dvw;
-  height: 100dvh;
-  background-color: #5a1df8;
-}
