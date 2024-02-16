@@ -32,14 +32,14 @@ const TimerDescriptionHover = () => {
   return (
     <div className={styles.timerDescriptionHover}>
       <svg
-        width="420"
+        width="380"
         height="55"
-        viewBox="0 0 420 55"
+        viewBox="0 0 380 55"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <rect width="420" height="40" rx="5" fill="#868686" />
-        <text x="210" y="27" fill="white" className={styles.descriptionText}>
+        <rect width="380" height="40" rx="5" fill="#868686" />
+        <text x="190" y="27" fill="white" className={styles.descriptionText}>
           발표 종료가 얼마 남지 않았을 때 알림을 받을 수 있어요.
         </text>
         <path
