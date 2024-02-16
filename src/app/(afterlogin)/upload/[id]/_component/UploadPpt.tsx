@@ -90,11 +90,11 @@ const UploadPpt = ({
                   src={pptInfo.dataURL as string}
                   alt="ppt image"
                   fill
-                  style={{ objectFit: 'contain' }}
+                  style={{ objectFit: 'contain', borderRadius: '16px' }}
                   className={styles.pptImage}
                 />
                 <button className={styles.changePptImageButton} onClick={onClickButton}>
-                  이미지 변경
+                  이미지 추가 및 변경하기
                 </button>
               </div>
               {currentPageIndex !== 0 && (
