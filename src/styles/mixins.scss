@@ -2,7 +2,7 @@
 
 $tmp-backgroud-color: #d7d7d7;
 
-@function px-to-rem($size, $base-font-size: 16px) {
+@function px-to-rem($size, $base-font-size: $font-2) {
   @return $size / $base-font-size * 1rem;
 }
 
@@ -72,7 +72,7 @@ $tmp-backgroud-color: #d7d7d7;
 @mixin button_size_web {
   width: 227px;
   height: 56px;
-  font-size: px-to-rem(24px);
+  font-size: px-to-rem($h2);
 
   // 내부 글씨 중앙 정렬
   display: flex;
@@ -88,7 +88,7 @@ $tmp-backgroud-color: #d7d7d7;
 @mixin button_size_mobile_modal_confirm {
   width: 128px;
   height: 48px;
-  font-size: 16px;
+  font-size: $font-2;
 
   // 내부 글씨 중앙 정렬
   display: flex;
@@ -104,7 +104,7 @@ $tmp-backgroud-color: #d7d7d7;
 @mixin button_size_mobile_modal_alert {
   width: 264px;
   height: 48px;
-  font-size: 16px;
+  font-size: $font-2;
 
   // 내부 글씨 중앙 정렬
   display: flex;
