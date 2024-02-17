@@ -119,19 +119,19 @@ $tmp-backgroud-color: #d7d7d7;
 
 // ### 버튼 default 테마
 @mixin button_theme_default {
-  background-color: $primary;
+  background-color: $gray-9;
   color: $white;
   border: none;
   &:hover {
-    background-color: $primary-hover;
-    cursor: pointer;
-  }
-  &:active {
     background-color: $primary;
     cursor: pointer;
   }
+  &:active {
+    background-color: $gray-9;
+    cursor: pointer;
+  }
   &:disabled {
-    background-color: $primary-disabled;
+    background-color: $gray-3;
     cursor: not-allowed;
   }
 }
@@ -142,8 +142,8 @@ $tmp-backgroud-color: #d7d7d7;
   color: $primary;
   border: 1px solid $primary;
   &:hover {
-    color: $primary-hover;
-    border: 1px solid $primary-hover;
+    color: $purple-4;
+    border: 1px solid $purple-4;
     cursor: pointer;
   }
   &:active {
@@ -152,8 +152,8 @@ $tmp-backgroud-color: #d7d7d7;
     cursor: pointer;
   }
   &:disabled {
-    color: $primary-disabled;
-    border: 1px solid $primary-pressed;
+    color: $gray-2;
+    border: 1px solid $gray-0;
     cursor: not-allowed;
   }
 }
@@ -162,21 +162,17 @@ $tmp-backgroud-color: #d7d7d7;
 @mixin button_theme_lined {
   background-color: $white;
   color: $secondary;
-  border: 1px solid $secondary;
+  border: 1px solid $gray-3;
   &:hover {
-    color: $secondary-hover;
-    border: 1px solid $secondary-hover;
+    color: $gray-4;
+    border: 1px solid $gray-2;
     cursor: pointer;
   }
   &:active {
     background-color: $white;
     color: $secondary;
+    border: 1px solid $gray-3;
     cursor: pointer;
-  }
-  &:disabled {
-    color: $secondary-disabled;
-    border: 1px solid $secondary-disabled;
-    cursor: not-allowed;
   }
 }
 
@@ -186,15 +182,11 @@ $tmp-backgroud-color: #d7d7d7;
   color: $white;
   border: none;
   &:hover {
-    background-color: $error-hover;
+    background-color: $red-4;
     cursor: pointer;
   }
   &:active {
     background-color: $error;
     cursor: pointer;
-  }
-  &:disabled {
-    background-color: $error-disabled;
-    cursor: not-allowed;
   }
 }
