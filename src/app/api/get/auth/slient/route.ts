@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
-  console.log('=========server=========');
-  console.log(request.headers);
+  // console.log(request.headers.get('cookie')?.toString());
+
   const url = `${process.env.NEXT_PUBLIC_BASE_URL_DEV}/accounts/reissue`;
   const response = await fetch(`${url}`, {
     method: 'GET',
-    credentials: 'include',
+    headers: { Cookie: cookies().toString() },
+    cache: 'no-store',
   });
 
   const tokens = response.headers.get('set-cookie');

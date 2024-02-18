@@ -19,6 +19,14 @@ const NavMenu = () => {
     if (isClickedList(name)) setClicked(name);
   };
 
+  const tmpReIssueTest = () => {
+    const res = fetch(`${process.env.NEXT_PUBLIC_BASE_URL_MOCK}/api/get/auth/slient`, {
+      method: 'GET',
+      cache: 'no-store',
+      credentials: 'include',
+    });
+  };
+
   return (
     <>
       <button
@@ -35,6 +43,7 @@ const NavMenu = () => {
       >
         리포트
       </button>
+      <button onClick={tmpReIssueTest}>재발급</button>
     </>
   );
 };
