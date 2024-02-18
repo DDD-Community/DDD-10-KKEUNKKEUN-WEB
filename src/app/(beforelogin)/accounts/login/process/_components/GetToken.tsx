@@ -2,8 +2,11 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Spinner from '@/app/(afterlogin)/upload/[id]/_component/Spinner';
 
 const GetToken = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const codeQuery = searchParams.get('code');
 
@@ -16,19 +19,21 @@ const GetToken = () => {
           cache: 'no-store',
         },
       );
-      console.log(res);
 
-      if (res.ok) {
-        const jsonResult = await res.json();
-        console.log(jsonResult.data);
+      if (res.status === 200) {
+        router.push('/login');
       }
     };
     if (codeQuery) {
       getLogin();
     }
-  }, []);
+  }, [router, codeQuery]);
 
-  return <div>{searchParams.get('code')}</div>;
+  return (
+    <>
+      <Spinner />
+    </>
+  );
 };
 
 export default GetToken;
