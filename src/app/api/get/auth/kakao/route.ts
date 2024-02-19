@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
 
   const response = await fetch(`${url}`, {
     method: 'GET',
+    cache: 'no-store',
   });
 
   const tokens = response.headers.get('set-cookie');

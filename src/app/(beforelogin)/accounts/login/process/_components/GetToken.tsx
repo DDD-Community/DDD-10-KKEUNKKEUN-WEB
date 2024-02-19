@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/app/(afterlogin)/upload/[id]/_component/Spinner';
+import { fetchWithAuth } from '@/services/fetch';
 
 const GetToken = () => {
   const router = useRouter();
@@ -12,16 +13,22 @@ const GetToken = () => {
 
   useEffect(() => {
     const getLogin = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL_MOCK}/api/get/auth/kakao?code=${codeQuery}`,
-        {
+      const nextServerUrl = `${process.env.NEXT_PUBLIC_BASE_URL_MOCK}/api/get/auth/kakao?code=${codeQuery}`;
+      const clientUrl = `/api/auth/login/process?code=${codeQuery}&provider=kakao`;
+      const loginResponse = await fetch(`${clientUrl}`, {
+        method: 'GET',
+        cache: 'no-store',
+      });
+
+      if (loginResponse.status === 200) {
+        const clientUrl = `/api/auth/me`;
+        const userInfoResponse = await fetchWithAuth(clientUrl, {
           method: 'GET',
           cache: 'no-store',
-        },
-      );
+          credentials: 'include',
+        });
 
-      if (res.status === 200) {
-        router.push('/login');
+        if (userInfoResponse.status === 200) router.push('/login');
       }
     };
     if (codeQuery) {
