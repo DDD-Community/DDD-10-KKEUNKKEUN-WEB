@@ -2,6 +2,7 @@ type ValuePiece = Date | null;
 
 export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
+// mock
 export interface ValidtaionType {
   title: string;
   script: string;
@@ -28,4 +29,12 @@ export interface PagesDataType {
 export interface PresentInfoType {
   id: number | null;
   data: PagesDataType;
+}
+
+// service
+export interface UserInfoType {
+  isAuth: boolean;
+  email: string;
+  nickName: string;
+  socialProvider: string;
 }

@@ -5,11 +5,13 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/app/(afterlogin)/upload/[id]/_component/Spinner';
 import { fetchWithAuth } from '@/services/fetch';
+import { useUserInfoStore } from '@/store/user';
 
 const GetToken = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const codeQuery = searchParams.get('code');
+  const { setUserInfo } = useUserInfoStore();
 
   useEffect(() => {
     const getLogin = async () => {
@@ -27,6 +29,10 @@ const GetToken = () => {
           cache: 'no-store',
           credentials: 'include',
         });
+
+        const userInfo = await userInfoResponse.json();
+
+        setUserInfo({ isAuth: true, ...userInfo });
 
         if (userInfoResponse.status === 200) router.push('/login');
       }
