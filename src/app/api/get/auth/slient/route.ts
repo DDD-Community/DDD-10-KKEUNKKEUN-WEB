@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
-  // console.log(request.headers.get('cookie')?.toString());
+  // console.log(request.headers.get('cookie'));
+  // console.log(request.cookies);
 
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL_DEV}/accounts/reissue`;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL_DEV}/api/accounts/reissue`;
   const response = await fetch(`${url}`, {
     method: 'GET',
     headers: { Cookie: cookies().toString() },

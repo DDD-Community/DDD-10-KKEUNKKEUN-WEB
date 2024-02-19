@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   const codeQuery = request.nextUrl.searchParams.get('code') as string;
 
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL_DEV}/accounts/login/process?code=${codeQuery}&provider=kakao`;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL_DEV}/api/accounts/login/process?code=${codeQuery}&provider=kakao`;
 
   const response = await fetch(`${url}`, {
     method: 'GET',

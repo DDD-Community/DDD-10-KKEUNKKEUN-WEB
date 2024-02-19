@@ -10,7 +10,7 @@ export const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   // 토큰 만료
   if (response.status === 401) {
     // accessToken 재발급
-    const clientUrl = `/api/auth/reissue`;
+    const clientUrl = `/api/accounts/reissue`;
     const accessTokenResponse = await fetch(clientUrl, {
       method: 'GET',
       cache: 'no-store',

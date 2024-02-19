@@ -23,7 +23,7 @@ const NavMenu = () => {
   // 테스트용
   const tmpReIssueTest = async () => {
     const nextServerUrl = `${process.env.NEXT_PUBLIC_BASE_URL_MOCK}/api/get/auth/slient`;
-    const clientUrl = `/api/auth/reissue`;
+    const clientUrl = `/api/accounts/reissue`;
     await fetch(clientUrl, {
       method: 'GET',
       cache: 'no-store',
@@ -33,7 +33,7 @@ const NavMenu = () => {
 
   // 테스트용
   const tmpMyInfoTest = async () => {
-    const clientUrl = `/api/auth/me`;
+    const clientUrl = `/api/accounts/me`;
     const res = await fetchWithAuth(clientUrl, {
       method: 'GET',
       cache: 'no-store',
