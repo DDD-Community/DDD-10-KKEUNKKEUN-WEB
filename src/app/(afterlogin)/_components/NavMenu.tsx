@@ -22,7 +22,7 @@ const NavMenu = () => {
 
   // 테스트용
   const tmpReIssueTest = async () => {
-    const nextServerUrl = `${process.env.NEXT_PUBLIC_BASE_URL_MOCK}/api/get/auth/slient`;
+    const nextServerUrl = `${process.env.NEXT_PUBLIC_ROUTE_HANDLER}/api/get/auth/slient`;
     const clientUrl = `/api/accounts/reissue`;
     await fetch(clientUrl, {
       method: 'GET',
