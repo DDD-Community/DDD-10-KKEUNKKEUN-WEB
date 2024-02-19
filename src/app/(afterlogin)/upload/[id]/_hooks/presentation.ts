@@ -1,4 +1,4 @@
-import { userApi } from '@/services/user';
+import { userApi } from '@/services/client/user';
 import { PresentInfoType } from '@/types/service';
 import { useSuspenseQuery } from '@tanstack/react-query';
 

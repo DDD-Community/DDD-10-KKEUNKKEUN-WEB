@@ -4,8 +4,9 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/app/(afterlogin)/upload/[id]/_component/Spinner';
-import { fetch_ClientAuth } from '@/services/fetch/fetchClient';
+
 import { useUserInfoStore } from '@/store/user';
+import { fetch_ClientAuth } from '@/services/client/fetchClient';
 
 const GetToken = () => {
   const router = useRouter();

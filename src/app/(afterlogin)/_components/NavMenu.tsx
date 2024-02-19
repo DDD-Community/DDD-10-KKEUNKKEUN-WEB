@@ -3,7 +3,7 @@
 import { MouseEventHandler, useState } from 'react';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames';
-import { fetch_ClientAuth } from '@/services/fetch/fetchClient';
+import { fetch_ClientAuth } from '@/services/client/fetchClient';
 
 type ClickedList = 'presentationList' | 'report';
 
@@ -58,8 +58,8 @@ const NavMenu = () => {
       >
         리포트
       </button>
-      {/* <button onClick={tmpReIssueTest}>토큰 재발급</button>
-      <button onClick={tmpMyInfoTest}>내 정보</button> */}
+      <button onClick={tmpReIssueTest}>토큰 재발급</button>
+      <button onClick={tmpMyInfoTest}>내 정보</button>
     </>
   );
 };

@@ -3,8 +3,8 @@ import NavMenu from './NavMenu';
 import LogoIcon from '@/app/_svgs/LogoIcon';
 import styles from './Navbar.module.scss';
 import UserIcon from '../_svgs/UserIcon';
-import { fetch_ServerAuth } from '@/services/fetch/fetchServer';
-import { userApi } from '@/services/user';
+import { userApi } from '@/services/server/user';
+import { fetch_ServerAuth } from '@/services/server/fetchServer';
 
 const Navbar = async () => {
   // const res = await fetch_ServerAuth(`${process.env.NEXT_PUBLIC_BASE_URL_DEV}/api/accounts/me`, {
