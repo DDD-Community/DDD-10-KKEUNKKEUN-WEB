@@ -32,7 +32,7 @@ const GetToken = () => {
 
         const userInfo = await userInfoResponse.json();
 
-        setUserInfo({ isAuth: true, ...userInfo });
+        setUserInfo({ ...userInfo });
 
         if (userInfoResponse.status === 200) router.push('/login');
       }

@@ -8,7 +8,7 @@ interface UserStore {
   deleteUserInfo: (userInfo: UserInfoType) => void;
 }
 
-const defaultState: UserInfoType = { isAuth: false, email: '', nickName: '', socialProvider: '' };
+const defaultState: UserInfoType = { email: '', nickName: '', socialProvider: '' };
 
 export const useUserInfoStore = create(
   persist<UserStore>(
