@@ -1,31 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|fonts|images).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|fonts|images).*)'],
 };
-
-const protectedRoutes = ['/home', '/upload/new']; // 로그인이 필요한 페이지 목록
-const publicRoutes = ['/login']; // 로그인이 되면 접근할 수 없는 페이지 목록
 
 export async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
-  const tokens = getTokenFromCookies(request);
-  const accessToken = tokens?.get('accessToken');
-  const refreshToken = tokens?.get('refreshToken');
-  console.log('middleware');
+  const accessToken = request.cookies.get('accessToken')?.value;
+  const refreshToken = request.cookies.get('refreshToken')?.value;
 
-  // if (!accessToken && refreshToken && protectedRoutes.includes(currentPath)) {
-  // }
-
-  // 로그아웃 처리
-  if (!refreshToken && protectedRoutes.includes(currentPath)) {
+  if (
+    !refreshToken &&
+    (currentPath.startsWith('/home') ||
+      currentPath.startsWith('/upload') ||
+      currentPath.startsWith('/setting'))
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
   }
 
-  // 로그인 처리
-  if (accessToken && refreshToken && publicRoutes.includes(currentPath)) {
+  if (refreshToken && currentPath.startsWith('/login')) {
     const url = request.nextUrl.clone();
     url.pathname = '/home';
     return NextResponse.redirect(url);
@@ -45,5 +40,4 @@ function getTokenFromCookies(request: NextRequest) {
 
   const cookies = new Map(cookiesArray);
   return cookies;
-  // return cookies.get('accessToken');
 }
