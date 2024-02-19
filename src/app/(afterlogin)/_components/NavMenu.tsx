@@ -20,6 +20,7 @@ const NavMenu = () => {
     if (isClickedList(name)) setClicked(name);
   };
 
+  // 테스트용
   const tmpReIssueTest = async () => {
     const nextServerUrl = `${process.env.NEXT_PUBLIC_BASE_URL_MOCK}/api/get/auth/slient`;
     const clientUrl = `/api/auth/reissue`;
@@ -30,6 +31,7 @@ const NavMenu = () => {
     });
   };
 
+  // 테스트용
   const tmpMyInfoTest = async () => {
     const clientUrl = `/api/auth/me`;
     const res = await fetchWithAuth(clientUrl, {
@@ -55,8 +57,8 @@ const NavMenu = () => {
       >
         리포트
       </button>
-      <button onClick={tmpReIssueTest}>토큰 재발급</button>
-      <button onClick={tmpMyInfoTest}>내 정보</button>
+      {/* <button onClick={tmpReIssueTest}>토큰 재발급</button>
+      <button onClick={tmpMyInfoTest}>내 정보</button> */}
     </>
   );
 };
