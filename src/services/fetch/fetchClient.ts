@@ -1,10 +1,13 @@
-/** 클라이언트 컴포넌트에서 사용하는 인증 기반 fetch */
-export const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
+/** 클라이언트 컴포넌트에서 사용하는 인증 기반 fetch
+ *
+ * @param url: 프록시 기반 백엔드 api
+ * @param options: fetch 옵션 객체
+ */
+
+export const fetch_ClientAuth = async (url: string, options: RequestInit = {}) => {
   // 1차 실행
   let response = await fetch(url, {
     ...options,
-    cache: 'no-store',
-    credentials: 'include',
   });
 
   // 토큰 만료

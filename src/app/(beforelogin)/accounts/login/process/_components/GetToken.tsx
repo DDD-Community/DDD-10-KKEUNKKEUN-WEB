@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/app/(afterlogin)/upload/[id]/_component/Spinner';
-import { fetchWithAuth } from '@/services/fetch';
+import { fetch_ClientAuth } from '@/services/fetch/fetchClient';
 import { useUserInfoStore } from '@/store/user';
 
 const GetToken = () => {
@@ -24,7 +24,7 @@ const GetToken = () => {
 
       if (loginResponse.status === 200) {
         const clientUrl = `/api/accounts/me`;
-        const userInfoResponse = await fetchWithAuth(clientUrl, {
+        const userInfoResponse = await fetch_ClientAuth(clientUrl, {
           method: 'GET',
           cache: 'no-store',
           credentials: 'include',

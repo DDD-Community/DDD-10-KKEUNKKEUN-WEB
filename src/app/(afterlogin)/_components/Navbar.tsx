@@ -3,15 +3,15 @@ import NavMenu from './NavMenu';
 import LogoIcon from '@/app/_svgs/LogoIcon';
 import styles from './Navbar.module.scss';
 import UserIcon from '../_svgs/UserIcon';
+import { fetch_ServerAuth } from '@/services/fetch/fetchServer';
 
 const Navbar = async () => {
-  // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_DEV}/api/accounts/me`, {
+  // const res = await fetch_ServerAuth(`${process.env.NEXT_PUBLIC_BASE_URL_DEV}/api/accounts/me`, {
   //   method: 'GET',
   //   headers: { Cookie: cookies().toString() },
-
   //   cache: 'no-store',
   // });
-  // console.log(await res.json());
+
   return (
     <nav className={styles.container}>
       <div className={styles.content}>

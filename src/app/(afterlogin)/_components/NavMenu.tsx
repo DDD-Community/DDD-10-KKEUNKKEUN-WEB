@@ -3,7 +3,7 @@
 import { MouseEventHandler, useState } from 'react';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames';
-import { fetchWithAuth } from '@/services/fetch';
+import { fetch_ClientAuth } from '@/services/fetch/fetchClient';
 
 type ClickedList = 'presentationList' | 'report';
 
@@ -34,11 +34,12 @@ const NavMenu = () => {
   // 테스트용
   const tmpMyInfoTest = async () => {
     const clientUrl = `/api/accounts/me`;
-    const res = await fetchWithAuth(clientUrl, {
+    const res = await fetch_ClientAuth(clientUrl, {
       method: 'GET',
       cache: 'no-store',
       credentials: 'include',
     });
+    // console.log(await res.json());
   };
 
   return (
