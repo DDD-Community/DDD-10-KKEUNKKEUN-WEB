@@ -53,8 +53,8 @@ const DragSection = () => {
     };
     const html = stateToHTML(contentState, options);
 
-    console.log(html);
-    console.log(raw);
+    // console.log(html);
+    // console.log(raw);
 
     localStorage.setItem('my-draft', JSON.stringify(raw, null, 2));
   };
