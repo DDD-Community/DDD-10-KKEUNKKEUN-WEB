@@ -24,7 +24,7 @@
     height: 100%;
   }
 
-  &__left {
+  &--left {
     .title {
       @include line(1);
 
@@ -33,7 +33,7 @@
     }
   }
 
-  &__center {
+  &--center {
     position: absolute;
     right: 50%;
 
@@ -47,7 +47,7 @@
   }
 
   .action {
-    &__next {
+    &--next {
       @include pure-button;
       @include button_theme_inverted;
 
@@ -57,7 +57,7 @@
       font-size: $font-3;
     }
 
-    &__close {
+    &--close {
       @include pure-button;
 
       margin-left: 40px;
