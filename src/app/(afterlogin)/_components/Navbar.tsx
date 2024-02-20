@@ -5,7 +5,7 @@ import styles from './Navbar.module.scss';
 import LogoIcon from '@/app/_svgs/LogoIcon';
 import UserIcon from '../_svgs/UserIcon';
 
-import { userApi } from '@/services/server/user';
+import { serverUserApi } from '@/services/server/user';
 import { fetch_ServerAuth } from '@/services/server/fetchServer';
 
 const Navbar = async () => {
@@ -15,7 +15,7 @@ const Navbar = async () => {
   //   cache: 'no-store',
   // });
 
-  const res = await userApi.getUserInfo();
+  const res = await serverUserApi.getUserInfo();
   console.log(res);
 
   return (

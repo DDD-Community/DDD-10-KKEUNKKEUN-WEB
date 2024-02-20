@@ -1,4 +1,4 @@
-export const userApi = {
+export const clientUserApi = {
   // mock
   // TODO: 실제 백엔드 API로 변경 및 파일 위치 이동 예정
   getPresentData: async <T>(id: string) => {
