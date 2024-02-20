@@ -1,8 +1,10 @@
 import { cookies } from 'next/headers';
+
 import NavMenu from './NavMenu';
-import LogoIcon from '@/app/_svgs/LogoIcon';
 import styles from './Navbar.module.scss';
+import LogoIcon from '@/app/_svgs/LogoIcon';
 import UserIcon from '../_svgs/UserIcon';
+
 import { userApi } from '@/services/server/user';
 import { fetch_ServerAuth } from '@/services/server/fetchServer';
 
@@ -13,7 +15,8 @@ const Navbar = async () => {
   //   cache: 'no-store',
   // });
 
-  // await userApi.getUserInfo();
+  const res = await userApi.getUserInfo();
+  console.log(res);
 
   return (
     <nav className={styles.container}>

@@ -4,8 +4,11 @@
  * @param options: fetch 옵션 객체
  */
 
+import { cookies } from 'next/headers';
+
 export const fetch_ServerAuth = async (url: string, options: RequestInit = {}) => {
   const response = await fetch(url, {
+    headers: { Cookie: cookies().toString() },
     ...options,
   });
   if (response.status === 401) {

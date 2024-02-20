@@ -7,6 +7,7 @@
 export const fetch_ClientAuth = async (url: string, options: RequestInit = {}) => {
   // 1차 실행
   let response = await fetch(url, {
+    credentials: 'include',
     ...options,
   });
 
