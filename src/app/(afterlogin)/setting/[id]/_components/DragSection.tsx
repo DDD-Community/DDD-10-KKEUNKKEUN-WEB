@@ -1,26 +1,22 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import 'draft-js/dist/Draft.css';
 import Editor from '@draft-js-plugins/editor';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import createInlineToolbarPlugin, { Separator } from '@draft-js-plugins/inline-toolbar';
 import { stateToHTML } from 'draft-js-export-html';
+import './DragSection.scss';
 
 import '@draft-js-plugins/inline-toolbar/lib/plugin.css';
-import { useState } from 'react';
 
 import HighlightButton from './HighlightButton';
 import RemoveButton from './RemoveButton';
 
 // 인라인 스타일 적용 옵션
 const styleMap = {
-  RED: {
-    color: 'red',
-  },
   BLUE: {
-    backgroundColor: '#6ea4eb',
+    backgroundColor: '#FF2E7B',
   },
 };
 const DragSection = () => {
@@ -52,31 +48,32 @@ const DragSection = () => {
       },
     };
     const html = stateToHTML(contentState, options);
-
     // console.log(html);
     // console.log(raw);
 
     localStorage.setItem('my-draft', JSON.stringify(raw, null, 2));
   };
   return (
-    <div style={{ border: '0.1rem solid' }}>
-      <button onClick={saveContent}>저장</button>
-      <hr />
-      <Editor
-        editorState={editorState}
-        onChange={setEditorState}
-        placeholder="여기에 입력하십시요..."
-        customStyleMap={styleMap} // 커스텀 스타일 맵 적용
-        plugins={plugins}
-      />
-      <InlineToolbar>
-        {(externalProps) => (
-          <>
-            <HighlightButton {...externalProps} />
-            <RemoveButton {...externalProps} />
-          </>
-        )}
-      </InlineToolbar>
+    <div className="container">
+      <div className="contentSection">
+        {/* <button onClick={saveContent}>저장</button> */}
+
+        <Editor
+          editorState={editorState}
+          onChange={setEditorState}
+          placeholder="여기에 입력하십시요..."
+          customStyleMap={styleMap} // 커스텀 스타일 맵 적용
+          plugins={plugins}
+        />
+        <InlineToolbar>
+          {(externalProps) => (
+            <>
+              <HighlightButton {...externalProps} />
+              <RemoveButton {...externalProps} />
+            </>
+          )}
+        </InlineToolbar>
+      </div>
     </div>
   );
 };

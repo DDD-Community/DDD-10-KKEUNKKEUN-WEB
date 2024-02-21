@@ -1,7 +1,7 @@
-import styles from './Step.module.scss';
+import styles from './StepNumbers.module.scss';
 import classNames from 'classnames/bind';
 
-interface StepProps {
+interface StepNumbersProps {
   number: number;
   label: string;
   current: number; // 배열 인덱스
@@ -9,7 +9,7 @@ interface StepProps {
 
 const cx = classNames.bind(styles);
 
-const Step = ({ number, label, current }: StepProps) => {
+const StepNumbers = ({ number, label, current }: StepNumbersProps) => {
   return (
     <div className={styles.container}>
       {number !== 1 && <line className={cx(['line', current + 1 >= number && 'selected'])} />}
@@ -19,4 +19,4 @@ const Step = ({ number, label, current }: StepProps) => {
   );
 };
 
-export default Step;
+export default StepNumbers;

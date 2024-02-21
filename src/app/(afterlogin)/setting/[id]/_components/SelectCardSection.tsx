@@ -1,15 +1,19 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import Card from './Card';
-import styles from './SelectSection.module.scss';
+import styles from './SelectCardSection.module.scss';
 import { ContentType } from './SettingProcess';
-interface SelectSectionProps {
+interface SelectCardSectionProps {
   current: number;
   setSelectedValue: Dispatch<SetStateAction<ContentType>>;
   selectedValue: ContentType;
 }
-const SelectSection = ({ current, setSelectedValue, selectedValue }: SelectSectionProps) => {
+const SelectCardSection = ({
+  current,
+  setSelectedValue,
+  selectedValue,
+}: SelectCardSectionProps) => {
   const setMode = (newValue: ContentType['mode']) => {
     setSelectedValue((prev) => ({
       ...prev,
@@ -97,4 +101,4 @@ const SelectSection = ({ current, setSelectedValue, selectedValue }: SelectSecti
   );
 };
 
-export default SelectSection;
+export default SelectCardSection;

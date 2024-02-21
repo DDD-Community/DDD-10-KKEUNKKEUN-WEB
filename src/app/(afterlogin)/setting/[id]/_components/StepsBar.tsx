@@ -1,6 +1,6 @@
 'use client';
 
-import Step from './Step';
+import StepNumbers from './StepNumbers';
 import styles from './StepsBar.module.scss';
 
 interface StepsBarProps {
@@ -15,7 +15,7 @@ const StepsBar = ({ current }: StepsBarProps) => {
   return (
     <div className={styles.container}>
       {steps.map((i) => {
-        return <Step key={i.number} number={i.number} label={i.label} current={current} />;
+        return <StepNumbers key={i.number} number={i.number} label={i.label} current={current} />;
       })}
     </div>
   );

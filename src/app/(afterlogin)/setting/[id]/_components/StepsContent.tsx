@@ -2,9 +2,10 @@
 
 import { Dispatch, SetStateAction } from 'react';
 import DragSection from './DragSection';
-import SelectSection from './SelectSection';
+import SelectCardSection from './SelectCardSection';
 import styles from './StepsContent.module.scss';
 import { ContentType } from './SettingProcess';
+import SelectSentenceSection from './SelectSentenceSection';
 
 interface StepsContentProps {
   current: number;
@@ -15,9 +16,9 @@ const StepsContent = ({ current, setSelectedValue, selectedValue }: StepsContent
   return (
     <div className={styles.container}>
       {current === 1 ? (
-        <DragSection />
+        <SelectSentenceSection />
       ) : (
-        <SelectSection
+        <SelectCardSection
           current={current}
           setSelectedValue={setSelectedValue}
           selectedValue={selectedValue}

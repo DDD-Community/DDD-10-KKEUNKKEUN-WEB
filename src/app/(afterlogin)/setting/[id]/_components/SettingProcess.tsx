@@ -24,7 +24,8 @@ const SettingProcess = () => {
 
   const onNextStep = () => {
     if (currentStep === 2) return;
-    setCurrentStep((prev) => (prev + 1) as ProcessStepType);
+    if (currentStep === 0 && selectedValue.mode === 'all') setCurrentStep(2);
+    else setCurrentStep((prev) => (prev + 1) as ProcessStepType);
   };
   return (
     <div className={styles.container}>
@@ -35,7 +36,9 @@ const SettingProcess = () => {
         selectedValue={selectedValue}
         setSelectedValue={setSelectedValue}
       />
-      <button onClick={onNextStep}>확인</button>
+      <button className={styles.confirmButton} onClick={onNextStep}>
+        확인
+      </button>
     </div>
   );
 };
