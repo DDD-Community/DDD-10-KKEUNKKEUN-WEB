@@ -9,7 +9,7 @@
   border: 1px solid $gray-1;
   border-radius: 32px;
   cursor: pointer;
-  font-size: px-to-rem(16px);
+  font-size: $font-2;
 
   svg {
     width: 28px;
@@ -27,9 +27,9 @@
 }
 
 .kakao {
-  background-color: #f8e049;
+  background-color: $yellow;
 }
 
 .naver {
-  background-color: #06be34;
+  background-color: $green-2;
 }

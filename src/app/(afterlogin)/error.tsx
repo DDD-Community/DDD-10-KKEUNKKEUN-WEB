@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import Spinner from './upload/[id]/_component/Spinner';
+import Spinner from '../_components/_modules/Spinner';
 
 // 서버 컴포넌트 토큰 재발급 이슈 전용 에러 컴포넌트
 export default function Error({

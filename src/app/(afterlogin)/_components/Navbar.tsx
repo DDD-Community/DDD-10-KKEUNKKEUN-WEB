@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers';
-
 import NavMenu from './NavMenu';
 import styles from './Navbar.module.scss';
 import LogoIcon from '@/app/_svgs/LogoIcon';
@@ -16,7 +14,7 @@ const Navbar = async () => {
   // });
 
   const res = await serverUserApi.getUserInfo();
-  console.log(res);
+  console.log(await res.json());
 
   return (
     <nav className={styles.container}>

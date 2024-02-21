@@ -1,18 +1,19 @@
 'use client';
+
 import classNames from 'classnames/bind';
 import styles from './SocialLoginButtons.module.scss';
+
 import SocialLogoIcon from '../_svgs/SocialLogoIcon';
+import { SOCIAL_ACCESS_URL } from '@/config/path';
 
 const cx = classNames.bind(styles);
 
 const SocialLoginButtons = () => {
   const onClick = (socialType: 'google' | 'kakao' | 'naver') => {
     let url;
-    if (socialType === 'kakao') {
-      // url = window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_DEV}&response_type=code`;
-      // url = `${process.env.NEXT_PUBLIC_BASE_URL_DEV}/oauth2/authorization/kakao`;
-      url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_ROUTE_HANDLER}/accounts/login/process`;
-    }
+    if (socialType === 'kakao') url = SOCIAL_ACCESS_URL.KAKAO;
+    // if (socialType === 'naver') url = SOCIAL_ACCESS_URL.NAVER;
+    // if (socialType === 'google') url = SOCIAL_ACCESS_URL.GOOGLE;
 
     window.location.href = `${url}`;
   };

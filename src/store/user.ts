@@ -5,7 +5,7 @@ import { persist } from 'zustand/middleware';
 interface UserStore {
   userInfo: UserInfoType;
   setUserInfo: (userInfo: UserInfoType) => void;
-  deleteUserInfo: (userInfo: UserInfoType) => void;
+  deleteUserInfo: () => void;
 }
 
 const defaultState: UserInfoType = { email: '', nickName: '', socialProvider: '' };

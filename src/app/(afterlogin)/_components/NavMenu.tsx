@@ -6,6 +6,7 @@ import styles from './Navbar.module.scss';
 import classNames from 'classnames';
 
 import { fetch_ClientAuth } from '@/services/client/fetchClient';
+import { ERROR_MESSAGE } from '@/config/const';
 
 type ClickedList = 'presentationList' | 'report';
 
@@ -35,13 +36,19 @@ const NavMenu = () => {
 
   // 테스트용
   const tmpMyInfoTest = async () => {
-    const clientUrl = `/api/accounts/me`;
-    const res = await fetch_ClientAuth(clientUrl, {
-      method: 'GET',
-      cache: 'no-store',
-      credentials: 'include',
-    });
-    // console.log(await res.json());
+    try {
+      const clientUrl = `/api/accounts/me`;
+      const res = await fetch_ClientAuth(clientUrl, {
+        method: 'GET',
+        cache: 'no-store',
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error(ERROR_MESSAGE.USER.ERROR);
+    } catch (e) {
+      if (e instanceof Error) {
+        console.log(e.message);
+      }
+    }
   };
 
   return (
