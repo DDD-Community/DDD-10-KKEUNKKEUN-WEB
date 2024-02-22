@@ -10,17 +10,46 @@ export interface ValidtaionType {
   dDayDate: Value;
 }
 
+// export interface PagesDataType {
+//   title: string | null;
+//   dDay: {
+//     date: Value;
+//   };
+//   time: {
+//     timer: number | null;
+//     alramTime: number | null;
+//   };
+//   scripts: {
+//     ppt: { dataURL: string | null; file: File | null };
+//     script: string | null;
+//     memo: string | null;
+//   }[];
+// }
+
+// export interface PresentInfoType {
+//   id: number | null;
+//   data: PagesDataType;
+// }
+
+// service
 export interface PagesDataType {
+  id?: number;
+  dday?: number;
+  createdAt?: Date;
+  modifiedAt?: Date;
   title: string | null;
-  dDay: {
-    date: Value;
+  timeLimit: {
+    hours: number | null;
+    minutes: number | null;
   };
-  time: {
-    timer: number | null;
-    alramTime: number | null;
+  alertTime: {
+    hours: number | null;
+    minutes: number | null;
   };
-  scripts: {
-    ppt: { dataURL: string | null; file: File | null };
+  deadlineDate: Value;
+  slides: {
+    id?: number;
+    imageFileId: { dataURL: string | null; file: File | null }; // 변경 예정
     script: string | null;
     memo: string | null;
   }[];
@@ -30,8 +59,6 @@ export interface PresentInfoType {
   id: number | null;
   data: PagesDataType;
 }
-
-// service
 
 /** 유저 정보를 나타내는 객체
  * @property email - 소셜 이메일

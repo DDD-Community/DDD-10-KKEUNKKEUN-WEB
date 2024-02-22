@@ -9,28 +9,31 @@ import InputSection from './InputSection';
 const CreatePresentation = () => {
   const initialState: PagesDataType = {
     title: null,
-    dDay: {
-      date: null,
+    deadlineDate: null,
+    timeLimit: {
+      hours: null,
+      minutes: null,
     },
-    time: {
-      timer: null,
-      alramTime: null,
+    alertTime: {
+      hours: null,
+      minutes: null,
     },
-    scripts: [{ ppt: { dataURL: null, file: null }, script: null, memo: null }],
+    slides: [{ imageFileId: { dataURL: null, file: null }, script: null, memo: null }],
   };
 
   const [presentationData, setPresentationData] = useState<PagesDataType>(initialState);
   const [currentPageIndex, setCurrpentPageIndex] = useState(0);
 
   return (
-    <InputSection
-      presentationData={presentationData}
-      setPresentationData={setPresentationData}
-      currentPageIndex={currentPageIndex}
-      setCurrpentPageIndex={setCurrpentPageIndex}
-      initialState={initialState}
-      slug="new"
-    />
+    // <InputSection
+    //   presentationData={presentationData}
+    //   setPresentationData={setPresentationData}
+    //   currentPageIndex={currentPageIndex}
+    //   setCurrpentPageIndex={setCurrpentPageIndex}
+    //   initialState={initialState}
+    //   slug="new"
+    // />
+    <></>
   );
 };
 

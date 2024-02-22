@@ -14,28 +14,30 @@ interface EditPresentationProps {
 const EditPresentation = ({ slug }: EditPresentationProps) => {
   const initialState: PagesDataType = {
     title: null,
-    dDay: {
-      date: null,
+    deadlineDate: null,
+    timeLimit: {
+      hours: null,
+      minutes: null,
     },
-    time: {
-      timer: null,
-      alramTime: null,
+    alertTime: {
+      hours: null,
+      minutes: null,
     },
-    scripts: [{ ppt: { dataURL: null, file: null }, script: null, memo: null }],
+    slides: [{ imageFileId: { dataURL: null, file: null }, script: null, memo: null }],
   };
 
   const [presentationData, setPresentationData] = useState<PagesDataType>(initialState);
   const [currentPageIndex, setCurrpentPageIndex] = useState(0);
 
   const value = useGetPresentationData(slug);
+
   useEffect(() => {
     const initailSetting = async () => {
-      const { data: originData, id: originId } = value;
       setPresentationData(() => {
-        const shallow = [...originData.scripts];
-        shallow.push(...initialState.scripts);
+        const shallow = [...value.slides];
+        shallow.push(...initialState.slides);
         return {
-          ...originData,
+          ...value,
           scripts: shallow,
         };
       });
@@ -44,15 +46,18 @@ const EditPresentation = ({ slug }: EditPresentationProps) => {
     initailSetting();
   }, [value]);
 
+  console.log(presentationData);
+
   return (
-    <InputSection
-      presentationData={presentationData}
-      setPresentationData={setPresentationData}
-      currentPageIndex={currentPageIndex}
-      setCurrpentPageIndex={setCurrpentPageIndex}
-      slug={slug}
-      initialState={initialState}
-    />
+    // <InputSection
+    //   presentationData={presentationData}
+    //   setPresentationData={setPresentationData}
+    //   currentPageIndex={currentPageIndex}
+    //   setCurrpentPageIndex={setCurrpentPageIndex}
+    //   slug={slug}
+    //   initialState={initialState}
+    // />
+    <></>
   );
 };
 
