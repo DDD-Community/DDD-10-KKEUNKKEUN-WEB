@@ -25,15 +25,14 @@ const CreatePresentation = () => {
   const [currentPageIndex, setCurrpentPageIndex] = useState(0);
 
   return (
-    // <InputSection
-    //   presentationData={presentationData}
-    //   setPresentationData={setPresentationData}
-    //   currentPageIndex={currentPageIndex}
-    //   setCurrpentPageIndex={setCurrpentPageIndex}
-    //   initialState={initialState}
-    //   slug="new"
-    // />
-    <></>
+    <InputSection
+      presentationData={presentationData}
+      setPresentationData={setPresentationData}
+      currentPageIndex={currentPageIndex}
+      setCurrpentPageIndex={setCurrpentPageIndex}
+      initialState={initialState}
+      slug="new"
+    />
   );
 };
 

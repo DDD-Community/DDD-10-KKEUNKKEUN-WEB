@@ -7,7 +7,7 @@ import { PagesDataType } from '@/types/service';
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
 
 interface UploadPptProps {
-  pptInfo: PagesDataType['scripts'][0]['ppt'];
+  pptInfo: PagesDataType['slides'][0]['imageFileId'];
   setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   currentPageIndex: number;
   initialState: PagesDataType;
@@ -35,23 +35,23 @@ const UploadPpt = ({
 
       reader.onloadend = () => {
         setPresentationData((prev) => {
-          const shallow = [...prev.scripts];
+          const shallow = [...prev.slides];
           shallow[currentPageIndex] = {
             ...shallow[currentPageIndex],
-            ppt: {
+            imageFileId: {
               dataURL: reader.result as string, // 미리보기용
               file, // 서버용
             },
           };
 
           // 추가
-          if (currentPageIndex === prev.scripts.length - 1) {
-            shallow.push(initialState.scripts[0]);
+          if (currentPageIndex === prev.slides.length - 1) {
+            shallow.push(initialState.slides[0]);
           }
 
           return {
             ...prev,
-            scripts: shallow,
+            slides: shallow,
           };
         });
       };

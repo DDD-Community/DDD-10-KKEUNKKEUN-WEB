@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import UploadTitle from './UploadTitle';
 import UploadScript from './UploadScript';
 import UploadMemo from './UploadMemo';
-import UploadDday from './UploadDday';
+import UploadDeadlineDate from './UploadDeadlineDate';
 import UploadTimer from './UploadTimer';
 import UploadPpt from './UploadPpt';
 import ControlButtons from './ControlButtons';
@@ -89,16 +89,16 @@ const InputSection = ({
     const resetFormData = () => {
       reset({
         title: presentationData.title || '',
-        script: presentationData.scripts[currentPageIndex].script || '',
-        memo: presentationData.scripts[currentPageIndex].memo || '',
-        dDayDate: presentationData.dDay.date,
+        script: presentationData.slides[currentPageIndex].script || '',
+        memo: presentationData.slides[currentPageIndex].memo || '',
+        deadlineDate: presentationData.deadlineDate,
       });
     };
     resetFormData();
   }, [presentationData, currentPageIndex]);
 
   const changeCurrentPageIndex = async (nextIndex: number) => {
-    if (currentPageIndex === presentationData.scripts.length - 1) {
+    if (currentPageIndex === presentationData.slides.length - 1) {
       setCurrpentPageIndex(nextIndex);
     } else {
       const validateResult = checkValidtaion(presentationData, currentPageIndex);
@@ -120,6 +120,7 @@ const InputSection = ({
     }
   };
 
+  console.log(presentationData);
   return (
     <div className={styles.container}>
       <div className={styles.leftSectionWrapper}>
@@ -132,7 +133,7 @@ const InputSection = ({
             </span>
           </p>
           <UploadPpt
-            pptInfo={presentationData.scripts[currentPageIndex].ppt}
+            pptInfo={presentationData.slides[currentPageIndex].imageFileId}
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
             changeCurrentPageIndex={changeCurrentPageIndex}
@@ -168,8 +169,8 @@ const InputSection = ({
               errors={errors}
             />
             <UploadScript
-              script={presentationData.scripts[currentPageIndex].script || ''}
-              lastDummyPageIndex={presentationData.scripts.length - 1}
+              script={presentationData.slides[currentPageIndex].script || ''}
+              lastDummyPageIndex={presentationData.slides.length - 1}
               setPresentationData={setPresentationData}
               currentPageIndex={currentPageIndex}
               register={register}
@@ -177,8 +178,8 @@ const InputSection = ({
               erroOnEachPage={erroOnEachPage}
             />
             <UploadMemo
-              memo={presentationData.scripts[currentPageIndex].memo || ''}
-              lastDummyPageIndex={presentationData.scripts.length - 1}
+              memo={presentationData.slides[currentPageIndex].memo || ''}
+              lastDummyPageIndex={presentationData.slides.length - 1}
               setPresentationData={setPresentationData}
               currentPageIndex={currentPageIndex}
               register={register}
@@ -187,19 +188,23 @@ const InputSection = ({
             />
             <div className={styles.line} />
 
-            <UploadDday
-              dDay={presentationData.dDay}
+            <UploadDeadlineDate
+              deadlineDate={presentationData.deadlineDate}
               setPresentationData={setPresentationData}
               register={register}
               errors={errors}
             />
-            <UploadTimer time={presentationData.time} setPresentationData={setPresentationData} />
+            <UploadTimer
+              timeLimit={presentationData.timeLimit}
+              alertTime={presentationData.alertTime}
+              setPresentationData={setPresentationData}
+            />
             <div className={styles.saveButtons}>
               <button
                 type="submit"
                 onClick={() => {}}
                 className={styles.save}
-                disabled={isSubmitting || presentationData.scripts.length === 1}
+                disabled={isSubmitting || presentationData.slides.length === 1}
               >
                 <p>임시저장</p>
               </button>
@@ -207,7 +212,7 @@ const InputSection = ({
                 type="submit"
                 onClick={() => {}}
                 className={styles.start}
-                disabled={isSubmitting || presentationData.scripts.length === 1}
+                disabled={isSubmitting || presentationData.slides.length === 1}
               >
                 <p>저장하고 발표 연습 시작하기</p>
               </button>

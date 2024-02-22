@@ -30,18 +30,18 @@ const ControlButtons = ({
   changeCurrentPageIndex,
 }: ControlButtonsProps) => {
   const addButton = async () => {
-    changeCurrentPageIndex(presentationData.scripts.length - 1);
+    changeCurrentPageIndex(presentationData.slides.length - 1);
   };
 
   const remove = (e: MouseEvent<HTMLButtonElement>, index: number) => {
     e.stopPropagation();
     setPresentationData((prev) => {
-      const shallow = [...prev.scripts];
+      const shallow = [...prev.slides];
       shallow.splice(index, 1);
 
       return {
         ...prev,
-        scripts: shallow,
+        slides: shallow,
       };
     });
 
@@ -58,13 +58,13 @@ const ControlButtons = ({
     const from = result.source.index;
 
     setPresentationData((prev) => {
-      const shallow = [...prev.scripts];
+      const shallow = [...prev.slides];
       const moveTarget = shallow.splice(from, 1);
       shallow.splice(to, 0, ...moveTarget);
 
       return {
         ...prev,
-        scripts: shallow,
+        slides: shallow,
       };
     });
   };
@@ -75,7 +75,7 @@ const ControlButtons = ({
         <Droppable droppableId={styles.buttons} direction="horizontal">
           {(provided) => (
             <div className={styles.buttons} {...provided.droppableProps} ref={provided.innerRef}>
-              {presentationData.scripts.slice(0, -1).map((item, index) => (
+              {presentationData.slides.slice(0, -1).map((item, index) => (
                 <Draggable draggableId={`test-${index}`} index={index} key={`test-${index}`}>
                   {(provided, snapshot) => {
                     return (
@@ -92,7 +92,7 @@ const ControlButtons = ({
                           })}
                         >
                           <Image
-                            src={item.ppt!.dataURL as string}
+                            src={item.imageFileId!.dataURL as string}
                             fill
                             alt="ppt이미지"
                             style={{ objectFit: 'contain', borderRadius: '8px' }}
@@ -120,11 +120,11 @@ const ControlButtons = ({
               <button
                 onClick={addButton}
                 disabled={
-                  presentationData.scripts[currentPageIndex].ppt.dataURL === null
-                  // || presentationData.scripts[currentPageIndex].ppt.file === null
+                  presentationData.slides[currentPageIndex].imageFileId.dataURL === null
+                  // || presentationData.slides[currentPageIndex].imageFileId.file === null
                 }
                 className={cx('addButton', {
-                  selected: currentPageIndex === presentationData.scripts.length - 1,
+                  selected: currentPageIndex === presentationData.slides.length - 1,
                 })}
               >
                 <div

@@ -46,7 +46,7 @@ const UploadMemo = forwardRef<HTMLInputElement, UploadMemoProps>(
         memoValue = memoValue.slice(0, MAX_LENGTH.MEMO + 1);
       }
       setPresentationData((prev) => {
-        const shallow = [...prev.scripts];
+        const shallow = [...prev.slides];
         shallow[currentPageIndex] = {
           ...shallow[currentPageIndex],
           memo: memoValue,
@@ -54,7 +54,7 @@ const UploadMemo = forwardRef<HTMLInputElement, UploadMemoProps>(
 
         return {
           ...prev,
-          scripts: shallow,
+          slides: shallow,
         };
       });
     };

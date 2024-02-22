@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef, useState } from 'react';
+import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef } from 'react';
 
 import { PagesDataType, ValidtaionType } from '@/types/service';
 
@@ -28,8 +28,6 @@ interface UploadScriptProps {
   };
 }
 
-const cx = classNames.bind(styles);
-
 const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
   (
     {
@@ -43,6 +41,7 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
     },
     ref,
   ) => {
+    const cx = classNames.bind(styles);
     const registerOptions: RegisterOptions =
       currentPageIndex === lastDummyPageIndex
         ? {}
@@ -61,7 +60,7 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
       }
 
       setPresentationData((prev) => {
-        const shallow = [...prev.scripts];
+        const shallow = [...prev.slides];
         shallow[currentPageIndex] = {
           ...shallow[currentPageIndex],
           script: scriptValue,
@@ -69,7 +68,7 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
 
         return {
           ...prev,
-          scripts: shallow,
+          slides: shallow,
         };
       });
     };

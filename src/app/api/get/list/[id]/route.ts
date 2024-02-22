@@ -112,16 +112,12 @@ export async function GET(
   { params }: { params: { id: string } },
 ): Promise<NextResponse> {
   const targetId = params.id;
-  console.log('!!!');
-  console.log(targetId);
   try {
     return new Promise((resolve) => {
       const result = mockPresentData.filter((i) => i.id === Number(targetId))[0];
       setTimeout(() => {
         resolve(new NextResponse(JSON.stringify(result), { status: 200 }));
       }, 500);
-      console.log('???');
-      console.log(result);
     });
   } catch (e) {
     return new NextResponse(null, { status: 500 });

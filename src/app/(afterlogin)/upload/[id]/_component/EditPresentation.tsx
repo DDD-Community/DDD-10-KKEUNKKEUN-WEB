@@ -38,26 +38,23 @@ const EditPresentation = ({ slug }: EditPresentationProps) => {
         shallow.push(...initialState.slides);
         return {
           ...value,
-          scripts: shallow,
+          slides: shallow,
         };
       });
     };
 
-    initailSetting();
+    if (value) initailSetting();
   }, [value]);
 
-  console.log(presentationData);
-
   return (
-    // <InputSection
-    //   presentationData={presentationData}
-    //   setPresentationData={setPresentationData}
-    //   currentPageIndex={currentPageIndex}
-    //   setCurrpentPageIndex={setCurrpentPageIndex}
-    //   slug={slug}
-    //   initialState={initialState}
-    // />
-    <></>
+    <InputSection
+      presentationData={presentationData}
+      setPresentationData={setPresentationData}
+      currentPageIndex={currentPageIndex}
+      setCurrpentPageIndex={setCurrpentPageIndex}
+      slug={slug}
+      initialState={initialState}
+    />
   );
 };
 

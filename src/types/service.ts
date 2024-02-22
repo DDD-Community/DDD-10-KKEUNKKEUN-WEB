@@ -7,7 +7,7 @@ export interface ValidtaionType {
   title: string;
   script: string;
   memo: string;
-  dDayDate: Value;
+  deadlineDate: Value;
 }
 
 // export interface PagesDataType {
