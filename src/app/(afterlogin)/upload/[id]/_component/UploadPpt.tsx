@@ -30,33 +30,36 @@ const UploadPpt = ({
     e.preventDefault();
     if (imageRef.current?.files) {
       const file = imageRef.current.files[0];
+      console.log(file);
 
-      const reader = new FileReader();
+      if (file) {
+        const reader = new FileReader();
 
-      reader.onloadend = () => {
-        setPresentationData((prev) => {
-          const shallow = [...prev.slides];
-          shallow[currentPageIndex] = {
-            ...shallow[currentPageIndex],
-            imageFileId: {
-              dataURL: reader.result as string, // 미리보기용
-              file, // 서버용
-            },
-          };
+        reader.onloadend = () => {
+          setPresentationData((prev) => {
+            const shallow = [...prev.slides];
+            shallow[currentPageIndex] = {
+              ...shallow[currentPageIndex],
+              imageFileId: {
+                dataURL: reader.result as string, // 미리보기용
+                file, // 서버용
+              },
+            };
 
-          // 추가
-          if (currentPageIndex === prev.slides.length - 1) {
-            shallow.push(initialState.slides[0]);
-          }
+            // 추가
+            if (currentPageIndex === prev.slides.length - 1) {
+              shallow.push(initialState.slides[0]);
+            }
 
-          return {
-            ...prev,
-            slides: shallow,
-          };
-        });
-      };
+            return {
+              ...prev,
+              slides: shallow,
+            };
+          });
+        };
 
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
+      }
     }
   };
 

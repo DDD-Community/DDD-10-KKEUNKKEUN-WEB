@@ -37,7 +37,6 @@ const UploadDeadlineDate = forwardRef<HTMLInputElement, UploadDeadlineDateProps>
       }));
     };
 
-    console.log(deadlineDate?.toLocaleString());
     return (
       <div className={styles.container}>
         <p className={styles.description}>D-day 설정</p>
