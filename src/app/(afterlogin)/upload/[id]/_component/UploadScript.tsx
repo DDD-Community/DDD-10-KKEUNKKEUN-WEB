@@ -1,6 +1,13 @@
 'use client';
 
-import { ChangeEventHandler, Dispatch, MouseEventHandler, SetStateAction, forwardRef } from 'react';
+import {
+  ChangeEventHandler,
+  Dispatch,
+  MouseEventHandler,
+  SetStateAction,
+  forwardRef,
+  useState,
+} from 'react';
 
 import { PagesDataType, ValidtaionType } from '@/types/service';
 
@@ -53,6 +60,7 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
     },
     ref,
   ) => {
+    const [currentLength, setCurrentLength] = useState(script);
     const registerOptions: RegisterOptions =
       currentPageIndex === lastDummyPageIndex
         ? {}
@@ -64,17 +72,19 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
             },
           };
 
-    // const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    //   let scriptValue = e.target.value;
-    //   if (scriptValue.length >= MAX_LENGTH.SCRIPT + 1) {
-    //     scriptValue = scriptValue.slice(0, MAX_LENGTH.SCRIPT + 1);
-    //   }
+    // if (watchedScriptValue.length > MAX_LENGTH.SCRIPT + 1) {
+    //   setValue('script', watchedScriptValue.slice(0, 5001), { shouldValidate: true });
+    // }
+
+    // const onStateChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    //   const value = e.target.value;
+    //   setValue('script', value, { shouldValidate: true });
 
     //   setPresentationData((prev) => {
     //     const shallow = [...prev.slides];
     //     shallow[currentPageIndex] = {
     //       ...shallow[currentPageIndex],
-    //       script: scriptValue,
+    //       script: value,
     //     };
 
     //     return {
@@ -84,26 +94,14 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
     //   });
     // };
 
-    if (watchedScriptValue.length > MAX_LENGTH.SCRIPT + 1) {
-      setValue('script', watchedScriptValue.slice(0, 5001), { shouldValidate: true });
-    }
-
-    const onStateChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    console.log(currentLength);
+    const onCurrentLengthChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
       const value = e.target.value;
       setValue('script', value, { shouldValidate: true });
-
-      setPresentationData((prev) => {
-        const shallow = [...prev.slides];
-        shallow[currentPageIndex] = {
-          ...shallow[currentPageIndex],
-          script: value,
-        };
-
-        return {
-          ...prev,
-          slides: shallow,
-        };
-      });
+      if (value.length > MAX_LENGTH.SCRIPT) {
+        setValue('script', value.slice(0, 5001), { shouldValidate: true });
+      }
+      setCurrentLength(value);
     };
     return (
       <div className={styles.container}>
@@ -120,34 +118,36 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
           )}
 
           {/* 작성 시(+페이지 이동 시) 유효성 검사 - 최소 길이*/}
-          {!errors.script &&
+          {/* {!errors.script &&
+            currentLength.length === 0 &&
             erroOnEachPage.script.minLength &&
-            watchedScriptValue.length === 0 &&
             lastDummyPageIndex !== currentPageIndex && (
               <small role="alert" style={{ color: '#DE3428' }}>
                 {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
               </small>
-            )}
+            )} */}
           {/* 작성 시(+페이지 이동 시) 유효성 검사 - 최대 길이*/}
-          {!errors.script &&
+          {/* {!errors.script &&
+            currentLength.length > MAX_LENGTH.SCRIPT &&
             erroOnEachPage.script.maxLength &&
-            watchedScriptValue.length > MAX_LENGTH.SCRIPT &&
             lastDummyPageIndex !== currentPageIndex && (
               <small role="alert" style={{ color: '#DE3428' }}>
                 {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
               </small>
-            )}
+            )} */}
         </div>
         <div
-          className={cx([
-            'scriptSection',
-            watchedScriptValue.length > MAX_LENGTH.SCRIPT && 'warning',
-          ])}
+          className={cx(['scriptSection', currentLength.length > MAX_LENGTH.SCRIPT && 'warning'])}
         >
           <textarea
+            maxLength={5001} // 이것도 써야 복붙해서 튀어나가는 렉이 없어짐 걸림
             id="script"
             className={styles.scriptTextarea}
-            {...register('script', registerOptions)}
+            {...register('script', {
+              ...registerOptions,
+              onChange: onCurrentLengthChange, // 이렇게 하면 error 객체가 잘 잡히는지는 모르겠다. 대신 반드시 setValue도 명시 해주면 괜찮은듯?
+            })}
+            // onChange={onCurrentLengthChange} // onChange를 덮어쓰는 대신 반드시 setValue도 명시 해줘야 함. 그래도 error객체는 여전히 못 씀
             // onChange={onStateChange}
             // onBlur={onStateChange} // register에도 onBlur가 있지만, 현재 상태값을 변경한다는 추가 동작을 하기 위해 따로 선언
             // onChange={onChange}
@@ -158,11 +158,12 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
           <div
             className={cx([
               'lengthCount',
-              watchedScriptValue.length > MAX_LENGTH.SCRIPT && 'lengthWarning',
+              currentLength.length > MAX_LENGTH.SCRIPT && 'lengthWarning',
             ])}
           >
             <p>
-              {watchedScriptValue.length}/{MAX_LENGTH.SCRIPT}
+              {/* 5002까지 찍히는 버그가 있어서 이렇게 막음 */}
+              {currentLength.length > 5001 ? 5001 : currentLength.length}/{MAX_LENGTH.SCRIPT}
             </p>
           </div>
         </div>

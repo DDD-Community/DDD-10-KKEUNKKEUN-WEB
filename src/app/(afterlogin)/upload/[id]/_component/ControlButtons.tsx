@@ -11,7 +11,7 @@ import classNames from 'classnames/bind';
 
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
-import { UseFormSetValue } from 'react-hook-form';
+import { UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { MAX_LENGTH } from '@/config/const';
 
 const cx = classNames.bind(styles);
@@ -24,6 +24,7 @@ interface ControlButtonsProps {
   changeCurrentPageIndex: (nextIndex: number) => void;
   setValue: UseFormSetValue<ValidtaionType>;
   watchedScriptValue: string;
+  getValues: UseFormGetValues<ValidtaionType>;
 }
 
 const ControlButtons = ({
@@ -34,22 +35,24 @@ const ControlButtons = ({
   changeCurrentPageIndex,
   setValue,
   watchedScriptValue,
+  getValues,
 }: ControlButtonsProps) => {
-  const addButton = async () => {
-    setPresentationData((prev) => {
-      const shallow = [...prev.slides];
-      shallow[currentPageIndex] = {
-        ...shallow[currentPageIndex],
-        script: watchedScriptValue,
-      };
+  // const addButton = async () => {
+  //   setValue('script', getValues('script'), { shouldValidate: true });
+  //   changeCurrentPageIndex(presentationData.slides.length - 1);
+  //   setPresentationData((prev) => {
+  //     const shallow = [...prev.slides];
+  //     shallow[currentPageIndex] = {
+  //       ...shallow[currentPageIndex],
+  //       script: getValues('script'),
+  //     };
 
-      return {
-        ...prev,
-        slides: shallow,
-      };
-    });
-    changeCurrentPageIndex(presentationData.slides.length - 1);
-  };
+  //     return {
+  //       ...prev,
+  //       slides: shallow,
+  //     };
+  //   });
+  // };
 
   const remove = (e: MouseEvent<HTMLButtonElement>, index: number) => {
     e.stopPropagation();
@@ -71,11 +74,11 @@ const ControlButtons = ({
   };
 
   const handleChange = (result: DropResult) => {
-    if (!result.destination || watchedScriptValue.length > MAX_LENGTH.SCRIPT) return;
+    if (!result.destination || getValues('script').length > MAX_LENGTH.SCRIPT) return;
     const to = result.destination?.index;
     const from = result.source.index;
 
-    setValue('script', watchedScriptValue, { shouldValidate: true });
+    setValue('script', getValues('script'), { shouldValidate: true });
     setPresentationData((prev) => {
       const shallow = [...prev.slides];
       const moveTarget = shallow.splice(from, 1);
@@ -90,12 +93,12 @@ const ControlButtons = ({
 
   const eachPptButtonClick = (index: number) => {
     changeCurrentPageIndex(index);
-    setValue('script', watchedScriptValue, { shouldValidate: true });
+    setValue('script', getValues('script'), { shouldValidate: true });
     setPresentationData((prev) => {
       const shallow = [...prev.slides];
       shallow[currentPageIndex] = {
         ...shallow[currentPageIndex],
-        script: watchedScriptValue,
+        script: getValues('script'),
       };
       return {
         ...prev,
@@ -105,12 +108,12 @@ const ControlButtons = ({
   };
 
   const onStart = () => {
-    setValue('script', watchedScriptValue, { shouldValidate: true });
+    setValue('script', getValues('script'), { shouldValidate: true });
     setPresentationData((prev) => {
       const shallow = [...prev.slides];
       shallow[currentPageIndex] = {
         ...shallow[currentPageIndex],
-        script: watchedScriptValue,
+        script: getValues('script'),
       };
       return {
         ...prev,
@@ -169,7 +172,8 @@ const ControlButtons = ({
               ))}
               {provided.placeholder}
               <button
-                onClick={addButton}
+                // onClick={addButton}
+                onClick={() => eachPptButtonClick(presentationData.slides.length - 1)}
                 disabled={
                   presentationData.slides[currentPageIndex].imageFileId.dataURL === null
                   // || presentationData.slides[currentPageIndex].imageFileId.file === null

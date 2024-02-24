@@ -85,13 +85,13 @@ const InputSection = ({
     reset,
     setValue,
     getValues,
-    watch,
+    // watch,
     formState: { defaultValues, isSubmitting, isSubmitted, errors },
   } = useForm<ValidtaionType>({ mode: 'onChange' });
 
-  const watchedScriptValue = watch('script') ? watch('script') : '';
-  const watchedMemoValue = watch('memo') ? watch('memo') : '';
-  const watchedTitleValue = watch('title') ? watch('title') : '';
+  // const watchedScriptValue = watch('script') ? watch('script') : '';
+  // const watchedMemoValue = watch('memo') ? watch('memo') : '';
+  // const watchedTitleValue = watch('title') ? watch('title') : '';
 
   useEffect(() => {
     const resetFormData = () => {
@@ -104,7 +104,9 @@ const InputSection = ({
     };
     resetFormData();
   }, [presentationData, currentPageIndex]);
-  console.log(errors);
+
+  // console.log(erroOnEachPage);
+  // console.log(presentationData);
 
   const changeCurrentPageIndex = async (nextIndex: number) => {
     if (currentPageIndex === presentationData.slides.length - 1) {
@@ -127,24 +129,27 @@ const InputSection = ({
       // )
       //   setCurrpentPageIndex(nextIndex);
 
+      // 최초에 뜨는 에러를 방지. 애초에 훅 폼이 처리 하는데 지금은
       setErroOnEachPage({
-        memo: watchedMemoValue.length > MAX_LENGTH.MEMO,
+        memo: getValues('memo').length > MAX_LENGTH.MEMO,
         script: {
-          minLength: watchedScriptValue.length === 0,
-          maxLength: watchedScriptValue.length > MAX_LENGTH.SCRIPT,
+          minLength: getValues('script').length === 0,
+          maxLength: getValues('script').length > MAX_LENGTH.SCRIPT,
         },
       });
 
       if (
         !errors.script &&
-        watchedScriptValue.length !== 0 &&
-        watchedScriptValue.length <= MAX_LENGTH.SCRIPT &&
+        getValues('script').length !== 0 &&
+        getValues('script').length <= MAX_LENGTH.SCRIPT &&
         !errors.memo &&
-        watchedMemoValue.length <= MAX_LENGTH.MEMO
+        getValues('memo').length <= MAX_LENGTH.MEMO
       )
         setCurrpentPageIndex(nextIndex);
     }
   };
+
+  console.log(errors);
 
   return (
     <div className={styles.container}>
@@ -170,7 +175,8 @@ const InputSection = ({
             currentPageIndex={currentPageIndex}
             changeCurrentPageIndex={changeCurrentPageIndex}
             setValue={setValue}
-            watchedScriptValue={watchedScriptValue}
+            getValues={getValues}
+            watchedScriptValue={'watchedScriptValue'}
           />
         </div>
       </div>
@@ -205,7 +211,7 @@ const InputSection = ({
               errors={errors}
               erroOnEachPage={erroOnEachPage}
               setValue={setValue}
-              watchedScriptValue={watchedScriptValue}
+              watchedScriptValue={'watchedScriptValue'}
             />
             <UploadMemo
               memo={presentationData.slides[currentPageIndex].memo || ''}
