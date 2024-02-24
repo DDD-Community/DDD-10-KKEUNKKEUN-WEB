@@ -20,7 +20,7 @@ const RemoveHighlightButton = ({ getEditorState, setEditorState }: any) => {
     <button
       onMouseDown={(e) => {
         e.preventDefault();
-        removeHighlight('BLUE');
+        removeHighlight('PINK');
       }}
     >
       하이라이트 제거

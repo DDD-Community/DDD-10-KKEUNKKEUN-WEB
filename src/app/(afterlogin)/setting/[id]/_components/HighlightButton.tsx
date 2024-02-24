@@ -29,7 +29,7 @@ const HighlightButton = ({ getEditorState, setEditorState }: any) => {
     <button
       onMouseDown={(e) => {
         e.preventDefault();
-        applyHighlight('BLUE');
+        applyHighlight('PINK');
       }}
     >
       하이라이트

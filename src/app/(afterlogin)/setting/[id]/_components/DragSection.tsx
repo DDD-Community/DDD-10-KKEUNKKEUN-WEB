@@ -15,7 +15,7 @@ import RemoveButton from './RemoveButton';
 
 // 인라인 스타일 적용 옵션
 const styleMap = {
-  BLUE: {
+  PINK: {
     backgroundColor: '#FF2E7B',
   },
 };
@@ -43,8 +43,7 @@ const DragSection = () => {
     // 인라인 스타일이 적용된 HTML 반환값 적용
     const options = {
       inlineStyles: {
-        RED: { style: { color: '#ff0000' } },
-        BLUE: { style: { backgroundColor: '#6ea4eb' } },
+        PINK: { style: { color: '#FF2E7B' } },
       },
     };
     const html = stateToHTML(contentState, options);
@@ -56,7 +55,7 @@ const DragSection = () => {
   return (
     <div className="container">
       <div className="contentSection">
-        {/* <button onClick={saveContent}>저장</button> */}
+        <button onClick={saveContent}>저장</button>
 
         <Editor
           editorState={editorState}
