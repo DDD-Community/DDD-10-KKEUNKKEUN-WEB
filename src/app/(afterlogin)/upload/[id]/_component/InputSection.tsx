@@ -17,6 +17,7 @@ import { checkValidtaion } from '../_utils/validation';
 
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
 import ModalContents from '@/app/_components/_modules/_modal-pre/ModalContents';
+import { MAX_LENGTH } from '@/config/const';
 
 interface InputSectionProps {
   presentationData: PagesDataType;
@@ -82,8 +83,15 @@ const InputSection = ({
     register,
     handleSubmit,
     reset,
+    setValue,
+    getValues,
+    watch,
     formState: { defaultValues, isSubmitting, isSubmitted, errors },
-  } = useForm<ValidtaionType>();
+  } = useForm<ValidtaionType>({ mode: 'onChange' });
+
+  const watchedScriptValue = watch('script') ? watch('script') : '';
+  const watchedMemoValue = watch('memo') ? watch('memo') : '';
+  const watchedTitleValue = watch('title') ? watch('title') : '';
 
   useEffect(() => {
     const resetFormData = () => {
@@ -96,25 +104,43 @@ const InputSection = ({
     };
     resetFormData();
   }, [presentationData, currentPageIndex]);
+  console.log(errors);
 
   const changeCurrentPageIndex = async (nextIndex: number) => {
     if (currentPageIndex === presentationData.slides.length - 1) {
       setCurrpentPageIndex(nextIndex);
     } else {
-      const validateResult = checkValidtaion(presentationData, currentPageIndex);
+      // const validateResult = checkValidtaion(presentationData, currentPageIndex);
+
+      // setErroOnEachPage({
+      //   memo: validateResult.memo,
+      //   script: {
+      //     minLength: validateResult.script.minLength,
+      //     maxLength: validateResult.script.maxLength,
+      //   },
+      // });
+
+      // if (
+      //   !validateResult.memo &&
+      //   !validateResult.script.maxLength &&
+      //   !validateResult.script.minLength
+      // )
+      //   setCurrpentPageIndex(nextIndex);
 
       setErroOnEachPage({
-        memo: validateResult.memo,
+        memo: watchedMemoValue.length > MAX_LENGTH.MEMO,
         script: {
-          minLength: validateResult.script.minLength,
-          maxLength: validateResult.script.maxLength,
+          minLength: watchedScriptValue.length === 0,
+          maxLength: watchedScriptValue.length > MAX_LENGTH.SCRIPT,
         },
       });
 
       if (
-        !validateResult.memo &&
-        !validateResult.script.maxLength &&
-        !validateResult.script.minLength
+        !errors.script &&
+        watchedScriptValue.length !== 0 &&
+        watchedScriptValue.length <= MAX_LENGTH.SCRIPT &&
+        !errors.memo &&
+        watchedMemoValue.length <= MAX_LENGTH.MEMO
       )
         setCurrpentPageIndex(nextIndex);
     }
@@ -143,6 +169,8 @@ const InputSection = ({
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
             changeCurrentPageIndex={changeCurrentPageIndex}
+            setValue={setValue}
+            watchedScriptValue={watchedScriptValue}
           />
         </div>
       </div>
@@ -155,8 +183,9 @@ const InputSection = ({
           </button>
           <form
             onSubmit={handleSubmit((data) => {
-              // 마지막 페이지는 제거
-              // mutation의 onSuccess로 모달 띄우기
+              // 1. 마지막 페이지는 제외
+              // 2. 현재 watch걸어둔 제목 스크립트 메모 전부 추가해서 데이터 요청
+              // 3. mutation의 onSuccess로 모달 띄우기
               console.log(JSON.stringify(data));
               openToastWithData();
             })}
@@ -175,6 +204,8 @@ const InputSection = ({
               register={register}
               errors={errors}
               erroOnEachPage={erroOnEachPage}
+              setValue={setValue}
+              watchedScriptValue={watchedScriptValue}
             />
             <UploadMemo
               memo={presentationData.slides[currentPageIndex].memo || ''}

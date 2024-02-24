@@ -1,12 +1,18 @@
 'use client';
 
-import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef } from 'react';
+import { ChangeEventHandler, Dispatch, MouseEventHandler, SetStateAction, forwardRef } from 'react';
 
 import { PagesDataType, ValidtaionType } from '@/types/service';
 
 import styles from './UploadScript.module.scss';
 
-import { FieldErrors, RegisterOptions, UseFormRegister } from 'react-hook-form';
+import {
+  FieldErrors,
+  RegisterOptions,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 
 import classNames from 'classnames/bind';
 import Required from './Required';
@@ -19,6 +25,8 @@ interface UploadScriptProps {
   register: UseFormRegister<ValidtaionType>;
   errors: FieldErrors<ValidtaionType>;
   lastDummyPageIndex: number;
+  setValue: UseFormSetValue<ValidtaionType>;
+  watchedScriptValue: string;
   erroOnEachPage: {
     memo: boolean;
     script: {
@@ -27,6 +35,8 @@ interface UploadScriptProps {
     };
   };
 }
+
+const cx = classNames.bind(styles);
 
 const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
   (
@@ -38,10 +48,11 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
       errors,
       lastDummyPageIndex,
       erroOnEachPage,
+      setValue,
+      watchedScriptValue,
     },
     ref,
   ) => {
-    const cx = classNames.bind(styles);
     const registerOptions: RegisterOptions =
       currentPageIndex === lastDummyPageIndex
         ? {}
@@ -53,17 +64,39 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
             },
           };
 
-    const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-      let scriptValue = e.target.value;
-      if (scriptValue.length >= MAX_LENGTH.SCRIPT + 1) {
-        scriptValue = scriptValue.slice(0, MAX_LENGTH.SCRIPT + 1);
-      }
+    // const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    //   let scriptValue = e.target.value;
+    //   if (scriptValue.length >= MAX_LENGTH.SCRIPT + 1) {
+    //     scriptValue = scriptValue.slice(0, MAX_LENGTH.SCRIPT + 1);
+    //   }
+
+    //   setPresentationData((prev) => {
+    //     const shallow = [...prev.slides];
+    //     shallow[currentPageIndex] = {
+    //       ...shallow[currentPageIndex],
+    //       script: scriptValue,
+    //     };
+
+    //     return {
+    //       ...prev,
+    //       slides: shallow,
+    //     };
+    //   });
+    // };
+
+    if (watchedScriptValue.length > MAX_LENGTH.SCRIPT + 1) {
+      setValue('script', watchedScriptValue.slice(0, 5001), { shouldValidate: true });
+    }
+
+    const onStateChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+      const value = e.target.value;
+      setValue('script', value, { shouldValidate: true });
 
       setPresentationData((prev) => {
         const shallow = [...prev.slides];
         shallow[currentPageIndex] = {
           ...shallow[currentPageIndex],
-          script: scriptValue,
+          script: value,
         };
 
         return {
@@ -85,40 +118,51 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
               {errors.script.message as string}
             </small>
           )}
+
           {/* 작성 시(+페이지 이동 시) 유효성 검사 - 최소 길이*/}
           {!errors.script &&
             erroOnEachPage.script.minLength &&
-            !script.length &&
-            currentPageIndex !== lastDummyPageIndex && (
+            watchedScriptValue.length === 0 &&
+            lastDummyPageIndex !== currentPageIndex && (
               <small role="alert" style={{ color: '#DE3428' }}>
                 {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
               </small>
             )}
-
-          {/* 작성 시 유효성 검사 - 최대 길이*/}
+          {/* 작성 시(+페이지 이동 시) 유효성 검사 - 최대 길이*/}
           {!errors.script &&
-            // (erroOnEachPage.script.maxLength || script.length > MAX_LENGTH.SCRIPT) &&
-            script.length > MAX_LENGTH.SCRIPT &&
-            currentPageIndex !== lastDummyPageIndex && (
+            erroOnEachPage.script.maxLength &&
+            watchedScriptValue.length > MAX_LENGTH.SCRIPT &&
+            lastDummyPageIndex !== currentPageIndex && (
               <small role="alert" style={{ color: '#DE3428' }}>
-                {VALIDATION_MESSAGE.SCRIPT.MAX_LENGTH}
+                {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
               </small>
             )}
         </div>
-        <div className={cx(['scriptSection', script.length > MAX_LENGTH.SCRIPT && 'warning'])}>
+        <div
+          className={cx([
+            'scriptSection',
+            watchedScriptValue.length > MAX_LENGTH.SCRIPT && 'warning',
+          ])}
+        >
           <textarea
             id="script"
             className={styles.scriptTextarea}
-            value={script}
             {...register('script', registerOptions)}
-            onChange={onChange}
+            // onChange={onStateChange}
+            // onBlur={onStateChange} // register에도 onBlur가 있지만, 현재 상태값을 변경한다는 추가 동작을 하기 위해 따로 선언
+            // onChange={onChange}
+            // value={script}
+
             placeholder="가지고 있는 대본을 이곳에 복사하여 붙여 넣어주세요."
           />
           <div
-            className={cx(['lengthCount', script?.length > MAX_LENGTH.SCRIPT && 'lengthWarning'])}
+            className={cx([
+              'lengthCount',
+              watchedScriptValue.length > MAX_LENGTH.SCRIPT && 'lengthWarning',
+            ])}
           >
             <p>
-              {script?.length}/{MAX_LENGTH.SCRIPT}
+              {watchedScriptValue.length}/{MAX_LENGTH.SCRIPT}
             </p>
           </div>
         </div>

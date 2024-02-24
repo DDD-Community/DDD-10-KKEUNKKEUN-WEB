@@ -30,7 +30,6 @@ const UploadPpt = ({
     e.preventDefault();
     if (imageRef.current?.files) {
       const file = imageRef.current.files[0];
-      console.log(file);
 
       if (file) {
         const reader = new FileReader();

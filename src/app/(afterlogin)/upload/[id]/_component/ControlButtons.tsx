@@ -4,13 +4,15 @@ import { Dispatch, MouseEvent, SetStateAction } from 'react';
 
 import Image from 'next/image';
 
-import { PagesDataType } from '@/types/service';
+import { PagesDataType, ValidtaionType } from '@/types/service';
 
 import styles from './ControlButtons.module.scss';
 import classNames from 'classnames/bind';
 
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
+import { UseFormSetValue } from 'react-hook-form';
+import { MAX_LENGTH } from '@/config/const';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +22,8 @@ interface ControlButtonsProps {
   currentPageIndex: number;
   slug?: string;
   changeCurrentPageIndex: (nextIndex: number) => void;
+  setValue: UseFormSetValue<ValidtaionType>;
+  watchedScriptValue: string;
 }
 
 const ControlButtons = ({
@@ -28,8 +32,22 @@ const ControlButtons = ({
   currentPageIndex,
   slug,
   changeCurrentPageIndex,
+  setValue,
+  watchedScriptValue,
 }: ControlButtonsProps) => {
   const addButton = async () => {
+    setPresentationData((prev) => {
+      const shallow = [...prev.slides];
+      shallow[currentPageIndex] = {
+        ...shallow[currentPageIndex],
+        script: watchedScriptValue,
+      };
+
+      return {
+        ...prev,
+        slides: shallow,
+      };
+    });
     changeCurrentPageIndex(presentationData.slides.length - 1);
   };
 
@@ -53,10 +71,11 @@ const ControlButtons = ({
   };
 
   const handleChange = (result: DropResult) => {
-    if (!result.destination) return;
+    if (!result.destination || watchedScriptValue.length > MAX_LENGTH.SCRIPT) return;
     const to = result.destination?.index;
     const from = result.source.index;
 
+    setValue('script', watchedScriptValue, { shouldValidate: true });
     setPresentationData((prev) => {
       const shallow = [...prev.slides];
       const moveTarget = shallow.splice(from, 1);
@@ -69,9 +88,40 @@ const ControlButtons = ({
     });
   };
 
+  const eachPptButtonClick = (index: number) => {
+    changeCurrentPageIndex(index);
+    setValue('script', watchedScriptValue, { shouldValidate: true });
+    setPresentationData((prev) => {
+      const shallow = [...prev.slides];
+      shallow[currentPageIndex] = {
+        ...shallow[currentPageIndex],
+        script: watchedScriptValue,
+      };
+      return {
+        ...prev,
+        slides: shallow,
+      };
+    });
+  };
+
+  const onStart = () => {
+    setValue('script', watchedScriptValue, { shouldValidate: true });
+    setPresentationData((prev) => {
+      const shallow = [...prev.slides];
+      shallow[currentPageIndex] = {
+        ...shallow[currentPageIndex],
+        script: watchedScriptValue,
+      };
+      return {
+        ...prev,
+        slides: shallow,
+      };
+    });
+  };
+
   return (
     <div className={styles.container}>
-      <DragDropContext onDragEnd={handleChange}>
+      <DragDropContext onDragStart={onStart} onDragEnd={handleChange}>
         <Droppable droppableId={styles.buttons} direction="horizontal">
           {(provided) => (
             <div className={styles.buttons} {...provided.droppableProps} ref={provided.innerRef}>
@@ -86,7 +136,8 @@ const ControlButtons = ({
                       >
                         <div
                           key={index}
-                          onClick={() => changeCurrentPageIndex(index)}
+                          // onClick={() => changeCurrentPageIndex(index)}
+                          onClick={() => eachPptButtonClick(index)}
                           className={cx('singlePptPage', {
                             selected: currentPageIndex === index,
                           })}
