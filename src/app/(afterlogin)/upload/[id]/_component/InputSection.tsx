@@ -25,7 +25,7 @@ interface InputSectionProps {
   currentPageIndex: number;
   setCurrpentPageIndex: Dispatch<SetStateAction<number>>;
   initialState: UploadDataType;
-  slug?: string | 'new';
+  slug?: number | 'new';
 }
 
 interface ErroOnEachPageType {
@@ -182,22 +182,29 @@ const InputSection = ({
           <form
             onSubmit={handleSubmit(async (data) => {
               // 1. 마지막 더미 페이지 제외
-              const shallow = [...presentationData.slides.slice(0, -1)];
+              const shallow = { ...presentationData };
+              const shallowSlides = [...presentationData.slides.slice(0, -1)];
 
               // 2. 현재페이지의 title,script,memo를 getValue로 가져온 뒤 상태에 추가
-              shallow[currentPageIndex] = {
-                ...shallow[currentPageIndex],
-                script: getValues('script'),
-                memo: getValues('memo'),
+              shallow.title = data.title;
+              shallowSlides[currentPageIndex] = {
+                ...shallowSlides[currentPageIndex],
+                script: data.script,
+                memo: data.memo,
               };
               const result = {
-                ...presentationData,
-                slides: shallow,
+                ...shallow,
+                slides: shallowSlides,
               };
 
-              const response = await clientPptApi.postPresentationUpload(result);
+              // 3. post , patch
+              if (slug === 'new') {
+                const postResponse = await clientPptApi.postPresentationUpload(result);
+              }
+              if (slug !== 'new') {
+                const patchResponse = await clientPptApi.patchPresentationData(slug!, result);
+              }
 
-              // 3. post
               // 3. mutation의 onSuccess로 모달 띄우기
               openToastWithData();
             })}

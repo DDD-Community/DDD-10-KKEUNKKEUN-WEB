@@ -9,7 +9,7 @@ import { useGetPresentationData } from '../_hooks/presentation';
 import InputSection from './InputSection';
 
 interface EditPresentationProps {
-  slug: string;
+  slug: number;
 }
 const EditPresentation = ({ slug }: EditPresentationProps) => {
   const initialState: UploadDataType = {
@@ -23,13 +23,14 @@ const EditPresentation = ({ slug }: EditPresentationProps) => {
       hours: null,
       minutes: null,
     },
+    // slides의 ID값은 무시
     slides: [{ imageFileId: null, imageFilePath: null, script: null, memo: null }],
   };
 
   const [presentationData, setPresentationData] = useState<UploadDataType>(initialState);
   const [currentPageIndex, setCurrpentPageIndex] = useState(0);
 
-  const value = useGetPresentationData(slug);
+  const value: UploadDataType = useGetPresentationData(slug);
 
   useEffect(() => {
     const initailSetting = async () => {

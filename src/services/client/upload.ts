@@ -26,9 +26,29 @@ export const clientPptApi = {
     return response;
   },
 
+  getPresentationData: async (presentationId: number) => {
+    const response = await fetch_ClientAuth(`/api/presentations/${presentationId}`, {
+      method: 'GET',
+    });
+
+    return response;
+  },
+
+  patchPresentationData: async (presentationId: number, data: UploadDataType) => {
+    const response = await fetch_ClientAuth(`/api/presentations/${presentationId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    return response;
+  },
+
   // mock
   // TODO: 백엔드 api로 변경 및 삭제 예정
-  getPresentData: async <T>(id: string) => {
+  getMockPresentData: async <T>(id: string) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_HANDLER}/api/get/list/${id}`, {
       cache: 'no-store',
       credentials: 'include',
