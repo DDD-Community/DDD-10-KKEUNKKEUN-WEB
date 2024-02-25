@@ -5,9 +5,10 @@ import { ChangeEventHandler, Dispatch, SetStateAction, useRef } from 'react';
 import styles from './UploadPpt.module.scss';
 import { UploadDataType } from '@/types/service';
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
+import { clientPptApi } from '@/services/client/upload';
 
 interface UploadPptProps {
-  pptInfo: UploadDataType['slides'][0]['imageFileId'];
+  pptInfo: UploadDataType['slides'][0];
   setPresentationData: Dispatch<SetStateAction<UploadDataType>>;
   currentPageIndex: number;
   initialState: UploadDataType;
@@ -26,38 +27,57 @@ const UploadPpt = ({
     imageRef.current?.click();
   };
 
-  const onUpload: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onUpload: ChangeEventHandler<HTMLInputElement> = async (e) => {
     e.preventDefault();
     if (imageRef.current?.files) {
       const file = imageRef.current.files[0];
 
       if (file) {
-        const reader = new FileReader();
+        // const reader = new FileReader();
+        // reader.onloadend = () => {
+        //   setPresentationData((prev) => {
+        //     const shallow = [...prev.slides];
+        //     shallow[currentPageIndex] = {
+        //       ...shallow[currentPageIndex],
+        //       imageFileId: {
+        //         dataURL: reader.result as string, // 미리보기용
+        //         file, // 서버용
+        //       },
+        //     };
 
-        reader.onloadend = () => {
-          setPresentationData((prev) => {
-            const shallow = [...prev.slides];
-            shallow[currentPageIndex] = {
-              ...shallow[currentPageIndex],
-              imageFileId: {
-                dataURL: reader.result as string, // 미리보기용
-                file, // 서버용
-              },
-            };
+        //     // 추가
+        //     if (currentPageIndex === prev.slides.length - 1) {
+        //       shallow.push(initialState.slides[0]);
+        //     }
 
-            // 추가
-            if (currentPageIndex === prev.slides.length - 1) {
-              shallow.push(initialState.slides[0]);
-            }
+        //     return {
+        //       ...prev,
+        //       slides: shallow,
+        //     };
+        //   });
+        // };
 
-            return {
-              ...prev,
-              slides: shallow,
-            };
-          });
-        };
+        // reader.readAsDataURL(file);
+        const imageResponse = await clientPptApi.postImageUrl(file);
+        const { id, path } = await imageResponse.json();
+        setPresentationData((prev) => {
+          const shallow = [...prev.slides];
+          shallow[currentPageIndex] = {
+            ...shallow[currentPageIndex],
+            imageFileId: id,
+            imageFilePath: path,
+          };
 
-        reader.readAsDataURL(file);
+          // 추가
+          if (currentPageIndex === prev.slides.length - 1) {
+            shallow.push(initialState.slides[0]);
+          }
+
+          return {
+            ...prev,
+            slides: shallow,
+          };
+        });
       }
     }
   };
@@ -74,54 +94,53 @@ const UploadPpt = ({
         ref={imageRef}
       />
       <div className={styles.pptUpdateSection}>
-        {
-          //  pptInfo.file === null ||
-          pptInfo.dataURL === null ? (
-            <div className={styles.newPptSection}>
-              <PptImageSvgs>
-                <PptImageSvgs.NewPpt />
-              </PptImageSvgs>
-              <button className={styles.updateButton} onClick={onClickButton}>
-                PPT 이미지 등록하기
+        {pptInfo.imageFilePath === null ? (
+          <div className={styles.newPptSection}>
+            <PptImageSvgs>
+              <PptImageSvgs.NewPpt />
+            </PptImageSvgs>
+            <button className={styles.updateButton} onClick={onClickButton}>
+              PPT 이미지 등록하기
+            </button>
+          </div>
+        ) : (
+          <div className={styles.pptImageSection}>
+            <div className={styles.hoverSection}>
+              <Image
+                src={`http://124.49.161.33/${pptInfo.imageFilePath}`}
+                alt={`${currentPageIndex + 1}페이지 ppt 이미지`}
+                width={503}
+                height={282}
+                // fill
+                style={{ objectFit: 'contain', borderRadius: '16px' }}
+                className={styles.pptImage}
+              />
+              <button className={styles.changePptImageButton} onClick={onClickButton}>
+                이미지 추가 및 변경하기
               </button>
             </div>
-          ) : (
-            <div className={styles.pptImageSection}>
-              <div className={styles.hoverSection}>
-                <Image
-                  src={pptInfo.dataURL as string}
-                  alt="ppt image"
-                  fill
-                  style={{ objectFit: 'contain', borderRadius: '16px' }}
-                  className={styles.pptImage}
-                />
-                <button className={styles.changePptImageButton} onClick={onClickButton}>
-                  이미지 추가 및 변경하기
-                </button>
-              </div>
-              {currentPageIndex !== 0 && (
-                <button
-                  className={styles.goLeft}
-                  disabled={currentPageIndex === 0}
-                  onClick={() => changeCurrentPageIndex(currentPageIndex - 1)}
-                >
-                  <PptImageSvgs>
-                    <PptImageSvgs.GoLeft />
-                  </PptImageSvgs>
-                </button>
-              )}
-
+            {currentPageIndex !== 0 && (
               <button
-                className={styles.goRight}
-                onClick={() => changeCurrentPageIndex(currentPageIndex + 1)}
+                className={styles.goLeft}
+                disabled={currentPageIndex === 0}
+                onClick={() => changeCurrentPageIndex(currentPageIndex - 1)}
               >
                 <PptImageSvgs>
-                  <PptImageSvgs.GoRight />
+                  <PptImageSvgs.GoLeft />
                 </PptImageSvgs>
               </button>
-            </div>
-          )
-        }
+            )}
+
+            <button
+              className={styles.goRight}
+              onClick={() => changeCurrentPageIndex(currentPageIndex + 1)}
+            >
+              <PptImageSvgs>
+                <PptImageSvgs.GoRight />
+              </PptImageSvgs>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

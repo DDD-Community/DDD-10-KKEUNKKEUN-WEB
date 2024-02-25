@@ -10,29 +10,8 @@ export interface ValidtaionType {
   deadlineDate: Value;
 }
 
-// export interface PagesDataType {
-//   title: string | null;
-//   dDay: {
-//     date: Value;
-//   };
-//   time: {
-//     timer: number | null;
-//     alramTime: number | null;
-//   };
-//   scripts: {
-//     ppt: { dataURL: string | null; file: File | null };
-//     script: string | null;
-//     memo: string | null;
-//   }[];
-// }
-
-// export interface PresentInfoType {
-//   id: number | null;
-//   data: PagesDataType;
-// }
-
-// service
-export interface UploadDataType {
+// Mock
+export interface MockUploadDataType {
   id?: number;
   dday?: number;
   createdAt?: Date;
@@ -55,9 +34,29 @@ export interface UploadDataType {
   }[];
 }
 
-export interface PresentInfoType {
-  id: number | null;
-  data: PagesDataType;
+// service
+export interface UploadDataType {
+  id?: number;
+  dday?: number;
+  createdAt?: Date;
+  modifiedAt?: Date;
+  title: string | null;
+  timeLimit: {
+    hours: number | null;
+    minutes: number | null;
+  };
+  alertTime: {
+    hours: number | null;
+    minutes: number | null;
+  };
+  deadlineDate: Value;
+  slides: {
+    id?: number;
+    imageFileId: number | null;
+    imageFilePath: string | null;
+    script: string | null;
+    memo: string | null;
+  }[];
 }
 
 /** 유저 정보를 나타내는 객체

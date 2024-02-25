@@ -134,6 +134,7 @@ const InputSection = ({
     }
   };
 
+  console.log(presentationData);
   return (
     <div className={styles.container}>
       <div className={styles.leftSectionWrapper}>
@@ -146,7 +147,7 @@ const InputSection = ({
             </span>
           </p>
           <UploadPpt
-            pptInfo={presentationData.slides[currentPageIndex].imageFileId}
+            pptInfo={presentationData.slides[currentPageIndex]}
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
             changeCurrentPageIndex={changeCurrentPageIndex}

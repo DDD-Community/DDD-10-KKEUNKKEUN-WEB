@@ -128,7 +128,7 @@ const ControlButtons = ({
                           })}
                         >
                           <Image
-                            src={item.imageFileId!.dataURL as string}
+                            src={`http://124.49.161.33/${item.imageFilePath}`}
                             fill
                             alt="ppt이미지"
                             style={{ objectFit: 'contain', borderRadius: '8px' }}
@@ -156,10 +156,7 @@ const ControlButtons = ({
               <button
                 // onClick={addButton}
                 onClick={() => eachPptButtonClick(presentationData.slides.length - 1)}
-                disabled={
-                  presentationData.slides[currentPageIndex].imageFileId.dataURL === null
-                  // || presentationData.slides[currentPageIndex].imageFileId.file === null
-                }
+                disabled={presentationData.slides[currentPageIndex].imageFilePath === null}
                 className={cx('addButton', {
                   selected: currentPageIndex === presentationData.slides.length - 1,
                 })}

@@ -23,7 +23,7 @@ const EditPresentation = ({ slug }: EditPresentationProps) => {
       hours: null,
       minutes: null,
     },
-    slides: [{ imageFileId: { dataURL: null, file: null }, script: null, memo: null }],
+    slides: [{ imageFileId: null, imageFilePath: null, script: null, memo: null }],
   };
 
   const [presentationData, setPresentationData] = useState<UploadDataType>(initialState);

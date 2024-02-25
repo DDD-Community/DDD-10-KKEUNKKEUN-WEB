@@ -1,6 +1,6 @@
 // src\app\api\get\list\[id]\route.ts
 
-import { UploadDataType } from '@/types/service';
+import { MockUploadDataType } from '@/types/service';
 import { NextRequest, NextResponse } from 'next/server';
 
 // const dummyFile = new File(['dummy content'], 'hello.png', {
@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 //   lastModified: new Date('2023-11-29T10:58:23Z').getTime(),
 // });
 
-const mockPresentData: UploadDataType[] = [
+const mockPresentData: MockUploadDataType[] = [
   {
     id: 11111,
     dday: 20,
