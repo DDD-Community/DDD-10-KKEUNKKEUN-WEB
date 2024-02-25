@@ -11,7 +11,7 @@ import classNames from 'classnames/bind';
 
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
-import { UseFormGetValues, UseFormSetValue } from 'react-hook-form';
+import { FieldErrors, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { MAX_LENGTH } from '@/config/const';
 
 const cx = classNames.bind(styles);
@@ -25,6 +25,7 @@ interface ControlButtonsProps {
   setValue: UseFormSetValue<ValidtaionType>;
   watchedScriptValue: string;
   getValues: UseFormGetValues<ValidtaionType>;
+  errors: FieldErrors<ValidtaionType>;
 }
 
 const ControlButtons = ({
@@ -36,6 +37,7 @@ const ControlButtons = ({
   setValue,
   watchedScriptValue,
   getValues,
+  errors,
 }: ControlButtonsProps) => {
   // const addButton = async () => {
   //   setValue('script', getValues('script'), { shouldValidate: true });
@@ -74,11 +76,12 @@ const ControlButtons = ({
   };
 
   const handleChange = (result: DropResult) => {
-    if (!result.destination || getValues('script').length > MAX_LENGTH.SCRIPT) return;
+    if (!result.destination || errors.script || errors.memo) return;
     const to = result.destination?.index;
     const from = result.source.index;
 
-    setValue('script', getValues('script'), { shouldValidate: true });
+    // setValue('script', getValues('script'), { shouldValidate: true });
+    // setValue('memo', getValues('memo'), { shouldValidate: true });
     setPresentationData((prev) => {
       const shallow = [...prev.slides];
       const moveTarget = shallow.splice(from, 1);
@@ -92,34 +95,43 @@ const ControlButtons = ({
   };
 
   const eachPptButtonClick = (index: number) => {
+    // if (errors.script || errors.memo) return; ??
     changeCurrentPageIndex(index);
-    setValue('script', getValues('script'), { shouldValidate: true });
-    setPresentationData((prev) => {
-      const shallow = [...prev.slides];
-      shallow[currentPageIndex] = {
-        ...shallow[currentPageIndex],
-        script: getValues('script'),
-      };
-      return {
-        ...prev,
-        slides: shallow,
-      };
-    });
+    // setValue('script', getValues('script'), { shouldValidate: true });
+    // setValue('memo', getValues('memo'), { shouldValidate: true });
+    if (!errors.script && !errors.memo) {
+      setPresentationData((prev) => {
+        const shallow = [...prev.slides];
+        shallow[currentPageIndex] = {
+          ...shallow[currentPageIndex],
+          script: getValues('script'),
+          memo: getValues('memo'),
+        };
+        return {
+          ...prev,
+          slides: shallow,
+        };
+      });
+    }
   };
 
   const onStart = () => {
-    setValue('script', getValues('script'), { shouldValidate: true });
-    setPresentationData((prev) => {
-      const shallow = [...prev.slides];
-      shallow[currentPageIndex] = {
-        ...shallow[currentPageIndex],
-        script: getValues('script'),
-      };
-      return {
-        ...prev,
-        slides: shallow,
-      };
-    });
+    // setValue('script', getValues('script'), { shouldValidate: true });
+    // setValue('memo', getValues('memo'), { shouldValidate: true });
+    if (!errors.script && !errors.memo) {
+      setPresentationData((prev) => {
+        const shallow = [...prev.slides];
+        shallow[currentPageIndex] = {
+          ...shallow[currentPageIndex],
+          script: getValues('script'),
+          memo: getValues('memo'),
+        };
+        return {
+          ...prev,
+          slides: shallow,
+        };
+      });
+    }
   };
 
   return (

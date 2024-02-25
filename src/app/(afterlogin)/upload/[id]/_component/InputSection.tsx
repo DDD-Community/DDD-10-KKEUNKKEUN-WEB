@@ -13,7 +13,6 @@ import { useModalStore, useToastStore } from '@/store/modal';
 import SaveToast from '@/app/_components/_modules/SaveToast';
 import { useForm } from 'react-hook-form';
 import Required from './Required';
-import { checkValidtaion } from '../_utils/validation';
 
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
 import ModalContents from '@/app/_components/_modules/_modal-pre/ModalContents';
@@ -85,13 +84,8 @@ const InputSection = ({
     reset,
     setValue,
     getValues,
-    // watch,
     formState: { defaultValues, isSubmitting, isSubmitted, errors },
-  } = useForm<ValidtaionType>({ mode: 'onChange' });
-
-  // const watchedScriptValue = watch('script') ? watch('script') : '';
-  // const watchedMemoValue = watch('memo') ? watch('memo') : '';
-  // const watchedTitleValue = watch('title') ? watch('title') : '';
+  } = useForm<ValidtaionType>();
 
   useEffect(() => {
     const resetFormData = () => {
@@ -105,13 +99,11 @@ const InputSection = ({
     resetFormData();
   }, [presentationData, currentPageIndex]);
 
-  // console.log(erroOnEachPage);
-  // console.log(presentationData);
-
   const changeCurrentPageIndex = async (nextIndex: number) => {
     if (currentPageIndex === presentationData.slides.length - 1) {
       setCurrpentPageIndex(nextIndex);
     } else {
+      // 일반 상태 적용
       // const validateResult = checkValidtaion(presentationData, currentPageIndex);
 
       // setErroOnEachPage({
@@ -129,27 +121,18 @@ const InputSection = ({
       // )
       //   setCurrpentPageIndex(nextIndex);
 
-      // 최초에 뜨는 에러를 방지. 애초에 훅 폼이 처리 하는데 지금은
-      setErroOnEachPage({
-        memo: getValues('memo').length > MAX_LENGTH.MEMO,
-        script: {
-          minLength: getValues('script').length === 0,
-          maxLength: getValues('script').length > MAX_LENGTH.SCRIPT,
-        },
-      });
+      // 폼 데이터 사용 (watch값도 사용가능)
+      // setErroOnEachPage({
+      //   memo: getValues('memo').length > MAX_LENGTH.MEMO,
+      //   script: {
+      //     minLength: getValues('script').length === 0,
+      //     maxLength: getValues('script').length > MAX_LENGTH.SCRIPT,
+      //   },
+      // });
 
-      if (
-        !errors.script &&
-        getValues('script').length !== 0 &&
-        getValues('script').length <= MAX_LENGTH.SCRIPT &&
-        !errors.memo &&
-        getValues('memo').length <= MAX_LENGTH.MEMO
-      )
-        setCurrpentPageIndex(nextIndex);
+      if (!errors.script && !errors.memo) setCurrpentPageIndex(nextIndex);
     }
   };
-
-  console.log(errors);
 
   return (
     <div className={styles.container}>
@@ -176,6 +159,7 @@ const InputSection = ({
             changeCurrentPageIndex={changeCurrentPageIndex}
             setValue={setValue}
             getValues={getValues}
+            errors={errors}
             watchedScriptValue={'watchedScriptValue'}
           />
         </div>
@@ -190,9 +174,8 @@ const InputSection = ({
           <form
             onSubmit={handleSubmit((data) => {
               // 1. 마지막 페이지는 제외
-              // 2. 현재 watch걸어둔 제목 스크립트 메모 전부 추가해서 데이터 요청
+              // 2. 현재페이지의 script,memo를 getValue로 가져온 뒤 상태에 추가해서 post
               // 3. mutation의 onSuccess로 모달 띄우기
-              console.log(JSON.stringify(data));
               openToastWithData();
             })}
           >
@@ -205,22 +188,18 @@ const InputSection = ({
             <UploadScript
               script={presentationData.slides[currentPageIndex].script || ''}
               lastDummyPageIndex={presentationData.slides.length - 1}
-              setPresentationData={setPresentationData}
               currentPageIndex={currentPageIndex}
               register={register}
               errors={errors}
-              erroOnEachPage={erroOnEachPage}
               setValue={setValue}
-              watchedScriptValue={'watchedScriptValue'}
             />
             <UploadMemo
               memo={presentationData.slides[currentPageIndex].memo || ''}
               lastDummyPageIndex={presentationData.slides.length - 1}
-              setPresentationData={setPresentationData}
               currentPageIndex={currentPageIndex}
               register={register}
               errors={errors}
-              erroOnEachPage={erroOnEachPage}
+              setValue={setValue}
             />
             <div className={styles.line} />
 

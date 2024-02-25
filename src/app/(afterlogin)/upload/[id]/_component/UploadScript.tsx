@@ -1,25 +1,12 @@
 'use client';
 
-import {
-  ChangeEventHandler,
-  Dispatch,
-  MouseEventHandler,
-  SetStateAction,
-  forwardRef,
-  useState,
-} from 'react';
+import { ChangeEventHandler, forwardRef, useState } from 'react';
 
-import { PagesDataType, ValidtaionType } from '@/types/service';
+import { ValidtaionType } from '@/types/service';
 
 import styles from './UploadScript.module.scss';
 
-import {
-  FieldErrors,
-  RegisterOptions,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormWatch,
-} from 'react-hook-form';
+import { FieldErrors, RegisterOptions, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 import classNames from 'classnames/bind';
 import Required from './Required';
@@ -28,39 +15,17 @@ import { MAX_LENGTH, VALIDATION_MESSAGE } from '@/config/const';
 interface UploadScriptProps {
   script: string;
   currentPageIndex: number;
-  setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
   register: UseFormRegister<ValidtaionType>;
   errors: FieldErrors<ValidtaionType>;
   lastDummyPageIndex: number;
   setValue: UseFormSetValue<ValidtaionType>;
-  watchedScriptValue: string;
-  erroOnEachPage: {
-    memo: boolean;
-    script: {
-      minLength: boolean;
-      maxLength: boolean;
-    };
-  };
 }
 
 const cx = classNames.bind(styles);
 
 const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
-  (
-    {
-      script,
-      currentPageIndex,
-      setPresentationData,
-      register,
-      errors,
-      lastDummyPageIndex,
-      erroOnEachPage,
-      setValue,
-      watchedScriptValue,
-    },
-    ref,
-  ) => {
-    const [currentLength, setCurrentLength] = useState(script);
+  ({ script, currentPageIndex, register, errors, lastDummyPageIndex, setValue }, ref) => {
+    const [currentLength, setCurrentLength] = useState(script.length);
     const registerOptions: RegisterOptions =
       currentPageIndex === lastDummyPageIndex
         ? {}
@@ -72,37 +37,15 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
             },
           };
 
-    // if (watchedScriptValue.length > MAX_LENGTH.SCRIPT + 1) {
-    //   setValue('script', watchedScriptValue.slice(0, 5001), { shouldValidate: true });
-    // }
-
-    // const onStateChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    //   const value = e.target.value;
-    //   setValue('script', value, { shouldValidate: true });
-
-    //   setPresentationData((prev) => {
-    //     const shallow = [...prev.slides];
-    //     shallow[currentPageIndex] = {
-    //       ...shallow[currentPageIndex],
-    //       script: value,
-    //     };
-
-    //     return {
-    //       ...prev,
-    //       slides: shallow,
-    //     };
-    //   });
-    // };
-
-    console.log(currentLength);
     const onCurrentLengthChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
       const value = e.target.value;
-      setValue('script', value, { shouldValidate: true });
+      setValue('script', value, { shouldValidate: true }); // mode : onChange 대체
       if (value.length > MAX_LENGTH.SCRIPT) {
-        setValue('script', value.slice(0, 5001), { shouldValidate: true });
+        setValue('script', value.slice(0, MAX_LENGTH.SCRIPT + 1), { shouldValidate: true });
       }
-      setCurrentLength(value);
+      setCurrentLength(value.length);
     };
+
     return (
       <div className={styles.container}>
         <div className={styles.description}>
@@ -136,34 +79,23 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
               </small>
             )} */}
         </div>
-        <div
-          className={cx(['scriptSection', currentLength.length > MAX_LENGTH.SCRIPT && 'warning'])}
-        >
+        <div className={cx(['scriptSection', currentLength > MAX_LENGTH.SCRIPT && 'warning'])}>
           <textarea
-            maxLength={5001} // 이것도 써야 복붙해서 튀어나가는 렉이 없어짐 걸림
+            maxLength={MAX_LENGTH.SCRIPT + 1}
             id="script"
             className={styles.scriptTextarea}
             {...register('script', {
               ...registerOptions,
-              onChange: onCurrentLengthChange, // 이렇게 하면 error 객체가 잘 잡히는지는 모르겠다. 대신 반드시 setValue도 명시 해주면 괜찮은듯?
+              onChange: onCurrentLengthChange,
             })}
-            // onChange={onCurrentLengthChange} // onChange를 덮어쓰는 대신 반드시 setValue도 명시 해줘야 함. 그래도 error객체는 여전히 못 씀
-            // onChange={onStateChange}
-            // onBlur={onStateChange} // register에도 onBlur가 있지만, 현재 상태값을 변경한다는 추가 동작을 하기 위해 따로 선언
-            // onChange={onChange}
-            // value={script}
-
             placeholder="가지고 있는 대본을 이곳에 복사하여 붙여 넣어주세요."
           />
           <div
-            className={cx([
-              'lengthCount',
-              currentLength.length > MAX_LENGTH.SCRIPT && 'lengthWarning',
-            ])}
+            className={cx(['lengthCount', currentLength > MAX_LENGTH.SCRIPT && 'lengthWarning'])}
           >
             <p>
-              {/* 5002까지 찍히는 버그가 있어서 이렇게 막음 */}
-              {currentLength.length > 5001 ? 5001 : currentLength.length}/{MAX_LENGTH.SCRIPT}
+              {currentLength > MAX_LENGTH.SCRIPT + 1 ? MAX_LENGTH.SCRIPT + 1 : currentLength}/
+              {MAX_LENGTH.SCRIPT}
             </p>
           </div>
         </div>
