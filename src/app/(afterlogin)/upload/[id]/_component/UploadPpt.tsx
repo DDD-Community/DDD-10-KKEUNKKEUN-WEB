@@ -3,14 +3,14 @@
 import Image from 'next/image';
 import { ChangeEventHandler, Dispatch, SetStateAction, useRef } from 'react';
 import styles from './UploadPpt.module.scss';
-import { PagesDataType } from '@/types/service';
+import { UploadDataType } from '@/types/service';
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
 
 interface UploadPptProps {
-  pptInfo: PagesDataType['slides'][0]['imageFileId'];
-  setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
+  pptInfo: UploadDataType['slides'][0]['imageFileId'];
+  setPresentationData: Dispatch<SetStateAction<UploadDataType>>;
   currentPageIndex: number;
-  initialState: PagesDataType;
+  initialState: UploadDataType;
   changeCurrentPageIndex: (nextIndex: number) => void;
 }
 const UploadPpt = ({

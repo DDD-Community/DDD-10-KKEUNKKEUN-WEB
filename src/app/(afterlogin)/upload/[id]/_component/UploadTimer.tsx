@@ -4,15 +4,15 @@ import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef } from 'react'
 
 import Input from '@/app/_components/_elements/Input';
 
-import { PagesDataType } from '@/types/service';
+import { UploadDataType } from '@/types/service';
 
 import styles from './UploadTimer.module.scss';
 import InputFormSvgs from '../_svgs/InputFormSvgs';
 
 interface UploadTimerProps {
-  timeLimit: PagesDataType['timeLimit'];
-  alertTime: PagesDataType['alertTime'];
-  setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
+  timeLimit: UploadDataType['timeLimit'];
+  alertTime: UploadDataType['alertTime'];
+  setPresentationData: Dispatch<SetStateAction<UploadDataType>>;
 }
 
 const UploadTimer = forwardRef<HTMLInputElement, UploadTimerProps>(

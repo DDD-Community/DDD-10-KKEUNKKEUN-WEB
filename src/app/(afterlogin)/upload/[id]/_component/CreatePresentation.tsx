@@ -2,17 +2,17 @@
 
 import { useState } from 'react';
 
-import { PagesDataType } from '@/types/service';
+import { UploadDataType } from '@/types/service';
 
 import InputSection from './InputSection';
 
 const CreatePresentation = () => {
-  const initialState: PagesDataType = {
+  const initialState: UploadDataType = {
     title: null,
     deadlineDate: null,
     timeLimit: {
       hours: null,
-      minutes: null,
+      minutes: 1,
     },
     alertTime: {
       hours: null,
@@ -21,7 +21,7 @@ const CreatePresentation = () => {
     slides: [{ imageFileId: { dataURL: null, file: null }, script: null, memo: null }],
   };
 
-  const [presentationData, setPresentationData] = useState<PagesDataType>(initialState);
+  const [presentationData, setPresentationData] = useState<UploadDataType>(initialState);
   const [currentPageIndex, setCurrpentPageIndex] = useState(0);
 
   return (

@@ -2,7 +2,7 @@
 
 import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef, useState } from 'react';
 
-import { PagesDataType, ValidtaionType } from '@/types/service';
+import { ValidtaionType } from '@/types/service';
 
 import styles from './UploadTitle.module.scss';
 import { FieldErrors, RegisterOptions, UseFormRegister, UseFormSetValue } from 'react-hook-form';

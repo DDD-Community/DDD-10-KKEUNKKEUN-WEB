@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, forwardRef, useState } from 'react';
 
-import { PagesDataType, ValidtaionType, Value } from '@/types/service';
+import { UploadDataType, ValidtaionType, Value } from '@/types/service';
 
 import styles from './UploadDeadlineDate.module.scss';
 
@@ -13,8 +13,8 @@ import { formatDate } from '../_utils/date';
 import { VALIDATION_MESSAGE } from '@/config/const';
 
 interface UploadDeadlineDateProps {
-  deadlineDate: PagesDataType['deadlineDate'];
-  setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
+  deadlineDate: UploadDataType['deadlineDate'];
+  setPresentationData: Dispatch<SetStateAction<UploadDataType>>;
   register: UseFormRegister<ValidtaionType>;
   errors: FieldErrors<ValidtaionType>;
 }

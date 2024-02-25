@@ -4,7 +4,7 @@ import { Dispatch, MouseEvent, SetStateAction } from 'react';
 
 import Image from 'next/image';
 
-import { PagesDataType, ValidtaionType } from '@/types/service';
+import { UploadDataType, ValidtaionType } from '@/types/service';
 
 import styles from './ControlButtons.module.scss';
 import classNames from 'classnames/bind';
@@ -16,8 +16,8 @@ import { FieldErrors, UseFormGetValues } from 'react-hook-form';
 const cx = classNames.bind(styles);
 
 interface ControlButtonsProps {
-  presentationData: PagesDataType;
-  setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
+  presentationData: UploadDataType;
+  setPresentationData: Dispatch<SetStateAction<UploadDataType>>;
   currentPageIndex: number;
   slug?: string;
   changeCurrentPageIndex: (nextIndex: number) => void;

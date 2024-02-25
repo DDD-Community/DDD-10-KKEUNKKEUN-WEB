@@ -2,7 +2,7 @@
 
 import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef, useState } from 'react';
 
-import { PagesDataType, ValidtaionType } from '@/types/service';
+import { UploadDataType, ValidtaionType } from '@/types/service';
 
 import styles from './UploadMemo.module.scss';
 import classNames from 'classnames/bind';

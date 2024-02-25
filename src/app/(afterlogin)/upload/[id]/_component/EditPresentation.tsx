@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { PagesDataType } from '@/types/service';
+import { UploadDataType } from '@/types/service';
 
 import { useGetPresentationData } from '../_hooks/presentation';
 
@@ -12,12 +12,12 @@ interface EditPresentationProps {
   slug: string;
 }
 const EditPresentation = ({ slug }: EditPresentationProps) => {
-  const initialState: PagesDataType = {
+  const initialState: UploadDataType = {
     title: null,
     deadlineDate: null,
     timeLimit: {
       hours: null,
-      minutes: null,
+      minutes: 1,
     },
     alertTime: {
       hours: null,
@@ -26,7 +26,7 @@ const EditPresentation = ({ slug }: EditPresentationProps) => {
     slides: [{ imageFileId: { dataURL: null, file: null }, script: null, memo: null }],
   };
 
-  const [presentationData, setPresentationData] = useState<PagesDataType>(initialState);
+  const [presentationData, setPresentationData] = useState<UploadDataType>(initialState);
   const [currentPageIndex, setCurrpentPageIndex] = useState(0);
 
   const value = useGetPresentationData(slug);

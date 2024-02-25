@@ -32,7 +32,7 @@ export interface ValidtaionType {
 // }
 
 // service
-export interface PagesDataType {
+export interface UploadDataType {
   id?: number;
   dday?: number;
   createdAt?: Date;

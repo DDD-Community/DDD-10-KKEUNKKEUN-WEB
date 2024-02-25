@@ -13,8 +13,8 @@ const Navbar = async () => {
   //   cache: 'no-store',
   // });
 
-  // const res = await serverUserApi.getUserInfo();
-  // console.log(await res.json());
+  const res = await serverUserApi.getUserInfo();
+  console.log(await res.json());
 
   return (
     <nav className={styles.container}>

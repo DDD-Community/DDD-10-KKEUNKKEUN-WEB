@@ -1,5 +1,5 @@
 'use client';
-import { PagesDataType, ValidtaionType } from '@/types/service';
+import { UploadDataType, ValidtaionType } from '@/types/service';
 import styles from './InputSection.module.scss';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import UploadTitle from './UploadTitle';
@@ -19,11 +19,11 @@ import ModalContents from '@/app/_components/_modules/_modal-pre/ModalContents';
 import { MAX_LENGTH } from '@/config/const';
 
 interface InputSectionProps {
-  presentationData: PagesDataType;
-  setPresentationData: Dispatch<SetStateAction<PagesDataType>>;
+  presentationData: UploadDataType;
+  setPresentationData: Dispatch<SetStateAction<UploadDataType>>;
   currentPageIndex: number;
   setCurrpentPageIndex: Dispatch<SetStateAction<number>>;
-  initialState: PagesDataType;
+  initialState: UploadDataType;
   slug?: string | 'new';
 }
 
