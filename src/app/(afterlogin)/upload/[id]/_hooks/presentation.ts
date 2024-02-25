@@ -1,15 +1,16 @@
 import { clientPptApi } from '@/services/client/upload';
-import { MockUploadDataType } from '@/types/service';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
-export const useGetPresentationData = (slug: string) => {
-  const { data: value } = useSuspenseQuery({
+// TODO: useSuspenseQuery 사용 버그 처리
+export const useGetPresentationData = (slug: number) => {
+  const { data: value } = useQuery({
     queryKey: ['upload', slug],
     queryFn: async () => {
-      const res = await clientPptApi.getPresentData<MockUploadDataType>(slug);
+      const res = await clientPptApi.getPresentationData(slug);
 
-      return res;
+      if (res.ok) return await res.json();
     },
   });
+
   return value;
 };
