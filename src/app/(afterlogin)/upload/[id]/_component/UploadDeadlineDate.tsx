@@ -7,7 +7,7 @@ import { UploadDataType, ValidtaionType, Value } from '@/types/service';
 import styles from './UploadDeadlineDate.module.scss';
 
 import CustomCalendar from './CustomCalendar';
-import { FieldErrors, RegisterOptions, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, RegisterOptions, UseFormGetValues, UseFormRegister } from 'react-hook-form';
 import Required from './Required';
 import { formatDate } from '../_utils/date';
 import { VALIDATION_MESSAGE } from '@/config/const';
@@ -17,10 +17,12 @@ interface UploadDeadlineDateProps {
   setPresentationData: Dispatch<SetStateAction<UploadDataType>>;
   register: UseFormRegister<ValidtaionType>;
   errors: FieldErrors<ValidtaionType>;
+  currentPageIndex: number;
+  getValues: UseFormGetValues<ValidtaionType>;
 }
 
 const UploadDeadlineDate = forwardRef<HTMLInputElement, UploadDeadlineDateProps>(
-  ({ deadlineDate, setPresentationData, register, errors }, ref) => {
+  ({ deadlineDate, setPresentationData, register, errors, getValues, currentPageIndex }, ref) => {
     const registerOptions: RegisterOptions = {
       required: VALIDATION_MESSAGE.DEADLINEDATE.REQUIRED,
     };
@@ -31,10 +33,26 @@ const UploadDeadlineDate = forwardRef<HTMLInputElement, UploadDeadlineDateProps>
 
     // 리액트 캘린더 전용 업데이트 함수
     const setDate: Dispatch<SetStateAction<Value>> = (newValue) => {
-      setPresentationData((prev) => ({
-        ...prev,
-        deadlineDate: newValue instanceof Function ? newValue(prev.deadlineDate) : newValue,
-      }));
+      setPresentationData((prev) => {
+        const shallow = { ...prev };
+        shallow.title = getValues('title');
+        shallow.deadlineDate =
+          newValue instanceof Function ? newValue(prev.deadlineDate) : newValue;
+        const shallowSlides = [...shallow.slides];
+        shallowSlides[currentPageIndex] = {
+          ...shallowSlides[currentPageIndex],
+          script: getValues('script'),
+          memo: getValues('memo'),
+        };
+        return {
+          ...shallow,
+          slides: shallowSlides,
+        };
+      });
+      // setPresentationData((prev) => ({
+      //   ...prev,
+      //   deadlineDate: newValue instanceof Function ? newValue(prev.deadlineDate) : newValue,
+      // }));
     };
 
     return (

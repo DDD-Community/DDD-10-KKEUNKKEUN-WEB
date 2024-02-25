@@ -7,7 +7,6 @@
 import { ERROR_MESSAGE } from '@/config/const';
 
 export const fetch_ClientAuth = async (url: string, options: RequestInit = {}) => {
-  console.log(options);
   let response = await fetch(url, {
     credentials: 'include',
     ...options,

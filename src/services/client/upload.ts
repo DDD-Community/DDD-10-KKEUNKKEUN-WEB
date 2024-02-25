@@ -1,3 +1,4 @@
+import { UploadDataType } from '@/types/service';
 import { fetch_ClientAuth } from './fetchClient';
 
 export const clientPptApi = {
@@ -14,9 +15,16 @@ export const clientPptApi = {
     return response;
   },
 
-  // postPresentationUpload: async (data: UploadDataType) => {
-
-  // },
+  postPresentationUpload: async (data: UploadDataType) => {
+    const response = await fetch_ClientAuth(`/api/presentations`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return response;
+  },
 
   // mock
   // TODO: 백엔드 api로 변경 및 삭제 예정

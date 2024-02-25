@@ -4,26 +4,30 @@ import { ChangeEventHandler, Dispatch, SetStateAction, forwardRef } from 'react'
 
 import Input from '@/app/_components/_elements/Input';
 
-import { UploadDataType } from '@/types/service';
+import { UploadDataType, ValidtaionType } from '@/types/service';
 
 import styles from './UploadTimer.module.scss';
 import InputFormSvgs from '../_svgs/InputFormSvgs';
+import { UseFormGetValues } from 'react-hook-form';
 
 interface UploadTimerProps {
   timeLimit: UploadDataType['timeLimit'];
   alertTime: UploadDataType['alertTime'];
   setPresentationData: Dispatch<SetStateAction<UploadDataType>>;
+  currentPageIndex: number;
+  getValues: UseFormGetValues<ValidtaionType>;
 }
 
 const UploadTimer = forwardRef<HTMLInputElement, UploadTimerProps>(
-  ({ timeLimit, alertTime, setPresentationData }, ref) => {
+  ({ timeLimit, alertTime, setPresentationData, currentPageIndex, getValues }, ref) => {
     const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-      setPresentationData((prev) => {
-        let { name, value } = e.target;
-        let changeValue = Number(value);
+      let { name, value } = e.target;
+      let changeValue = Number(value);
 
-        const timeLimitShallow = { ...prev.timeLimit };
-        const alertTimeShallow = { ...prev.alertTime };
+      setPresentationData((prev) => {
+        const shallow = { ...prev };
+        const timeLimitShallow = { ...shallow.timeLimit };
+        const alertTimeShallow = { ...shallow.alertTime };
 
         if (name === 'timeLimit_hour') {
           if (changeValue > 12) changeValue = 12;
@@ -45,12 +49,54 @@ const UploadTimer = forwardRef<HTMLInputElement, UploadTimerProps>(
           alertTimeShallow['minutes'] = changeValue;
         }
 
+        shallow.title = getValues('title');
+        shallow.timeLimit = timeLimitShallow;
+        shallow.alertTime = alertTimeShallow;
+
+        const shallowSlides = [...shallow.slides];
+        shallowSlides[currentPageIndex] = {
+          ...shallowSlides[currentPageIndex],
+          script: getValues('script'),
+          memo: getValues('memo'),
+        };
         return {
-          ...prev,
-          timeLimit: timeLimitShallow,
-          alertTime: alertTimeShallow,
+          ...shallow,
+          slides: shallowSlides,
         };
       });
+      // setPresentationData((prev) => {
+      //   let { name, value } = e.target;
+      //   let changeValue = Number(value);
+
+      //   const timeLimitShallow = { ...prev.timeLimit };
+      //   const alertTimeShallow = { ...prev.alertTime };
+
+      //   if (name === 'timeLimit_hour') {
+      //     if (changeValue > 12) changeValue = 12;
+      //     timeLimitShallow['hours'] = changeValue;
+      //   }
+
+      //   if (name === 'timeLimit_minute') {
+      //     if (changeValue > 59) changeValue = 59;
+      //     timeLimitShallow['minutes'] = changeValue;
+      //   }
+
+      //   if (name === 'alertTime_hour') {
+      //     if (changeValue > 12) changeValue = 12;
+      //     alertTimeShallow['hours'] = changeValue;
+      //   }
+
+      //   if (name === 'alertTime_minute') {
+      //     if (changeValue > 59) changeValue = 59;
+      //     alertTimeShallow['minutes'] = changeValue;
+      //   }
+
+      //   return {
+      //     ...prev,
+      //     timeLimit: timeLimitShallow,
+      //     alertTime: alertTimeShallow,
+      //   };
+      // });
     };
 
     return (

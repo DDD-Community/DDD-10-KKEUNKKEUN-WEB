@@ -17,6 +17,7 @@ import Required from './Required';
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
 import ModalContents from '@/app/_components/_modules/_modal-pre/ModalContents';
 import { MAX_LENGTH } from '@/config/const';
+import { clientPptApi } from '@/services/client/upload';
 
 interface InputSectionProps {
   presentationData: UploadDataType;
@@ -130,11 +131,19 @@ const InputSection = ({
       //   },
       // });
 
-      if (!errors.script && !errors.memo) setCurrpentPageIndex(nextIndex);
+      if (
+        errors.script ||
+        errors.memo ||
+        getValues('script').length > MAX_LENGTH.SCRIPT ||
+        getValues('script').length === 0 ||
+        getValues('memo').length > MAX_LENGTH.MEMO
+      )
+        return;
+
+      setCurrpentPageIndex(nextIndex);
     }
   };
 
-  console.log(presentationData);
   return (
     <div className={styles.container}>
       <div className={styles.leftSectionWrapper}>
@@ -171,9 +180,24 @@ const InputSection = ({
             </PptImageSvgs>
           </button>
           <form
-            onSubmit={handleSubmit((data) => {
-              // 1. 마지막 페이지는 제외
-              // 2. 현재페이지의 title,script,memo를 getValue로 가져온 뒤 상태에 추가해서 post
+            onSubmit={handleSubmit(async (data) => {
+              // 1. 마지막 더미 페이지 제외
+              const shallow = [...presentationData.slides.slice(0, -1)];
+
+              // 2. 현재페이지의 title,script,memo를 getValue로 가져온 뒤 상태에 추가
+              shallow[currentPageIndex] = {
+                ...shallow[currentPageIndex],
+                script: getValues('script'),
+                memo: getValues('memo'),
+              };
+              const result = {
+                ...presentationData,
+                slides: shallow,
+              };
+
+              const response = await clientPptApi.postPresentationUpload(result);
+
+              // 3. post
               // 3. mutation의 onSuccess로 모달 띄우기
               openToastWithData();
             })}
@@ -207,11 +231,15 @@ const InputSection = ({
               setPresentationData={setPresentationData}
               register={register}
               errors={errors}
+              currentPageIndex={currentPageIndex}
+              getValues={getValues}
             />
             <UploadTimer
               timeLimit={presentationData.timeLimit}
               alertTime={presentationData.alertTime}
               setPresentationData={setPresentationData}
+              currentPageIndex={currentPageIndex}
+              getValues={getValues}
             />
             <div className={styles.saveButtons}>
               <button

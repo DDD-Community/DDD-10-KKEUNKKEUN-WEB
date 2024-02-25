@@ -110,7 +110,7 @@ const UploadPpt = ({
                 src={`http://124.49.161.33/${pptInfo.imageFilePath}`}
                 alt={`${currentPageIndex + 1}페이지 ppt 이미지`}
                 width={503}
-                height={282}
+                height={283}
                 // fill
                 style={{ objectFit: 'contain', borderRadius: '16px' }}
                 className={styles.pptImage}

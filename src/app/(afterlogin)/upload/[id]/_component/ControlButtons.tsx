@@ -12,6 +12,7 @@ import classNames from 'classnames/bind';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
 import { FieldErrors, UseFormGetValues } from 'react-hook-form';
+import { MAX_LENGTH } from '@/config/const';
 
 const cx = classNames.bind(styles);
 
@@ -54,7 +55,16 @@ const ControlButtons = ({
   };
 
   const handleChange = (result: DropResult) => {
-    if (!result.destination || errors.script || errors.memo) return;
+    if (
+      !result.destination ||
+      errors.script ||
+      errors.memo ||
+      getValues('script').length > MAX_LENGTH.SCRIPT ||
+      getValues('script').length === 0 ||
+      getValues('memo').length > MAX_LENGTH.MEMO
+    )
+      return;
+
     const to = result.destination?.index;
     const from = result.source.index;
 
@@ -73,33 +83,51 @@ const ControlButtons = ({
   const eachPptButtonClick = (index: number) => {
     changeCurrentPageIndex(index);
 
-    if (errors.script || errors.memo) return;
+    if (
+      errors.script ||
+      errors.memo ||
+      getValues('script').length > MAX_LENGTH.SCRIPT ||
+      getValues('script').length === 0 ||
+      getValues('memo').length > MAX_LENGTH.MEMO
+    )
+      return;
     setPresentationData((prev) => {
-      const shallow = [...prev.slides];
-      shallow[currentPageIndex] = {
-        ...shallow[currentPageIndex],
+      const shallow = { ...prev };
+      shallow.title = getValues('title');
+      const shallowSlides = [...shallow.slides];
+      shallowSlides[currentPageIndex] = {
+        ...shallowSlides[currentPageIndex],
         script: getValues('script'),
         memo: getValues('memo'),
       };
       return {
-        ...prev,
-        slides: shallow,
+        ...shallow,
+        slides: shallowSlides,
       };
     });
   };
 
   const onStart = () => {
-    if (errors.script || errors.memo) return;
+    if (
+      errors.script ||
+      errors.memo ||
+      getValues('script').length > MAX_LENGTH.SCRIPT ||
+      getValues('script').length === 0 ||
+      getValues('memo').length > MAX_LENGTH.MEMO
+    )
+      return;
     setPresentationData((prev) => {
-      const shallow = [...prev.slides];
-      shallow[currentPageIndex] = {
-        ...shallow[currentPageIndex],
+      const shallow = { ...prev };
+      shallow.title = getValues('title');
+      const shallowSlides = [...shallow.slides];
+      shallowSlides[currentPageIndex] = {
+        ...shallowSlides[currentPageIndex],
         script: getValues('script'),
         memo: getValues('memo'),
       };
       return {
-        ...prev,
-        slides: shallow,
+        ...shallow,
+        slides: shallowSlides,
       };
     });
   };
