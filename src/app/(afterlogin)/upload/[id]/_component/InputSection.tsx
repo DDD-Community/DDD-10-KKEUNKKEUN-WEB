@@ -157,10 +157,8 @@ const InputSection = ({
             setPresentationData={setPresentationData}
             currentPageIndex={currentPageIndex}
             changeCurrentPageIndex={changeCurrentPageIndex}
-            setValue={setValue}
             getValues={getValues}
             errors={errors}
-            watchedScriptValue={'watchedScriptValue'}
           />
         </div>
       </div>
@@ -174,14 +172,14 @@ const InputSection = ({
           <form
             onSubmit={handleSubmit((data) => {
               // 1. 마지막 페이지는 제외
-              // 2. 현재페이지의 script,memo를 getValue로 가져온 뒤 상태에 추가해서 post
+              // 2. 현재페이지의 title,script,memo를 getValue로 가져온 뒤 상태에 추가해서 post
               // 3. mutation의 onSuccess로 모달 띄우기
               openToastWithData();
             })}
           >
             <UploadTitle
               title={presentationData.title || ''}
-              setPresentationData={setPresentationData}
+              setValue={setValue}
               register={register}
               errors={errors}
             />
