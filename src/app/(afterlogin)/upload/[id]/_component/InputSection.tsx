@@ -1,7 +1,10 @@
 'use client';
-import { UploadDataType, ValidtaionType } from '@/types/service';
-import styles from './InputSection.module.scss';
+
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { usePatchPresentationData, usePostPresentationData } from '../_hooks/presentation';
+import useToggle from '@/app/_hooks/useToggle';
+
 import UploadTitle from './UploadTitle';
 import UploadScript from './UploadScript';
 import UploadMemo from './UploadMemo';
@@ -9,15 +12,16 @@ import UploadDeadlineDate from './UploadDeadlineDate';
 import UploadTimer from './UploadTimer';
 import UploadPpt from './UploadPpt';
 import ControlButtons from './ControlButtons';
-import { useModalStore } from '@/store/modal';
-
-import { useForm } from 'react-hook-form';
 import Required from './Required';
-
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
-import ModalContents from '@/app/_components/_modules/_modal-pre/ModalContents';
+import Confirm from '@/app/_components/_modules/_modal/Confirm';
+
+import styles from './InputSection.module.scss';
+
+import { UploadDataType, ValidtaionType } from '@/types/service';
 import { MAX_LENGTH } from '@/config/const';
-import { usePatchPresentationData, usePostPresentationData } from '../_hooks/presentation';
+
+import { useRouter } from 'next/navigation';
 
 interface InputSectionProps {
   presentationData: UploadDataType;
@@ -43,6 +47,7 @@ const InputSection = ({
   initialState,
   slug,
 }: InputSectionProps) => {
+  const router = useRouter();
   const [errorForMovePage, setErrorForMovePage] = useState<ErroForMovePageType>({
     script: {
       minLength: false,
@@ -53,27 +58,7 @@ const InputSection = ({
 
   const postMutation = usePostPresentationData();
   const patchMutation = usePatchPresentationData(slug!);
-
-  const { openModal } = useModalStore();
-
-  const openModalWithData = () =>
-    openModal({
-      content: (
-        <ModalContents>
-          <ModalContents.ExitUpload />
-        </ModalContents>
-      ),
-      onCancelButton: (
-        <ModalContents>
-          <ModalContents.ExitUploadCancel />
-        </ModalContents>
-      ),
-      onSubmitButton: (
-        <ModalContents>
-          <ModalContents.ExitUploadSubmit />
-        </ModalContents>
-      ),
-    });
+  const confirm = useToggle();
 
   const {
     register,
@@ -152,14 +137,30 @@ const InputSection = ({
       </div>
       <div className={styles.rightSectionWrapper}>
         <div className={styles.rightSection}>
-          <button className={styles.cancelButton} onClick={openModalWithData}>
+          <button
+            className={styles.cancelButton}
+            onClick={() => {
+              confirm.onOpen();
+            }}
+          >
             <PptImageSvgs>
               <PptImageSvgs.X />
             </PptImageSvgs>
           </button>
+          <Confirm
+            context={confirm}
+            title="발표 자료 추가를 중단하시겠어요?"
+            message="임시저장하지 않은 자료는 복원할 수 없어요."
+            okayText="중단하기"
+            cancelText="계속 작성하기"
+            onOkayClick={() => {
+              router.push('/home');
+              confirm.onClose();
+            }}
+          />
           <form
             onSubmit={handleSubmit(async (data) => {
-              // 1. 마지막 더미 페이지 제외
+              // 1. 마지막 더미 페이지 제거
               const shallow = { ...presentationData };
               const shallowSlides = [...presentationData.slides.slice(0, -1)];
 
