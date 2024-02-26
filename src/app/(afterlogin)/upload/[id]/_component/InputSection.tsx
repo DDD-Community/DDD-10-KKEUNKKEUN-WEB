@@ -9,16 +9,15 @@ import UploadDeadlineDate from './UploadDeadlineDate';
 import UploadTimer from './UploadTimer';
 import UploadPpt from './UploadPpt';
 import ControlButtons from './ControlButtons';
-import { useModalStore, useToastStore } from '@/store/modal';
-import SaveToast from '@/app/_components/_modules/SaveToast';
+import { useModalStore } from '@/store/modal';
+
 import { useForm } from 'react-hook-form';
 import Required from './Required';
 
 import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
 import ModalContents from '@/app/_components/_modules/_modal-pre/ModalContents';
 import { MAX_LENGTH } from '@/config/const';
-import { clientPptApi } from '@/services/client/upload';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { usePatchPresentationData, usePostPresentationData } from '../_hooks/presentation';
 
 interface InputSectionProps {
   presentationData: UploadDataType;
@@ -52,12 +51,8 @@ const InputSection = ({
     memo: false,
   });
 
-  const { openToast } = useToastStore();
-
-  const openToastWithData = () =>
-    openToast({
-      content: <SaveToast />,
-    });
+  const postMutation = usePostPresentationData();
+  const patchMutation = usePatchPresentationData(slug!);
 
   const { openModal } = useModalStore();
 
@@ -79,28 +74,6 @@ const InputSection = ({
         </ModalContents>
       ),
     });
-
-  const queryClient = useQueryClient();
-
-  const postMutation = useMutation({
-    mutationKey: ['upload', 'new'],
-    mutationFn: async (result: UploadDataType) => {
-      return await clientPptApi.postPresentationUpload(result);
-    },
-    onSuccess: async (response) => {
-      openToastWithData();
-    },
-  });
-
-  const patchMutation = useMutation({
-    mutationKey: ['upload', slug],
-    mutationFn: async ({ result, slug }: { result: UploadDataType; slug: number }) => {
-      return await clientPptApi.patchPresentationData(slug, result);
-    },
-    onSuccess: async (response) => {
-      openToastWithData();
-    },
-  });
 
   const {
     register,
@@ -202,21 +175,15 @@ const InputSection = ({
                 slides: shallowSlides,
               };
 
-              // 3. post , patch
+              // 3. post, patch + mutation의 onSuccess로 모달 띄우기
               if (slug === 'new') {
                 // post
                 postMutation.mutate(result);
-
-                // const postResponse = await clientPptApi.postPresentationUpload(result);
               }
               if (slug !== 'new') {
                 // patch
-                patchMutation.mutate({ result, slug: slug as number });
-                // const patchResponse = await clientPptApi.patchPresentationData(slug!, result);
+                patchMutation.mutate(result);
               }
-
-              // 3. mutation의 onSuccess로 모달 띄우기
-              // openToastWithData();
             })}
           >
             <UploadTitle
