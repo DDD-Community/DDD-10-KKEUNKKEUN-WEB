@@ -35,6 +35,9 @@ export const usePostPresentationData = () => {
     onSuccess: async (response) => {
       openToastWithData();
     },
+    onError: () => {
+      alert('문제가 발생했습니다.');
+    },
   });
 
   return postMutation;
@@ -57,6 +60,9 @@ export const usePatchPresentationData = (slug: number | 'new') => {
     },
     onSuccess: async (response) => {
       openToastWithData();
+    },
+    onError: () => {
+      alert('문제가 발생했습니다.');
     },
   });
 
