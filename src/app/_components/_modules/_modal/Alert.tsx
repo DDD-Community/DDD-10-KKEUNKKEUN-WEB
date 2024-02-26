@@ -11,7 +11,7 @@ interface Props {
   /** 본문 */
   message: string;
   /** 하단 버튼 텍스트 */
-  actionText: string;
+  actionText?: string;
   /** 하단 버튼 비활성화 여부 (true: 비활성화, false: 활성화 / 기본값: true) */
   isDisabled?: boolean;
   /** 하단 버튼 이벤트 (기본 값 : 창 닫음) */
@@ -22,7 +22,7 @@ const Alert = ({
   context,
   title,
   message,
-  actionText,
+  actionText = '확인',
   isDisabled = false,
   onActionClick,
 }: Props) => {
