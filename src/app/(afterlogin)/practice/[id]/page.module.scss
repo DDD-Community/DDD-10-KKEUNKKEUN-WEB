@@ -2,6 +2,7 @@
 @import '@/styles/mixins';
 
 .container {
+  position: relative;
   width: 100%;
   padding: 60px;
 }
@@ -81,4 +82,10 @@
     border: 1px solid $gray-1;
     border-radius: 15px;
   }
+}
+
+.bubble {
+  position: absolute;
+  top: 8px;
+  left: 30%;
 }

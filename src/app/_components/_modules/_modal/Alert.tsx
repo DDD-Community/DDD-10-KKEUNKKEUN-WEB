@@ -28,10 +28,8 @@ const Alert = ({
 }: Props) => {
   const handleOnClick = () => {
     if (typeof onActionClick === 'function') {
-      console.log('here');
       onActionClick();
     } else {
-      console.log('there???');
       context.onClose();
     }
   };

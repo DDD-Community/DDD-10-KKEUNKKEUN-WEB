@@ -6,11 +6,12 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import useRecorder from '../_hooks/useRecorder';
 import Alert from '@/app/_components/_modules/_modal/Alert';
+import SpeechBubble from '@/app/_components/_modules/SpeechBubble';
 
 export default function Page({ params }: { params: { id: string } }) {
   const modal = useToggle();
+  const bubble = useToggle();
   const recorder = useRecorder();
-  const [isPermitted, setIsPermitted] = useState(false);
 
   const cx = classNames.bind(styles);
 
@@ -23,23 +24,12 @@ export default function Page({ params }: { params: { id: string } }) {
   const handleModalAction = () => {
     recorder.startRecording();
     modal.onClose();
+    bubble.onOpen();
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.contents}>
-        <button
-          onClick={() => {
-            recorder.stopRecording();
-          }}
-        >
-          click
-        </button>
-        {recorder.audioBlob && (
-          <audio controls>
-            <source src={URL.createObjectURL(recorder.audioBlob)} type="audio/mp3" />
-          </audio>
-        )}
         <section className={styles.presentation__box}>
           <article className={styles.presentation}>img...</article>
           <section className={styles.helper__box}>
@@ -83,6 +73,13 @@ export default function Page({ params }: { params: { id: string } }) {
         isDisabled={!recorder.isPermitted}
         onActionClick={handleModalAction}
       />
+      <div className={styles.bubble}>
+        <SpeechBubble
+          context={bubble}
+          message="녹음 버튼을 누르면 일시정지할 수 있어요."
+          hasCloseBtn
+        />
+      </div>
     </div>
   );
 }
