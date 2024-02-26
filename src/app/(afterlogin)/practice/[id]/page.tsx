@@ -1,14 +1,45 @@
 'use client';
 
+import useToggle from '@/app/_hooks/useToggle';
 import styles from './page.module.scss';
 import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
+import useRecorder from '../_hooks/useRecorder';
+import Alert from '@/app/_components/_modules/_modal/Alert';
 
 export default function Page({ params }: { params: { id: string } }) {
+  const modal = useToggle();
+  const recorder = useRecorder();
+  const [isPermitted, setIsPermitted] = useState(false);
+
   const cx = classNames.bind(styles);
+
+  useEffect(() => {
+    modal.onOpen();
+    recorder.getMedia();
+    recorder.processPermission();
+  }, []);
+
+  const handleModalAction = () => {
+    recorder.startRecording();
+    modal.onClose();
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.contents}>
+        <button
+          onClick={() => {
+            recorder.stopRecording();
+          }}
+        >
+          click
+        </button>
+        {recorder.audioBlob && (
+          <audio controls>
+            <source src={URL.createObjectURL(recorder.audioBlob)} type="audio/mp3" />
+          </audio>
+        )}
         <section className={styles.presentation__box}>
           <article className={styles.presentation}>img...</article>
           <section className={styles.helper__box}>
@@ -44,6 +75,14 @@ export default function Page({ params }: { params: { id: string } }) {
           </p>
         </article>
       </div>
+      <Alert
+        context={modal}
+        title="마이크 권한을 허용해주세요."
+        message="권한을 허용해야 발표 연습을 하실 수 있어요!"
+        actionText="연습 시작하기"
+        isDisabled={!recorder.isPermitted}
+        onActionClick={handleModalAction}
+      />
     </div>
   );
 }
