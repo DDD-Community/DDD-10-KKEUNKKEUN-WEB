@@ -19,12 +19,22 @@ interface UploadScriptProps {
   errors: FieldErrors<ValidtaionType>;
   lastDummyPageIndex: number;
   setValue: UseFormSetValue<ValidtaionType>;
+  errorForMovePage: {
+    memo: boolean;
+    script: {
+      minLength: boolean;
+      maxLength: boolean;
+    };
+  };
 }
 
 const cx = classNames.bind(styles);
 
 const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
-  ({ script, currentPageIndex, register, errors, lastDummyPageIndex, setValue }, ref) => {
+  (
+    { script, currentPageIndex, register, errors, lastDummyPageIndex, setValue, errorForMovePage },
+    ref,
+  ) => {
     const [currentLength, setCurrentLength] = useState(script.length);
     const registerOptions: RegisterOptions =
       currentPageIndex === lastDummyPageIndex
@@ -53,31 +63,22 @@ const UploadScript = forwardRef<HTMLInputElement, UploadScriptProps>(
             {currentPageIndex + 1} 페이지 대본 붙여넣기 <Required />
           </label>
 
-          {/* 제출용 훅 폼 유효성 검사 */}
+          {/* 훅 폼 유효성 검사 */}
           {errors.script && (
             <small role="alert" style={{ color: '#DE3428' }}>
               {errors.script.message as string}
             </small>
           )}
 
-          {/* 작성 시(+페이지 이동 시) 유효성 검사 - 최소 길이*/}
-          {/* {!errors.script &&
-            currentLength.length === 0 &&
-            erroOnEachPage.script.minLength &&
+          {/* 최초 페이지 생성 후, 페이지 이동 유효성 검사 - 최소 길이 */}
+          {!errors.script &&
+            currentLength === 0 &&
+            errorForMovePage.script.minLength &&
             lastDummyPageIndex !== currentPageIndex && (
               <small role="alert" style={{ color: '#DE3428' }}>
                 {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
               </small>
-            )} */}
-          {/* 작성 시(+페이지 이동 시) 유효성 검사 - 최대 길이*/}
-          {/* {!errors.script &&
-            currentLength.length > MAX_LENGTH.SCRIPT &&
-            erroOnEachPage.script.maxLength &&
-            lastDummyPageIndex !== currentPageIndex && (
-              <small role="alert" style={{ color: '#DE3428' }}>
-                {VALIDATION_MESSAGE.SCRIPT.REQUIRED}
-              </small>
-            )} */}
+            )}
         </div>
         <div className={cx(['scriptSection', currentLength > MAX_LENGTH.SCRIPT && 'warning'])}>
           <textarea

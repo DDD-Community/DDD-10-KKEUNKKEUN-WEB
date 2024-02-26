@@ -44,6 +44,6 @@ export const fetch_ClientAuth = async (url: string, options: RequestInit = {}) =
     }
   }
 
-  // 성공 or 에러를 그대로 반환
+  // 기존 요청에 대한 성공or에러를 그대로 반환
   return response;
 };

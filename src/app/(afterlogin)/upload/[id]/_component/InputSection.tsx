@@ -18,6 +18,7 @@ import PptImageSvgs from '@/app/(afterlogin)/upload/[id]/_svgs/PptImgSvgs';
 import ModalContents from '@/app/_components/_modules/_modal-pre/ModalContents';
 import { MAX_LENGTH } from '@/config/const';
 import { clientPptApi } from '@/services/client/upload';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface InputSectionProps {
   presentationData: UploadDataType;
@@ -28,7 +29,7 @@ interface InputSectionProps {
   slug?: number | 'new';
 }
 
-interface ErroOnEachPageType {
+interface ErroForMovePageType {
   memo: boolean;
   script: {
     minLength: boolean;
@@ -43,7 +44,7 @@ const InputSection = ({
   initialState,
   slug,
 }: InputSectionProps) => {
-  const [erroOnEachPage, setErroOnEachPage] = useState<ErroOnEachPageType>({
+  const [errorForMovePage, setErrorForMovePage] = useState<ErroForMovePageType>({
     script: {
       minLength: false,
       maxLength: false,
@@ -79,6 +80,28 @@ const InputSection = ({
       ),
     });
 
+  const queryClient = useQueryClient();
+
+  const postMutation = useMutation({
+    mutationKey: ['upload', 'new'],
+    mutationFn: async (result: UploadDataType) => {
+      return await clientPptApi.postPresentationUpload(result);
+    },
+    onSuccess: async (response) => {
+      openToastWithData();
+    },
+  });
+
+  const patchMutation = useMutation({
+    mutationKey: ['upload', slug],
+    mutationFn: async ({ result, slug }: { result: UploadDataType; slug: number }) => {
+      return await clientPptApi.patchPresentationData(slug, result);
+    },
+    onSuccess: async (response) => {
+      openToastWithData();
+    },
+  });
+
   const {
     register,
     handleSubmit,
@@ -104,32 +127,14 @@ const InputSection = ({
     if (currentPageIndex === presentationData.slides.length - 1) {
       setCurrpentPageIndex(nextIndex);
     } else {
-      // 일반 상태 적용
-      // const validateResult = checkValidtaion(presentationData, currentPageIndex);
-
-      // setErroOnEachPage({
-      //   memo: validateResult.memo,
-      //   script: {
-      //     minLength: validateResult.script.minLength,
-      //     maxLength: validateResult.script.maxLength,
-      //   },
-      // });
-
-      // if (
-      //   !validateResult.memo &&
-      //   !validateResult.script.maxLength &&
-      //   !validateResult.script.minLength
-      // )
-      //   setCurrpentPageIndex(nextIndex);
-
-      // 폼 데이터 사용 (watch값도 사용가능)
-      // setErroOnEachPage({
-      //   memo: getValues('memo').length > MAX_LENGTH.MEMO,
-      //   script: {
-      //     minLength: getValues('script').length === 0,
-      //     maxLength: getValues('script').length > MAX_LENGTH.SCRIPT,
-      //   },
-      // });
+      // 폼 데이터 사용 (watch도 가능)
+      setErrorForMovePage({
+        memo: getValues('memo').length > MAX_LENGTH.MEMO,
+        script: {
+          minLength: getValues('script').length === 0,
+          maxLength: getValues('script').length > MAX_LENGTH.SCRIPT,
+        },
+      });
 
       if (
         errors.script ||
@@ -199,14 +204,19 @@ const InputSection = ({
 
               // 3. post , patch
               if (slug === 'new') {
-                const postResponse = await clientPptApi.postPresentationUpload(result);
+                // post
+                postMutation.mutate(result);
+
+                // const postResponse = await clientPptApi.postPresentationUpload(result);
               }
               if (slug !== 'new') {
-                const patchResponse = await clientPptApi.patchPresentationData(slug!, result);
+                // patch
+                patchMutation.mutate({ result, slug: slug as number });
+                // const patchResponse = await clientPptApi.patchPresentationData(slug!, result);
               }
 
               // 3. mutation의 onSuccess로 모달 띄우기
-              openToastWithData();
+              // openToastWithData();
             })}
           >
             <UploadTitle
@@ -222,6 +232,7 @@ const InputSection = ({
               register={register}
               errors={errors}
               setValue={setValue}
+              errorForMovePage={errorForMovePage}
             />
             <UploadMemo
               memo={presentationData.slides[currentPageIndex].memo || ''}

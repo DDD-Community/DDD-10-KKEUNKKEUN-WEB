@@ -1,5 +1,6 @@
 import { UploadDataType } from '@/types/service';
 import { fetch_ClientAuth } from './fetchClient';
+import { ERROR_MESSAGE } from '@/config/const';
 
 export const clientPptApi = {
   postImageUrl: async (file: File) => {
@@ -43,6 +44,8 @@ export const clientPptApi = {
       body: JSON.stringify(data),
     });
 
+    // mutation의 onError
+    if (response.status === 401) throw new Error(ERROR_MESSAGE.AUTH.EXPIRE);
     return response;
   },
 
