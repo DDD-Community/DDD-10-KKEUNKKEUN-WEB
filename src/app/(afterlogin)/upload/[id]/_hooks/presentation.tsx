@@ -3,6 +3,7 @@ import { clientPptApi } from '@/services/client/upload';
 import { useToastStore } from '@/store/modal';
 import { UploadDataType } from '@/types/service';
 import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 // TODO: useSuspenseQuery 사용 버그 처리
 export const useGetPresentationData = (slug: number) => {
@@ -19,6 +20,7 @@ export const useGetPresentationData = (slug: number) => {
 };
 
 export const usePostPresentationData = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const { openToast } = useToastStore();
@@ -33,10 +35,12 @@ export const usePostPresentationData = () => {
       return await clientPptApi.postPresentationUpload(result);
     },
     onSuccess: async (response) => {
+      const { presentationId } = await response.json();
+      router.push(`/setting/${presentationId}`);
       openToastWithData();
     },
     onError: () => {
-      alert('문제가 발생했습니다.');
+      alert('저장하는 도중 문제가 발생했습니다.');
     },
   });
 
@@ -44,6 +48,7 @@ export const usePostPresentationData = () => {
 };
 
 export const usePatchPresentationData = (slug: number | 'new') => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const { openToast } = useToastStore();
@@ -59,10 +64,12 @@ export const usePatchPresentationData = (slug: number | 'new') => {
       return await clientPptApi.patchPresentationData(slug as number, result);
     },
     onSuccess: async (response) => {
+      const { presentationId } = await response.json();
+      router.push(`/setting/${presentationId}`);
       openToastWithData();
     },
     onError: () => {
-      alert('문제가 발생했습니다.');
+      alert('저장하는 도중 문제가 발생했습니다.');
     },
   });
 
