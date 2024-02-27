@@ -22,6 +22,7 @@ const SettingProcess = () => {
   const slug = Number(pathName.split('/').pop());
 
   const { data }: { data?: SettingDataType } = useGetPrefetchSettingData(slug);
+  console.log(data);
 
   const [currentStep, setCurrentStep] = useState<ProcessStepType>(0);
   const [selectedValue, setSelectedValue] = useState<ContentType>({

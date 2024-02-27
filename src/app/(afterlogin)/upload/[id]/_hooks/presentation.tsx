@@ -19,7 +19,7 @@ export const useGetPresentationData = (slug: number) => {
   return value;
 };
 
-export const usePostPresentationData = () => {
+export const usePostPresentationData = (submitAction: 'save' | 'start') => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -36,8 +36,8 @@ export const usePostPresentationData = () => {
     },
     onSuccess: async (response) => {
       const { presentationId } = await response.json();
-      router.push(`/setting/${presentationId}`);
-      openToastWithData();
+      if (submitAction === 'start') router.push(`/setting/${presentationId}`);
+      if (submitAction === 'save') openToastWithData();
     },
     onError: () => {
       alert('저장하는 도중 문제가 발생했습니다.');
@@ -47,7 +47,7 @@ export const usePostPresentationData = () => {
   return postMutation;
 };
 
-export const usePatchPresentationData = (slug: number | 'new') => {
+export const usePatchPresentationData = (submitAction: 'save' | 'start', slug: number | 'new') => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -65,8 +65,8 @@ export const usePatchPresentationData = (slug: number | 'new') => {
     },
     onSuccess: async (response) => {
       const { presentationId } = await response.json();
-      router.push(`/setting/${presentationId}`);
-      openToastWithData();
+      if (submitAction === 'start') router.push(`/setting/${presentationId}`);
+      if (submitAction === 'save') openToastWithData();
     },
     onError: () => {
       alert('저장하는 도중 문제가 발생했습니다.');
