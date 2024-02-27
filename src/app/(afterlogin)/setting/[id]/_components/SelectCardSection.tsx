@@ -4,29 +4,40 @@ import { Dispatch, SetStateAction } from 'react';
 import Card from './Card';
 import styles from './SelectCardSection.module.scss';
 import { ContentType } from './SettingProcess';
+import { SettingDataType, SlidesSettingType } from '@/types/service';
 interface SelectCardSectionProps {
-  current: number;
-  setSelectedValue: Dispatch<SetStateAction<ContentType>>;
-  selectedValue: ContentType;
+  totalInfo: SettingDataType;
+  value: SlidesSettingType;
+  currentStep: number;
+  onChangePracticeMode: (practiceMode: SlidesSettingType['practiceMode']) => void;
+  onChangeSlide: (
+    index: number,
+    memorizationSentences: {
+      offset: SlidesSettingType['slides'][0]['memorizationSentences'][0]['offset'];
+      length: SlidesSettingType['slides'][0]['memorizationSentences'][0]['length'];
+    }[],
+  ) => void;
 }
 const SelectCardSection = ({
-  current,
-  setSelectedValue,
-  selectedValue,
+  totalInfo,
+  currentStep,
+  onChangePracticeMode,
+  onChangeSlide,
+  value,
 }: SelectCardSectionProps) => {
-  const setMode = (newValue: ContentType['mode']) => {
-    setSelectedValue((prev) => ({
-      ...prev,
-      mode: newValue,
-    }));
-  };
+  // const setMode = (newValue: ContentType['mode']) => {
+  //   setSelectedValue((prev) => ({
+  //     ...prev,
+  //     mode: newValue,
+  //   }));
+  // };
 
-  const setDevice = (newValue: ContentType['device']) => {
-    setSelectedValue((prev) => ({
-      ...prev,
-      device: newValue,
-    }));
-  };
+  // const setDevice = (newValue: ContentType['device']) => {
+  //   setSelectedValue((prev) => ({
+  //     ...prev,
+  //     device: newValue,
+  //   }));
+  // };
 
   const firstStepCardInfo = [
     {
@@ -65,9 +76,9 @@ const SelectCardSection = ({
 
   return (
     <div className={styles.container}>
-      {current === 0 && (
+      {currentStep === 0 && (
         <>
-          <Card
+          {/* <Card
             title={firstStepCardInfo[0].title}
             content={firstStepCardInfo[0].content}
             setMode={() => setMode('all')}
@@ -78,12 +89,12 @@ const SelectCardSection = ({
             content={firstStepCardInfo[1].content}
             setMode={() => setMode('memorise')}
             selected={selectedValue.mode === 'memorise'}
-          />
+          /> */}
         </>
       )}
-      {current === 2 && (
+      {currentStep === 2 && (
         <>
-          <Card
+          {/* <Card
             title={thirdStepCardInfo[0].title}
             content={thirdStepCardInfo[0].content}
             setDevice={() => setDevice('desktop')}
@@ -94,7 +105,7 @@ const SelectCardSection = ({
             content={thirdStepCardInfo[1].content}
             setDevice={() => setDevice('both')}
             selected={selectedValue.device === 'both'}
-          />
+          /> */}
         </>
       )}
     </div>

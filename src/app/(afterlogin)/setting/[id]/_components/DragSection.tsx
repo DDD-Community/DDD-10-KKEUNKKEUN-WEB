@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import Editor from '@draft-js-plugins/editor';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
@@ -12,6 +12,21 @@ import '@draft-js-plugins/inline-toolbar/lib/plugin.css';
 
 import HighlightButton from './HighlightButton';
 import RemoveButton from './RemoveButton';
+import { SlidesSettingType } from '@/types/service';
+
+interface DragSectionProps {
+  value: SlidesSettingType;
+  currentPage: number;
+  currentStep: number;
+  onChangePracticeMode: (practiceMode: SlidesSettingType['practiceMode']) => void;
+  onChangeSlide: (
+    index: number,
+    memorizationSentences: {
+      offset: SlidesSettingType['slides'][0]['memorizationSentences'][0]['offset'];
+      length: SlidesSettingType['slides'][0]['memorizationSentences'][0]['length'];
+    }[],
+  ) => void;
+}
 
 // 인라인 스타일 적용 옵션
 const styleMap = {
@@ -19,7 +34,16 @@ const styleMap = {
     backgroundColor: '#FF2E7B',
   },
 };
-const DragSection = () => {
+const DragSection = ({
+  value,
+  currentPage,
+  currentStep,
+  onChangePracticeMode,
+  onChangeSlide,
+}: DragSectionProps) => {
+  // console.log(value);
+
+  const isFirstRender = useRef(true); // 첫 렌더링을 추적하는 ref
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
   const [plugins, InlineToolbar] = useMemo(() => {
     const inlineToolbarPlugin = createInlineToolbarPlugin();
@@ -27,13 +51,16 @@ const DragSection = () => {
   }, []);
 
   useEffect(() => {
-    const raw = localStorage.getItem('my-draft');
+    // const raw = localStorage.getItem('my-draft');
+    const raw = localStorage.getItem('draftData');
+    // console.log(raw);
     if (raw) {
       const contentState = convertFromRaw(JSON.parse(raw));
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(newEditorState);
+      isFirstRender.current = false;
     }
-  }, []);
+  }, [currentPage]);
 
   const saveContent = () => {
     // 인라인 스타일 적용된 데이터
@@ -50,8 +77,20 @@ const DragSection = () => {
     // console.log(html);
     // console.log(raw);
 
-    localStorage.setItem('my-draft', JSON.stringify(raw, null, 2));
+    const infoForValue = raw.blocks[0].inlineStyleRanges.map((i) => {
+      return { offset: i.offset, length: i.length };
+    });
+
+    // localStorage.setItem('my-draft', JSON.stringify(raw, null, 2));
+    onChangeSlide(currentPage, infoForValue);
+    localStorage.setItem('draftData', JSON.stringify(raw, null, 2));
   };
+
+  const onEditorChange = (newEditorState: EditorState) => {
+    setEditorState(newEditorState);
+    if (!isFirstRender.current) saveContent(); // 최초 렌더링때는 동작x
+  };
+
   return (
     <div className="container">
       <div className="contentSection">
@@ -59,7 +98,7 @@ const DragSection = () => {
 
         <Editor
           editorState={editorState}
-          onChange={setEditorState}
+          onChange={onEditorChange}
           placeholder="여기에 입력하십시요..."
           customStyleMap={styleMap} // 커스텀 스타일 맵 적용
           plugins={plugins}
