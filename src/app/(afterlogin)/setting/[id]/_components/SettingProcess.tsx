@@ -47,8 +47,10 @@ const SettingProcess = () => {
     if (currentStep === 2) {
       patchMutation.mutate();
     }
-    if (currentStep === 0 && settingInfo.practiceMode === 'SHOW') setCurrentStep(2);
-    else setCurrentStep((prev) => (prev + 1) as ProcessStepType);
+    if (currentStep === 0 && settingInfo.practiceMode === 'SHOW') {
+      setCurrentStep(2);
+    }
+    if (currentStep !== 2) setCurrentStep((prev) => (prev + 1) as ProcessStepType);
   };
 
   return (
