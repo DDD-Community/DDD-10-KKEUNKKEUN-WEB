@@ -6,43 +6,20 @@ import styles from './SelectCardSection.module.scss';
 
 import { SettingDataType, SlidesSettingType } from '@/types/service';
 interface SelectCardSectionProps {
-  totalInfo: SettingDataType;
   settingInfo: SlidesSettingType;
   currentStep: number;
   onChangePracticeMode: (practiceMode: SlidesSettingType['practiceMode']) => void;
-  onChangeSlide: (
-    index: number,
-    memorizationSentences: {
-      offset: SlidesSettingType['slides'][0]['memorizationSentences'][0]['offset'];
-      length: SlidesSettingType['slides'][0]['memorizationSentences'][0]['length'];
-    }[],
-  ) => void;
+
   setSelectedDevice: Dispatch<SetStateAction<'DESKTOP' | 'BOTH'>>;
   selectedDevice: 'DESKTOP' | 'BOTH';
 }
 const SelectCardSection = ({
-  totalInfo,
   currentStep,
   onChangePracticeMode,
-  onChangeSlide,
   settingInfo,
   setSelectedDevice,
   selectedDevice,
 }: SelectCardSectionProps) => {
-  // const setMode = (newValue: ContentType['mode']) => {
-  //   setSelectedValue((prev) => ({
-  //     ...prev,
-  //     mode: newValue,
-  //   }));
-  // };
-
-  // const setDevice = (newValue: ContentType['device']) => {
-  //   setSelectedValue((prev) => ({
-  //     ...prev,
-  //     device: newValue,
-  //   }));
-  // };
-
   const firstStepCardInfo = [
     {
       image: 'image',

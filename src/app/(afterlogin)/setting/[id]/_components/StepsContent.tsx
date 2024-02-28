@@ -37,17 +37,13 @@ const StepsContent = ({
         <SelectSentenceSection
           totalInfo={totalInfo}
           settingInfo={settingInfo}
-          currentStep={currentStep}
-          onChangePracticeMode={onChangePracticeMode}
           onChangeSlide={onChangeSlide}
         />
       ) : (
         <SelectCardSection
-          totalInfo={totalInfo}
           settingInfo={settingInfo}
           currentStep={currentStep}
           onChangePracticeMode={onChangePracticeMode}
-          onChangeSlide={onChangeSlide}
           setSelectedDevice={setSelectedDevice}
           selectedDevice={selectedDevice}
         />

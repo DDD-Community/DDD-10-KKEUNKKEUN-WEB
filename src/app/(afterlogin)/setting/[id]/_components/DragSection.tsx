@@ -15,10 +15,7 @@ import RemoveButton from './RemoveButton';
 import { SlidesSettingType } from '@/types/service';
 
 interface DragSectionProps {
-  settingInfo: SlidesSettingType;
   currentPage: number;
-  currentStep: number;
-  onChangePracticeMode: (practiceMode: SlidesSettingType['practiceMode']) => void;
   onChangeSlide: (
     index: number,
     memorizationSentences: {
@@ -34,15 +31,7 @@ const styleMap = {
     backgroundColor: '#FF2E7B',
   },
 };
-const DragSection = ({
-  settingInfo,
-  currentPage,
-  currentStep,
-  onChangePracticeMode,
-  onChangeSlide,
-}: DragSectionProps) => {
-  // console.log(settingInfo);
-
+const DragSection = ({ currentPage, onChangeSlide }: DragSectionProps) => {
   const isFirstRender = useRef(true); // 첫 렌더링을 추적하는 ref
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
   const [plugins, InlineToolbar] = useMemo(() => {
@@ -51,9 +40,8 @@ const DragSection = ({
   }, []);
 
   useEffect(() => {
-    // const raw = localStorage.getItem('my-draft');
     const raw = localStorage.getItem('draftData');
-    // console.log(raw);
+
     if (raw) {
       const contentState = convertFromRaw(JSON.parse(raw));
       const newEditorState = EditorState.createWithContent(contentState);
@@ -81,7 +69,6 @@ const DragSection = ({
       return { offset: i.offset, length: i.length };
     });
 
-    // localStorage.setItem('my-draft', JSON.stringify(raw, null, 2));
     onChangeSlide(currentPage, infoForValue);
     localStorage.setItem('draftData', JSON.stringify(raw, null, 2));
   };

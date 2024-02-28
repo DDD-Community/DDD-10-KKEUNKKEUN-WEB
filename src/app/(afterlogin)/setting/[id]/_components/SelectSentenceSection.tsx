@@ -8,8 +8,7 @@ import Image from 'next/image';
 interface SelectSentenceSectionProps {
   totalInfo: SettingDataType;
   settingInfo: SlidesSettingType;
-  currentStep: number;
-  onChangePracticeMode: (practiceMode: SlidesSettingType['practiceMode']) => void;
+
   onChangeSlide: (
     index: number,
     memorizationSentences: {
@@ -21,8 +20,6 @@ interface SelectSentenceSectionProps {
 
 const SelectSentenceSection = ({
   totalInfo,
-  currentStep,
-  onChangePracticeMode,
   onChangeSlide,
   settingInfo,
 }: SelectSentenceSectionProps) => {
@@ -50,8 +47,6 @@ const SelectSentenceSection = ({
     ],
     entityMap: {},
   };
-
-  // console.log(draftData);
 
   localStorage.setItem('draftData', JSON.stringify(draftData, null, 2));
 
@@ -84,13 +79,7 @@ const SelectSentenceSection = ({
           </button>
         </div>
       </div>
-      <DragSection
-        settingInfo={settingInfo}
-        currentStep={currentStep}
-        currentPage={currentPage}
-        onChangePracticeMode={onChangePracticeMode}
-        onChangeSlide={onChangeSlide}
-      />
+      <DragSection currentPage={currentPage} onChangeSlide={onChangeSlide} />
     </div>
   );
 };
