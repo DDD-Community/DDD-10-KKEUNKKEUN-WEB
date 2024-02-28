@@ -16,7 +16,7 @@ import { useState } from 'react';
 export const useSettingInfo = (settingValue: SlidesSettingType) => {
   const [draft, setDraft] = useState<Partial<SlidesSettingType>>({});
 
-  const value = {
+  const settingInfo = {
     ...settingValue,
     ...draft,
     slides:
@@ -49,5 +49,5 @@ export const useSettingInfo = (settingValue: SlidesSettingType) => {
   };
   const onReset = () => setDraft({});
 
-  return { value, onChangePracticeMode, onChangeSlide, onReset };
+  return { settingInfo, onChangePracticeMode, onChangeSlide, onReset };
 };

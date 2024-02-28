@@ -10,7 +10,7 @@ import { SettingDataType, SlidesSettingType } from '@/types/service';
 
 interface StepsContentProps {
   totalInfo: SettingDataType;
-  value: SlidesSettingType;
+  settingInfo: SlidesSettingType;
   currentStep: number;
   onChangePracticeMode: (practiceMode: SlidesSettingType['practiceMode']) => void;
   onChangeSlide: (
@@ -20,20 +20,24 @@ interface StepsContentProps {
       length: SlidesSettingType['slides'][0]['memorizationSentences'][0]['length'];
     }[],
   ) => void;
+  setSelectedDevice: Dispatch<SetStateAction<'both' | 'desktop'>>;
+  selectedDevice: 'both' | 'desktop';
 }
 const StepsContent = ({
   totalInfo,
   currentStep,
   onChangePracticeMode,
   onChangeSlide,
-  value,
+  settingInfo,
+  setSelectedDevice,
+  selectedDevice,
 }: StepsContentProps) => {
   return (
     <div className={styles.container}>
       {currentStep === 1 ? (
         <SelectSentenceSection
           totalInfo={totalInfo}
-          value={value}
+          settingInfo={settingInfo}
           currentStep={currentStep}
           onChangePracticeMode={onChangePracticeMode}
           onChangeSlide={onChangeSlide}
@@ -41,10 +45,12 @@ const StepsContent = ({
       ) : (
         <SelectCardSection
           totalInfo={totalInfo}
-          value={value}
+          settingInfo={settingInfo}
           currentStep={currentStep}
           onChangePracticeMode={onChangePracticeMode}
           onChangeSlide={onChangeSlide}
+          setSelectedDevice={setSelectedDevice}
+          selectedDevice={selectedDevice}
         />
       )}
     </div>

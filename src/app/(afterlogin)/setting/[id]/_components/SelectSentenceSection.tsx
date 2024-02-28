@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 interface SelectSentenceSectionProps {
   totalInfo: SettingDataType;
-  value: SlidesSettingType;
+  settingInfo: SlidesSettingType;
   currentStep: number;
   onChangePracticeMode: (practiceMode: SlidesSettingType['practiceMode']) => void;
   onChangeSlide: (
@@ -24,7 +24,7 @@ const SelectSentenceSection = ({
   currentStep,
   onChangePracticeMode,
   onChangeSlide,
-  value,
+  settingInfo,
 }: SelectSentenceSectionProps) => {
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -37,7 +37,7 @@ const SelectSentenceSection = ({
         type: 'unstyled',
         depth: 0,
         inlineStyleRanges: [
-          ...value.slides[currentPage].memorizationSentences.map((i) => {
+          ...settingInfo.slides[currentPage].memorizationSentences.map((i) => {
             return {
               ...i, // offest, length
               style: 'PINK', // 인라인 스타일 정보 추가
@@ -85,7 +85,7 @@ const SelectSentenceSection = ({
         </div>
       </div>
       <DragSection
-        value={value}
+        settingInfo={settingInfo}
         currentStep={currentStep}
         currentPage={currentPage}
         onChangePracticeMode={onChangePracticeMode}

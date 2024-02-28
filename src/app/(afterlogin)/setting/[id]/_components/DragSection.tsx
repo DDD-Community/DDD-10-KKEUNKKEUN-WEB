@@ -15,7 +15,7 @@ import RemoveButton from './RemoveButton';
 import { SlidesSettingType } from '@/types/service';
 
 interface DragSectionProps {
-  value: SlidesSettingType;
+  settingInfo: SlidesSettingType;
   currentPage: number;
   currentStep: number;
   onChangePracticeMode: (practiceMode: SlidesSettingType['practiceMode']) => void;
@@ -35,13 +35,13 @@ const styleMap = {
   },
 };
 const DragSection = ({
-  value,
+  settingInfo,
   currentPage,
   currentStep,
   onChangePracticeMode,
   onChangeSlide,
 }: DragSectionProps) => {
-  // console.log(value);
+  // console.log(settingInfo);
 
   const isFirstRender = useRef(true); // 첫 렌더링을 추적하는 ref
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());

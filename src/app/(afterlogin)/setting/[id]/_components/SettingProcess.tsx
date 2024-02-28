@@ -54,8 +54,9 @@ const SettingProcess = () => {
   const pathName = usePathname();
   const slug = Number(pathName.split('/').pop());
 
+  const [selectedDevice, setSelectedDevice] = useState<'desktop' | 'both'>('desktop');
   const { data: totalInfo } = useGetPrefetchSettingData(slug);
-  const settingValues: SlidesSettingType = totalInfo
+  const defaultSettingValues: SlidesSettingType = totalInfo
     ? {
         practiceMode: totalInfo.practiceMode,
         slides: totalInfo.slides.map((slide) => {
@@ -69,30 +70,33 @@ const SettingProcess = () => {
       }
     : initialValue;
 
-  const { value, onChangePracticeMode, onChangeSlide, onReset } = useSettingInfo(settingValues);
-  // console.log(value);
-  // console.log(totalInfo);
+  const { settingInfo, onChangePracticeMode, onChangeSlide, onReset } =
+    useSettingInfo(defaultSettingValues);
+  // console.log(settingInfo);
 
   const [currentStep, setCurrentStep] = useState<ProcessStepType>(0);
 
   const onNextStep = () => {
-    if (currentStep === 2) return;
-    // if (currentStep === 0 && value.practiceMode === 'SHOW') setCurrentStep(2);
+    if (currentStep === 2) {
+    }
+    if (currentStep === 0 && settingInfo.practiceMode === 'SHOW') setCurrentStep(2);
     else setCurrentStep((prev) => (prev + 1) as ProcessStepType);
   };
 
   return (
     <div className={styles.container}>
-      {totalInfo && value && (
+      {totalInfo && settingInfo && (
         <>
           <StepsBar currentStep={currentStep} />
           <StepsDescription currentStep={currentStep} />
           <StepsContent
             totalInfo={totalInfo}
-            value={value}
+            settingInfo={settingInfo}
             currentStep={currentStep}
             onChangePracticeMode={onChangePracticeMode}
             onChangeSlide={onChangeSlide}
+            setSelectedDevice={setSelectedDevice}
+            selectedDevice={selectedDevice}
           />
 
           <button className={styles.confirmButton} onClick={onNextStep}>
