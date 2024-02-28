@@ -1,6 +1,8 @@
 'use client';
 
 import { Modifier, EditorState } from 'draft-js';
+import PenIcon from './_svgs/PenIcon';
+import styles from './ToolbarButtons.module.scss';
 
 const HighlightButton = ({ getEditorState, setEditorState }: any) => {
   const applyHighlight = (color: any) => {
@@ -31,8 +33,10 @@ const HighlightButton = ({ getEditorState, setEditorState }: any) => {
         e.preventDefault();
         applyHighlight('PINK');
       }}
+      className={styles.toolbarButton}
     >
-      하이라이트
+      <PenIcon />
+      형광펜
     </button>
   );
 };

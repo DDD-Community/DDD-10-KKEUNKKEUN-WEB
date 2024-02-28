@@ -81,7 +81,7 @@ const DragSection = ({ currentPage, onChangeSlide }: DragSectionProps) => {
   return (
     <div className="container">
       <div className="contentSection">
-        <button onClick={saveContent}>저장</button>
+        {/* <button onClick={saveContent}>저장</button> */}
 
         <Editor
           editorState={editorState}
@@ -92,10 +92,10 @@ const DragSection = ({ currentPage, onChangeSlide }: DragSectionProps) => {
         />
         <InlineToolbar>
           {(externalProps) => (
-            <>
+            <div className="toolbar">
               <HighlightButton {...externalProps} />
               <RemoveButton {...externalProps} />
-            </>
+            </div>
           )}
         </InlineToolbar>
       </div>
