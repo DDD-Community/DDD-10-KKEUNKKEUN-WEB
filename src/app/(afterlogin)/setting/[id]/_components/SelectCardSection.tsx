@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import Card from './Card';
 import styles from './SelectCardSection.module.scss';
-import { ContentType } from './SettingProcess';
+
 import { SettingDataType, SlidesSettingType } from '@/types/service';
 interface SelectCardSectionProps {
   totalInfo: SettingDataType;
@@ -17,8 +17,8 @@ interface SelectCardSectionProps {
       length: SlidesSettingType['slides'][0]['memorizationSentences'][0]['length'];
     }[],
   ) => void;
-  setSelectedDevice: Dispatch<SetStateAction<'both' | 'desktop'>>;
-  selectedDevice: 'both' | 'desktop';
+  setSelectedDevice: Dispatch<SetStateAction<'DESKTOP' | 'BOTH'>>;
+  selectedDevice: 'DESKTOP' | 'BOTH';
 }
 const SelectCardSection = ({
   totalInfo,
@@ -101,14 +101,14 @@ const SelectCardSection = ({
           <Card
             title={thirdStepCardInfo[0].title}
             content={thirdStepCardInfo[0].content}
-            setDevice={() => setSelectedDevice('desktop')}
-            selected={selectedDevice === 'desktop'}
+            setDevice={() => setSelectedDevice('DESKTOP')}
+            selected={selectedDevice === 'DESKTOP'}
           />
           <Card
             title={thirdStepCardInfo[1].title}
             content={thirdStepCardInfo[1].content}
-            setDevice={() => setSelectedDevice('both')}
-            selected={selectedDevice === 'both'}
+            setDevice={() => setSelectedDevice('BOTH')}
+            selected={selectedDevice === 'BOTH'}
           />
         </>
       )}

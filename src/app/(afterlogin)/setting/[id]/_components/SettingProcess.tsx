@@ -5,56 +5,22 @@ import styles from './SettingProcess.module.scss';
 import StepsBar from './StepsBar';
 import StepsDescription from './StepsDescription';
 import StepsContent from './StepsContent';
-import { SettingDataType, SlidesSettingType } from '@/types/service';
-import { useGetPrefetchSettingData } from '../_hooks/settingInfo';
+import { SlidesSettingType } from '@/types/service';
+import {
+  initialValue,
+  useGetPrefetchSettingData,
+  usePatchSettingInfo,
+} from '../_hooks/settingInfo';
 import { usePathname } from 'next/navigation';
 import { useSettingInfo } from '../_hooks/draft';
 
 type ProcessStepType = 0 | 1 | 2;
 
-export interface ContentType {
-  mode: 'all' | 'memorise' | null;
-  sentence: unknown | null;
-  device: 'desktop' | 'both' | null;
-}
-
-const initialValue: SettingDataType = {
-  presentationId: 0,
-  title: '',
-  timeLimit: {
-    hours: null,
-    minutes: null,
-  },
-  alertTime: {
-    hours: null,
-    minutes: null,
-  },
-  practiceMode: 'SHOW',
-  activateNextSlideModal: false,
-  slides: [
-    {
-      id: 0,
-      imageFilePath: '',
-      script: '',
-      memo: '',
-      memorizationSentences: [
-        {
-          offset: 0,
-          end: 0,
-          length: 0,
-          text: '',
-        },
-      ],
-    },
-  ],
-  createdAt: new Date(),
-  modifiedAt: new Date(),
-};
 const SettingProcess = () => {
   const pathName = usePathname();
   const slug = Number(pathName.split('/').pop());
 
-  const [selectedDevice, setSelectedDevice] = useState<'desktop' | 'both'>('desktop');
+  const [selectedDevice, setSelectedDevice] = useState<'DESKTOP' | 'BOTH'>('DESKTOP');
   const { data: totalInfo } = useGetPrefetchSettingData(slug);
   const defaultSettingValues: SlidesSettingType = totalInfo
     ? {
@@ -72,12 +38,14 @@ const SettingProcess = () => {
 
   const { settingInfo, onChangePracticeMode, onChangeSlide, onReset } =
     useSettingInfo(defaultSettingValues);
-  // console.log(settingInfo);
+
+  const patchMutation = usePatchSettingInfo(settingInfo, totalInfo!.presentationId, selectedDevice);
 
   const [currentStep, setCurrentStep] = useState<ProcessStepType>(0);
 
   const onNextStep = () => {
     if (currentStep === 2) {
+      patchMutation.mutate();
     }
     if (currentStep === 0 && settingInfo.practiceMode === 'SHOW') setCurrentStep(2);
     else setCurrentStep((prev) => (prev + 1) as ProcessStepType);

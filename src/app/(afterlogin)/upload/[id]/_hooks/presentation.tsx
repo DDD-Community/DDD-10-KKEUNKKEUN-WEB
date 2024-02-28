@@ -68,8 +68,8 @@ export const usePatchPresentationData = (submitAction: 'save' | 'start', slug: n
       if (submitAction === 'start') router.push(`/setting/${presentationId}`);
       if (submitAction === 'save') openToastWithData();
     },
-    onError: () => {
-      alert('저장하는 도중 문제가 발생했습니다.');
+    onError: (error) => {
+      alert(error.message);
     },
   });
 

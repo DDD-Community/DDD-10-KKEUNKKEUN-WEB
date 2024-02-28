@@ -1,8 +1,9 @@
 import { clientSettingApi } from '@/services/client/setting';
-import { SettingDataType } from '@/types/service';
-import { useQuery } from '@tanstack/react-query';
+import { SettingDataType, SlidesSettingType } from '@/types/service';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
-const initialValue: SettingDataType = {
+export const initialValue: SettingDataType = {
   presentationId: 0,
   title: '',
   timeLimit: {
@@ -47,6 +48,29 @@ export const useGetPrefetchSettingData = (slug: number) => {
         if (e instanceof Error) alert(e.message);
         return initialValue;
       }
+    },
+  });
+  return response;
+};
+
+export const usePatchSettingInfo = (
+  settingInfo: SlidesSettingType,
+  presentationId: number,
+  device: 'DESKTOP' | 'BOTH',
+) => {
+  const router = useRouter();
+  const response = useMutation({
+    mutationKey: ['setting', presentationId],
+    mutationFn: async () => {
+      return await clientSettingApi.patchSettingInfo(settingInfo, presentationId);
+    },
+    onSuccess: async (result) => {
+      router.push(
+        `/practice/${presentationId}?mode=${device}&practiceMode=${settingInfo.practiceMode}`,
+      );
+    },
+    onError: (error) => {
+      alert(error.message);
     },
   });
   return response;
