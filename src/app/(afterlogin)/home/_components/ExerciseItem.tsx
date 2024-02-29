@@ -18,14 +18,14 @@ interface Props {
 }
 
 const ExerciseItem = ({ presentation }: Props) => {
-  const route = useRouter();
+  const router = useRouter();
   const flyout = useToggle();
   const modal = useToggle();
 
   const { mutate } = useDeletePresentation(presentation.id);
 
   const handleModify = () => {
-    route.push(`/upload/${presentation.id}`);
+    router.push(`/upload/${presentation.id}`);
     flyout.onClose();
   };
 
@@ -34,10 +34,8 @@ const ExerciseItem = ({ presentation }: Props) => {
     modal.onOpen();
   };
 
-  const deleteItem = (id: number) => {
-    // TODO: 실제 API 연동 필요한 부분
+  const deleteItem = () => {
     mutate();
-    console.log('delete: ', id);
   };
 
   return (
@@ -78,7 +76,12 @@ const ExerciseItem = ({ presentation }: Props) => {
             <ExerciseInfo presentation={presentation} />
           </div>
           <div className={styles.action__box}>
-            <button className={styles.action}>연습하기</button>
+            <button
+              className={styles.action}
+              onClick={() => router.push(`/setting/${presentation.id}`)}
+            >
+              연습하기
+            </button>
           </div>
         </div>
       </article>
@@ -90,7 +93,7 @@ const ExerciseItem = ({ presentation }: Props) => {
         okayText="삭제하기"
         cancelText="취소"
         onOkayClick={() => {
-          deleteItem(presentation.id);
+          deleteItem();
         }}
       />
     </>

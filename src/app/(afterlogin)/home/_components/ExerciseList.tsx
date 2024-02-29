@@ -7,8 +7,10 @@ import { clientHomeApi } from '@/services/client/home';
 import { useInView } from 'react-intersection-observer';
 import { Fragment, useEffect } from 'react';
 import { PresentationListType } from '@/types/service';
+import { useRouter } from 'next/navigation';
 
 const ExerciseList = () => {
+  const router = useRouter();
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['home', 'list'],
     queryFn: async ({ pageParam = 0 }) => {
@@ -57,13 +59,18 @@ const ExerciseList = () => {
             </Fragment>
           );
         })}
-        <button className={styles.exercise__new}>
+        <button
+          className={styles.exercise__new}
+          onClick={() => {
+            router.push(`/upload/new`);
+          }}
+        >
           <PlusIcon />
           <span>새 발표 추가하기</span>
         </button>
       </ul>
 
-      <div ref={ref} style={{ height: '20px' }} />
+      <div ref={ref} style={{ height: '30px' }} />
     </section>
   );
 };
