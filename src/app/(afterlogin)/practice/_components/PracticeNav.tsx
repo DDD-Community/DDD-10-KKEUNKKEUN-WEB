@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 
 import LogoIcon from '@/app/_svgs/LogoIcon';
 import RecordOnIcon from '../_svgs/RecordOnIcon';
-import CloseIconWhite from '../../../_svgs/CloseIconWhite';
+import CloseIcon from '../../../_svgs/CloseIcon';
 
 import styles from './PracticeNav.module.scss';
 
@@ -24,7 +24,7 @@ const PracticeNav = () => {
         <div className={cx(['contents', 'contents--right'])}>
           <button className={cx('action--next')}>다음 페이지</button>
           <button className={cx('action--close')}>
-            <CloseIconWhite />
+            <CloseIcon color="white" />
           </button>
         </div>
       </div>
