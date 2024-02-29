@@ -2,14 +2,17 @@ import { fetch_ClientAuth } from './fetchClient';
 
 export const clientHomeApi = {
   getPresentationList: async ({ pageParam }: { pageParam?: number }) => {
-    console.log(pageParam);
     const response = await fetch_ClientAuth(`/api/presentations?page=${pageParam}&size=6`, {
       method: 'GET',
       cache: 'no-store',
     });
 
-    if (response.ok) return response;
-    throw new Error('데이터를 불러오는 도중 문제가 발생했습니다');
+    if (!response.ok) {
+      const errorBody = await response.json();
+      throw new Error(errorBody.message || '데이터를 불러오는 도중 문제가 발생 했습니다');
+    }
+
+    return response;
   },
 
   getLatestPresentation: async () => {
@@ -21,7 +24,29 @@ export const clientHomeApi = {
       },
     });
 
-    if (response.ok) return response;
-    throw new Error('데이터를 불러오는 도중 문제가 발생했습니다');
+    if (!response.ok) {
+      const errorBody = await response.json();
+      throw new Error(errorBody.message || '데이터를 불러오는 도중 문제가 발생 했습니다');
+    }
+
+    return response;
+  },
+
+  deletePresentationList: async (presentationIds: { presentationIds: number[] }) => {
+    const response = await fetch_ClientAuth(`/api/presentations`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+      body: JSON.stringify(presentationIds),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json();
+      throw new Error(errorBody.message || '데이터를 삭제하는 도중 문제가 발생 했습니다');
+    }
+
+    return response;
   },
 };

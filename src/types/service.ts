@@ -239,7 +239,7 @@ export interface PresentationListType {
     content: [
       {
         id: number;
-        title: '반갑습니다.';
+        title: string;
         dday: number;
         timeLimit: {
           hours: number;

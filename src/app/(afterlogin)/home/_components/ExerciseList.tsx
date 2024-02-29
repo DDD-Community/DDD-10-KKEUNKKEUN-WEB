@@ -49,10 +49,9 @@ const ExerciseList = () => {
         {data?.pages.map((eachPage: PresentationListType, index) => {
           return (
             <Fragment key={index}>
-              {Array.from({ length: eachPage.page.content.length }, (_, i) => i).map((v, index) => (
+              {eachPage.page.content.map((presentation, index) => (
                 <li className={styles.exercise} key={index}>
-                  {/* TODO: 실제 id 값으로 변경 */}
-                  <ExerciseItem id={v} />
+                  <ExerciseItem presentation={presentation} />
                 </li>
               ))}
             </Fragment>
