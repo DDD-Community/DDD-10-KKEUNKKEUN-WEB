@@ -1,3 +1,5 @@
+'use client';
+
 import FlyoutMenu from '@/app/_components/_modules/FlyoutMenu';
 import styles from './ExerciseItem.module.scss';
 import ExerciseInfo from './_elements/ExerciseInfo';
