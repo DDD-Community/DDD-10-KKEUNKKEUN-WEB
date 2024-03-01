@@ -47,6 +47,11 @@ export interface UserInfoType {
   nickName: string;
   socialProvider: string;
 }
+
+/** 세션 id 조회 res */
+export interface SessionId {
+  sessionId: string;
+}
 // #endregion
 
 // #region Presentation API
