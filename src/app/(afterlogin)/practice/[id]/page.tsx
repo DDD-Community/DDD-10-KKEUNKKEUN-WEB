@@ -16,6 +16,7 @@ import Confirm from '@/app/_components/_modules/_modal/Confirm';
 import NextSlideConfirm from '../_components/NextSlideConfirm';
 import { useRouter } from 'next/navigation';
 import { FileService } from '@/services/client/file';
+import { FieldValues, useForm } from 'react-hook-form';
 
 export default function Page({ params }: { params: { id: string } }) {
   const id = Number(params.id);
@@ -23,9 +24,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   // #region state
   const [slideSeq, setSlideSeq] = useState(0); // INFO: 슬라이드 순서
-  const [slideIdx, setSlideIdx] = useState(0); // INFO: 슬라이드 아이디
-  const [isActiveModal, setIsActiveModal] = useState<boolean>(true);
-  const [memos, setMemos] = useState<string[]>([]);
+  const [saveMemo, setSaveMemo] = useState('');
 
   const alert = useToggle(); // INFO: 마이크 권한 체크
   const confirm = useToggle(); // INFO: 연습 중단 확인
@@ -55,18 +54,14 @@ export default function Page({ params }: { params: { id: string } }) {
   /** 마지막 슬라이드 여부 */
   const isLastSlide = data?.slides.length === slideSeq + 1;
 
-  /** 모달 노출 여부 */
-  if (data && data.activateNextSlideModal !== isActiveModal) {
-    setIsActiveModal(data.activateNextSlideModal);
-  }
+  /** 모달 노출 여부
+   * TODO: 이렇게 해도 로직상 문제 없는지는 확인 필요
+   */
+  const isActiveModal = data?.activateNextSlideModal ?? true;
 
   /** 슬라이드 아이디 */
-  if (data && data.slides[slideSeq].id !== slideIdx) {
-    setSlideIdx(data.slides[slideSeq].id);
-
-    const memo = data.slides[slideSeq].memo ?? '';
-    setMemos([...memos, memo]);
-  }
+  const slideIdx = data?.slides[slideSeq].id ?? 0;
+  const curMemo = data?.slides[slideSeq].memo ?? '';
   // #endregion
 
   // #region mutation
@@ -96,6 +91,10 @@ export default function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     recorder.getMedia();
     recorder.startRecording();
+
+    reset({
+      content: curMemo,
+    });
   }, [slideSeq]);
 
   useEffect(() => {
@@ -127,7 +126,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
     if (checked) {
       modalMutation.mutate();
-      setIsActiveModal(false);
+      // setIsActiveModal(false);
     }
   };
 
@@ -141,11 +140,6 @@ export default function Page({ params }: { params: { id: string } }) {
   const onCloseClick = () => {
     confirm.onOpen();
   };
-
-  /** 메모 작성 이벤트 */
-  const onMemoChange = () => {
-    recorder.pauseRecording();
-  };
   // #endregion
 
   // #region function
@@ -157,6 +151,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
     recorder.stopRecording();
 
+    setSaveMemo(content);
     setSlideSeq((prev) => prev + 1);
   };
 
@@ -167,7 +162,6 @@ export default function Page({ params }: { params: { id: string } }) {
 
   /** 발표 연습 저장 함수 (슬라이드 별) */
   const savePractice = async () => {
-    // 오디오 파일 업로드 해서
     const audioBlob = recorder.audioBlob;
 
     if (audioBlob?.size) {
@@ -177,7 +171,7 @@ export default function Page({ params }: { params: { id: string } }) {
       );
 
       const param = {
-        memo: memos[slideSeq],
+        memo: saveMemo,
         audioFileId: id,
       };
 
@@ -189,8 +183,26 @@ export default function Page({ params }: { params: { id: string } }) {
   };
   // #endregion
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    watch,
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      content: data?.slides[slideSeq].memo ?? '',
+    },
+  });
+  const content = watch('content') || '';
+
+  const onSubmit = (data: FieldValues) => {
+    console.log('??????', data);
+  };
+
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <PracticeNav
         title={title}
         isRecording={recorder.isRecording}
@@ -238,9 +250,17 @@ export default function Page({ params }: { params: { id: string } }) {
               <article className={styles.helper}>
                 <h4 className={styles.helper__title}>
                   메모하기
-                  <span className={cx(['helper__subtitle', 'helper__subtitle--memo'])}>
-                    발표 연습 중 메모를 입력하면 녹음이 일시정지돼요.
-                  </span>
+                  {recorder.isRecording ? (
+                    <span
+                      className={cx(['helper__subtitle', 'helper__subtitle--memo', 'recording'])}
+                    >
+                      발표 연습 중 메모를 입력하면 녹음이 일시정지돼요.
+                    </span>
+                  ) : (
+                    <span className={cx(['helper__subtitle', 'helper__subtitle--memo', 'pausing'])}>
+                      녹음을 이어서 하시려면 녹음 버튼을 눌러주세요.
+                    </span>
+                  )}
                 </h4>
                 <button
                   className={styles.helper__recorder}
@@ -250,11 +270,23 @@ export default function Page({ params }: { params: { id: string } }) {
                   녹음 재개
                 </button>
                 <textarea
+                  {...register('content', {
+                    required: true,
+                    maxLength: 10,
+                    onChange: () => {
+                      recorder.pauseRecording();
+                    },
+                  })}
                   className={styles.helper__item}
                   placeholder="ex. 발표문 수정 사항, 목소리 크기 등에 대한 메모를 작성해 주세요."
-                  defaultValue={data?.slides[slideSeq].memo ?? ''}
-                  onChange={onMemoChange}
                 />
+                {errors.content && errors.content.type === 'maxLength' ? (
+                  <span className={cx(['memo-validation', 'memo-validation--error'])}>
+                    {content.length} / 500
+                  </span>
+                ) : (
+                  <span className={cx(['memo-validation'])}>{content.length} / 500</span>
+                )}
               </article>
             </section>
           </section>
@@ -287,6 +319,6 @@ export default function Page({ params }: { params: { id: string } }) {
         />
       </div>
       <NextSlideConfirm context={modal} handleOkay={handleConfirmOkay} />
-    </>
+    </form>
   );
 }

@@ -60,12 +60,12 @@ const PracticeNav = ({
         </div>
         <div className={cx(['contents', 'contents--right'])}>
           {isRecording && !isLastSlide && (
-            <button className={cx('action--next')} onClick={goToNext}>
+            <button type="submit" className={cx('action--next')} onClick={goToNext}>
               다음 페이지
             </button>
           )}
           {isLastSlide && (
-            <button className={cx('action--next')} onClick={goToNext}>
+            <button type="submit" className={cx('action--next')} onClick={goToNext}>
               발표 종료
             </button>
           )}

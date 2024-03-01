@@ -52,8 +52,25 @@
     &--memo {
       display: block;
       margin-top: 4px;
-      color: $gray-8;
       font-weight: 400;
+    }
+  }
+
+  .recording {
+    color: $gray-8;
+  }
+
+  .pausing {
+    color: $pink-4;
+  }
+
+  .memo-validation {
+    margin-top: 4px;
+    color: $gray-8;
+    text-align: end;
+
+    &--error {
+      color: $error;
     }
   }
 
