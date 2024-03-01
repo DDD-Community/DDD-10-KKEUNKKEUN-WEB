@@ -11,6 +11,8 @@ interface Props {
   title: string;
   /** 녹음 진행 여부 */
   isRecording: boolean;
+  /** 마지막 페이지 여부 */
+  isLastSlide: boolean;
   /** 다음 페이지 이동 함수 */
   goToNext: () => void;
   /** 녹음 핸들러 */
@@ -19,7 +21,14 @@ interface Props {
   onCloseClick: () => void;
 }
 
-const PracticeNav = ({ title, isRecording, goToNext, handleRecording, onCloseClick }: Props) => {
+const PracticeNav = ({
+  title,
+  isRecording,
+  isLastSlide,
+  goToNext,
+  handleRecording,
+  onCloseClick,
+}: Props) => {
   const cx = classNames.bind(styles);
 
   return (
@@ -39,9 +48,14 @@ const PracticeNav = ({ title, isRecording, goToNext, handleRecording, onCloseCli
           <h2>15:00</h2>
         </div>
         <div className={cx(['contents', 'contents--right'])}>
-          {isRecording && (
+          {isRecording && !isLastSlide && (
             <button className={cx('action--next')} onClick={goToNext}>
               다음 페이지
+            </button>
+          )}
+          {isLastSlide && (
+            <button className={cx('action--next')} onClick={goToNext}>
+              발표 종료
             </button>
           )}
           <button className={cx('action--close')} onClick={onCloseClick}>

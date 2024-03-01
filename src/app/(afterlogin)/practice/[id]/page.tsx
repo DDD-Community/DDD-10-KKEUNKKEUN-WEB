@@ -7,20 +7,27 @@ import { useEffect, useState } from 'react';
 import useRecorder from '../_hooks/useRecorder';
 import Alert from '@/app/_components/_modules/_modal/Alert';
 import SpeechBubble from '@/app/_components/_modules/SpeechBubble';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { PracticeDetail } from '@/types/service';
 import { PracticeService } from '@/services/client/practice';
 import Image from 'next/image';
 import PracticeNav from '../_components/PracticeNav';
 import Confirm from '@/app/_components/_modules/_modal/Confirm';
+import Modal from '@/app/_components/_modules/_modal/Modal';
+import NextSlideConfirm from '../_components/NextSlideConfirm';
+import { useRouter } from 'next/navigation';
 
 export default function Page({ params }: { params: { id: string } }) {
   const id = Number(params.id);
+  const router = useRouter();
 
   // #region state
   const [slideIdx, setSlideIdx] = useState(0);
-  const modal = useToggle();
-  const confirm = useToggle();
+  const [isActiveModal, setIsActiveModal] = useState<boolean>(true);
+
+  const alert = useToggle(); // INFO: 마이크 권한 체크
+  const confirm = useToggle(); // INFO: 연습 중단 확인
+  const modal = useToggle(); // INFO: 다음 슬라이드 이동 확인
   const bubble = useToggle();
   const recorder = useRecorder();
   // #endregion
@@ -38,10 +45,25 @@ export default function Page({ params }: { params: { id: string } }) {
   const title = data?.title ?? '';
 
   /** 슬라이드 페이징 문자열 */
-  const slidePaging = `${slideIdx}/${data?.slides.length ?? 0}`;
+  const slidePaging = `${slideIdx + 1}/${data?.slides.length ?? 0}`;
 
   /** 마지막 슬라이드 여부 */
   const isLastSlide = data?.slides.length === slideIdx + 1;
+
+  /** 모달 노출 여부 */
+  if (data && data.activateNextSlideModal !== isActiveModal) {
+    setIsActiveModal(data.activateNextSlideModal);
+  }
+  // #endregion
+
+  // #region mutation
+  const modalMutation = useMutation({
+    mutationKey: ['deactive-modal'],
+    mutationFn: () => PracticeService.patchDeactiveModal(),
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
   // #endregion
 
   useEffect(() => {
@@ -51,31 +73,59 @@ export default function Page({ params }: { params: { id: string } }) {
   }, []);
 
   // #region event-handler
-  const handleModalAction = () => {
+  /** 마이크 권한 체크 얼럿 액션 핸들러 */
+  const handleAlertAction = () => {
     recorder.startRecording();
-    modal.onClose();
+    alert.onClose();
     bubble.onOpen();
   };
 
-  const handleNextSlide = () => {
-    console.log('go to next slide');
+  /** '다음 페이지' 버튼 클릭 이벤트 */
+  const onClickNextPage = () => {
+    if (isLastSlide) return;
+
+    if (isActiveModal) {
+      modal.onOpen();
+    } else {
+      goToNextSlide();
+    }
   };
 
+  /** 다음 슬라이드 이동 컴펌 okay 핸들러 */
+  const handleConfirmOkay = (checked: boolean) => {
+    goToNextSlide();
+
+    if (checked) {
+      modalMutation.mutate();
+      setIsActiveModal(false);
+    }
+  };
+
+  /** 녹음 일시정지 및 재개 핸들러 */
   const handleRecordingPause = () => {
     if (recorder.isRecording) recorder.pauseRecording();
     else recorder.resumeRecording();
   };
 
-  const handleClose = () => {
-    console.log('close ... ');
+  /** 닫기 버튼 클릭 이벤트 */
+  const onClickClose = () => {
     confirm.onOpen();
   };
   // #endregion
 
   // #region function
+  /** 다음 슬라이드 이동 함수 */
+  const goToNextSlide = () => {
+    if (isLastSlide) return;
+
+    if (modal.isOpen) modal.onClose();
+
+    setSlideIdx((prev) => prev + 1);
+  };
+
+  /** 발표 목록 페이지 이동 함수 */
   const goToPresentationsPage = () => {
-    console.log('go to presentation page...');
-    confirm.onClose();
+    router.push('/home');
   };
   // #endregion
 
@@ -84,16 +134,17 @@ export default function Page({ params }: { params: { id: string } }) {
       <PracticeNav
         title={title}
         isRecording={recorder.isRecording}
-        goToNext={handleNextSlide}
+        isLastSlide={isLastSlide}
+        goToNext={onClickNextPage}
         handleRecording={handleRecordingPause}
-        onCloseClick={handleClose}
+        onCloseClick={onClickClose}
       />
       <div className={styles.container}>
         <div className={styles.contents}>
           <section className={styles.presentation__box}>
             <article className={styles.presentation}>
               <Image
-                src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[0].imageFilePath}`}
+                src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[slideIdx].imageFilePath}`}
                 alt={`slide-${0}`}
                 width={900}
                 height={510}
@@ -113,7 +164,8 @@ export default function Page({ params }: { params: { id: string } }) {
                     <div>last ... </div>
                   ) : (
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[0].imageFilePath}`}
+                      src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[slideIdx + 1]
+                        .imageFilePath}`}
                       alt={`slide-${0}`}
                       width={370}
                       height={200}
@@ -138,17 +190,17 @@ export default function Page({ params }: { params: { id: string } }) {
             </section>
           </section>
           <article className={styles.script__box}>
-            <p className={styles.script}>{data?.slides[0].script ?? ''}</p>
+            <p className={styles.script}>{data?.slides[slideIdx].script ?? ''}</p>
           </article>
         </div>
       </div>
       <Alert
-        context={modal}
+        context={alert}
         title="마이크 권한을 허용해주세요."
         message="권한을 허용해야 발표 연습을 하실 수 있어요!"
         actionText="연습 시작하기"
         isDisabled={!recorder.isPermitted}
-        onActionClick={handleModalAction}
+        onActionClick={handleAlertAction}
       />
       <Confirm
         context={confirm}
@@ -165,6 +217,7 @@ export default function Page({ params }: { params: { id: string } }) {
           hasCloseBtn
         />
       </div>
+      <NextSlideConfirm context={modal} handleOkay={handleConfirmOkay} />
     </>
   );
 }
