@@ -13,7 +13,6 @@ import { PracticeService } from '@/services/client/practice';
 import Image from 'next/image';
 import PracticeNav from '../_components/PracticeNav';
 import Confirm from '@/app/_components/_modules/_modal/Confirm';
-import Modal from '@/app/_components/_modules/_modal/Modal';
 import NextSlideConfirm from '../_components/NextSlideConfirm';
 import { useRouter } from 'next/navigation';
 import { FileService } from '@/services/client/file';
@@ -27,7 +26,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [slideIdx, setSlideIdx] = useState(0); // INFO: 슬라이드 아이디
   const [isActiveModal, setIsActiveModal] = useState<boolean>(true);
   const [memos, setMemos] = useState<string[]>([]);
-  const [test, setTest] = useState();
+  const [test, setTest] = useState<Blob | null>();
 
   const alert = useToggle(); // INFO: 마이크 권한 체크
   const confirm = useToggle(); // INFO: 연습 중단 확인
@@ -94,7 +93,7 @@ export default function Page({ params }: { params: { id: string } }) {
   }, []);
 
   useEffect(() => {
-    // recorder.getMedia();
+    recorder.getMedia();
     recorder.startRecording();
   }, [slideSeq]);
 
@@ -151,7 +150,6 @@ export default function Page({ params }: { params: { id: string } }) {
     if (modal.isOpen) modal.onClose();
 
     recorder.stopRecording();
-    // savePractice();
 
     setSlideSeq((prev) => prev + 1);
   };
@@ -163,15 +161,15 @@ export default function Page({ params }: { params: { id: string } }) {
 
   /** 발표 연습 저장 함수 (슬라이드 별) */
   const savePractice = async () => {
-    console.log('savePractice');
     // 오디오 파일 업로드 해서
     const audioBlob = recorder.audioBlob;
     setTest(audioBlob);
-    console.log('page : ', audioBlob);
 
     if (audioBlob?.size) {
-      const { id, path } = await FileService.fileUpload(audioBlob as Blob, 'practice.mp3');
-      console.log(id);
+      const { id, path } = await FileService.fileUpload(
+        audioBlob as Blob,
+        `practice_${slideSeq}.mp3`,
+      );
 
       const param = {
         memo: memos[slideSeq],
@@ -196,11 +194,6 @@ export default function Page({ params }: { params: { id: string } }) {
         handleRecording={handleRecordingPause}
         onCloseClick={onClickClose}
       />
-      {test && (
-        <audio controls>
-          <source src={URL.createObjectURL(test)} type="audio/mp3" />
-        </audio>
-      )}
       <div className={styles.container}>
         <div className={styles.contents}>
           <section className={styles.presentation__box}>
