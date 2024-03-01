@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 
 interface Props {
   /** 발표 시작 여부 */
-  isStarted: boolean;
+  isRecording: boolean;
   /** 최대 시간 값 */
   maxHours: number;
   /** 최대 분 값 */
   maxMinutes: number;
 }
 
-const Timer = ({ isStarted, maxHours, maxMinutes }: Props) => {
+const Timer = ({ isRecording, maxHours, maxMinutes }: Props) => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -20,7 +20,7 @@ const Timer = ({ isStarted, maxHours, maxMinutes }: Props) => {
   }, [maxHours, maxMinutes]);
 
   useEffect(() => {
-    if (isStarted) {
+    if (isRecording) {
       let timer = setInterval(() => {
         // 시간, 분, 초가 모두 0이라면 타이머를 멈춤
         if (hours === 0 && minutes === 0 && seconds === 0) {
@@ -46,7 +46,7 @@ const Timer = ({ isStarted, maxHours, maxMinutes }: Props) => {
         clearInterval(timer);
       };
     }
-  }, [isStarted, hours, minutes, seconds]); // hours, minutes, seconds 상태가 변경될 때마다 useEffect 호출
+  }, [isRecording, hours, minutes, seconds]); // hours, minutes, seconds 상태가 변경될 때마다 useEffect 호출
 
   // 시간을 두 자리 수로 포맷하는 함수
   const formatTime = (time: number) => {

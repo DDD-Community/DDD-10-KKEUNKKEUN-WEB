@@ -26,7 +26,6 @@ export default function Page({ params }: { params: { id: string } }) {
   const [slideIdx, setSlideIdx] = useState(0); // INFO: 슬라이드 아이디
   const [isActiveModal, setIsActiveModal] = useState<boolean>(true);
   const [memos, setMemos] = useState<string[]>([]);
-  const [test, setTest] = useState(false);
 
   const alert = useToggle(); // INFO: 마이크 권한 체크
   const confirm = useToggle(); // INFO: 연습 중단 확인
@@ -109,7 +108,6 @@ export default function Page({ params }: { params: { id: string } }) {
     recorder.startRecording();
     alert.onClose();
     bubble.onOpen();
-    setTest(true);
   };
 
   /** '다음 페이지' 버튼 클릭 이벤트 */
@@ -193,7 +191,6 @@ export default function Page({ params }: { params: { id: string } }) {
         isRecording={recorder.isRecording}
         isLastSlide={isLastSlide}
         practiceTime={timeLimit}
-        isStarted={test}
         goToNext={onClickNextPage}
         handleRecording={handleRecordingPause}
         onCloseClick={onClickClose}

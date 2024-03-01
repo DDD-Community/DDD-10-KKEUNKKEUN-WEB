@@ -19,8 +19,6 @@ interface Props {
     hours: number;
     minutes: number;
   };
-  /** 발표 시작 여부 */
-  isStarted: boolean;
   /** 다음 페이지 이동 함수 */
   goToNext: () => void;
   /** 녹음 핸들러 */
@@ -34,7 +32,6 @@ const PracticeNav = ({
   isRecording,
   isLastSlide,
   practiceTime,
-  isStarted,
   goToNext,
   handleRecording,
   onCloseClick,
@@ -56,7 +53,7 @@ const PracticeNav = ({
           </button>
           <em className={styles.division}></em>
           <Timer
-            isStarted={isStarted}
+            isRecording={isRecording}
             maxHours={practiceTime.hours}
             maxMinutes={practiceTime.minutes}
           />
