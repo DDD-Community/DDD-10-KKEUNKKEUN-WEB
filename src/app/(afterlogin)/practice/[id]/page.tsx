@@ -26,7 +26,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [slideIdx, setSlideIdx] = useState(0); // INFO: 슬라이드 아이디
   const [isActiveModal, setIsActiveModal] = useState<boolean>(true);
   const [memos, setMemos] = useState<string[]>([]);
-  const [test, setTest] = useState<Blob | null>();
+  const [test, setTest] = useState(false);
 
   const alert = useToggle(); // INFO: 마이크 권한 체크
   const confirm = useToggle(); // INFO: 연습 중단 확인
@@ -46,6 +46,9 @@ export default function Page({ params }: { params: { id: string } }) {
 
   /** 발표 이름 */
   const title = data?.title ?? '';
+
+  /** 발표 시간 */
+  const timeLimit = data?.timeLimit ?? { hours: 0, minutes: 0 };
 
   /** 슬라이드 페이징 문자열 */
   const slidePaging = `${slideSeq + 1}/${data?.slides.length ?? 0}`;
@@ -88,7 +91,6 @@ export default function Page({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     alert.onOpen();
-    recorder.getMedia();
     recorder.processPermission();
   }, []);
 
@@ -107,6 +109,7 @@ export default function Page({ params }: { params: { id: string } }) {
     recorder.startRecording();
     alert.onClose();
     bubble.onOpen();
+    setTest(true);
   };
 
   /** '다음 페이지' 버튼 클릭 이벤트 */
@@ -163,7 +166,6 @@ export default function Page({ params }: { params: { id: string } }) {
   const savePractice = async () => {
     // 오디오 파일 업로드 해서
     const audioBlob = recorder.audioBlob;
-    setTest(audioBlob);
 
     if (audioBlob?.size) {
       const { id, path } = await FileService.fileUpload(
@@ -190,6 +192,8 @@ export default function Page({ params }: { params: { id: string } }) {
         title={title}
         isRecording={recorder.isRecording}
         isLastSlide={isLastSlide}
+        practiceTime={timeLimit}
+        isStarted={test}
         goToNext={onClickNextPage}
         handleRecording={handleRecordingPause}
         onCloseClick={onClickClose}

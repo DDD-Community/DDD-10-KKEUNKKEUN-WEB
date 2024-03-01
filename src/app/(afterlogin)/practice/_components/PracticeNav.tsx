@@ -5,6 +5,7 @@ import RecordIcon from '../_svgs/RecordIcon';
 import CloseIcon from '../../../_svgs/CloseIcon';
 
 import styles from './PracticeNav.module.scss';
+import Timer from './Timer';
 
 interface Props {
   /** 발표 제목 */
@@ -13,6 +14,13 @@ interface Props {
   isRecording: boolean;
   /** 마지막 페이지 여부 */
   isLastSlide: boolean;
+  /** 발표 시간 */
+  practiceTime: {
+    hours: number;
+    minutes: number;
+  };
+  /** 발표 시작 여부 */
+  isStarted: boolean;
   /** 다음 페이지 이동 함수 */
   goToNext: () => void;
   /** 녹음 핸들러 */
@@ -25,6 +33,8 @@ const PracticeNav = ({
   title,
   isRecording,
   isLastSlide,
+  practiceTime,
+  isStarted,
   goToNext,
   handleRecording,
   onCloseClick,
@@ -45,7 +55,11 @@ const PracticeNav = ({
             <RecordIcon isRecording={isRecording} />
           </button>
           <em className={styles.division}></em>
-          <h2>15:00</h2>
+          <Timer
+            isStarted={isStarted}
+            maxHours={practiceTime.hours}
+            maxMinutes={practiceTime.minutes}
+          />
         </div>
         <div className={cx(['contents', 'contents--right'])}>
           {isRecording && !isLastSlide && (
