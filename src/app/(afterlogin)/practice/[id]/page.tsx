@@ -138,8 +138,13 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   /** 닫기 버튼 클릭 이벤트 */
-  const onClickClose = () => {
+  const onCloseClick = () => {
     confirm.onOpen();
+  };
+
+  /** 메모 작성 이벤트 */
+  const onMemoChange = () => {
+    recorder.pauseRecording();
   };
   // #endregion
 
@@ -193,7 +198,7 @@ export default function Page({ params }: { params: { id: string } }) {
         practiceTime={timeLimit}
         goToNext={onClickNextPage}
         handleRecording={handleRecordingPause}
-        onCloseClick={onClickClose}
+        onCloseClick={onCloseClick}
       />
       <div className={styles.container}>
         <div className={styles.contents}>
@@ -201,7 +206,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <article className={styles.presentation}>
               <Image
                 src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[slideSeq].imageFilePath}`}
-                alt={`slide-${0}`}
+                alt={`slide-${slideSeq}`}
                 width={900}
                 height={510}
                 style={{ objectFit: 'contain', borderRadius: '16px' }}
@@ -222,7 +227,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     <Image
                       src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[slideSeq + 1]
                         .imageFilePath}`}
-                      alt={`slide-${0}`}
+                      alt={`slide-${slideSeq + 1}`}
                       width={370}
                       height={200}
                       style={{ objectFit: 'contain', borderRadius: '16px' }}
@@ -237,10 +242,18 @@ export default function Page({ params }: { params: { id: string } }) {
                     발표 연습 중 메모를 입력하면 녹음이 일시정지돼요.
                   </span>
                 </h4>
+                <button
+                  className={styles.helper__recorder}
+                  disabled={recorder.isRecording}
+                  onClick={handleRecordingPause}
+                >
+                  녹음 재개
+                </button>
                 <textarea
                   className={styles.helper__item}
                   placeholder="ex. 발표문 수정 사항, 목소리 크기 등에 대한 메모를 작성해 주세요."
-                  defaultValue={data?.slides[0].memo ?? ''}
+                  defaultValue={data?.slides[slideSeq].memo ?? ''}
+                  onChange={onMemoChange}
                 />
               </article>
             </section>
