@@ -67,7 +67,7 @@ const SelectCardSection = ({
             selected={settingInfo.practiceMode === 'SHOW'}
           />
           <Card
-            image={firstStepCardInfo[0].image}
+            image={firstStepCardInfo[1].image}
             title={firstStepCardInfo[1].title}
             content={firstStepCardInfo[1].content}
             setMode={() => onChangePracticeMode('HIDE')}
@@ -78,14 +78,14 @@ const SelectCardSection = ({
       {currentStep === 2 && (
         <>
           <Card
-            image={firstStepCardInfo[0].image}
+            image={thirdStepCardInfo[0].image}
             title={thirdStepCardInfo[0].title}
             content={thirdStepCardInfo[0].content}
             setDevice={() => setSelectedDevice('DESKTOP')}
             selected={selectedDevice === 'DESKTOP'}
           />
           <Card
-            image={firstStepCardInfo[0].image}
+            image={thirdStepCardInfo[1].image}
             title={thirdStepCardInfo[1].title}
             content={thirdStepCardInfo[1].content}
             setDevice={() => setSelectedDevice('BOTH')}
