@@ -1,9 +1,9 @@
 import { fetch_ServerAuth } from './fetchServer';
 
 export const serverHomeApi = {
-  getPresentationList: async () => {
+  getPresentationList: async ({ pageParam }: { pageParam?: number }) => {
     const response = await fetch_ServerAuth(
-      `${process.env.NEXT_PUBLIC_BASE_URL_DEV}/api/presentations?page=2&size=5`,
+      `${process.env.NEXT_PUBLIC_BASE_URL_DEV}/api/presentations?page=${pageParam}&size=6`,
       { method: 'GET', cache: 'no-store' },
     );
 
@@ -17,9 +17,9 @@ export const serverHomeApi = {
       {
         method: 'GET',
         cache: 'no-store',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        // headers: {
+        //   'Content-Type': 'application/json',
+        // },
       },
     );
 
