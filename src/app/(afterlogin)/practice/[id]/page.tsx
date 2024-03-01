@@ -8,7 +8,7 @@ import useRecorder from '../_hooks/useRecorder';
 import Alert from '@/app/_components/_modules/_modal/Alert';
 import SpeechBubble from '@/app/_components/_modules/SpeechBubble';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { PracticeDetail } from '@/types/service';
+import { PracticeDetail, SavePracticeParams } from '@/types/service';
 import { PracticeService } from '@/services/client/practice';
 import Image from 'next/image';
 import PracticeNav from '../_components/PracticeNav';
@@ -16,14 +16,18 @@ import Confirm from '@/app/_components/_modules/_modal/Confirm';
 import Modal from '@/app/_components/_modules/_modal/Modal';
 import NextSlideConfirm from '../_components/NextSlideConfirm';
 import { useRouter } from 'next/navigation';
+import { FileService } from '@/services/client/file';
 
 export default function Page({ params }: { params: { id: string } }) {
   const id = Number(params.id);
   const router = useRouter();
 
   // #region state
-  const [slideIdx, setSlideIdx] = useState(0);
+  const [slideSeq, setSlideSeq] = useState(0); // INFO: 슬라이드 순서
+  const [slideIdx, setSlideIdx] = useState(0); // INFO: 슬라이드 아이디
   const [isActiveModal, setIsActiveModal] = useState<boolean>(true);
+  const [memos, setMemos] = useState<string[]>([]);
+  const [test, setTest] = useState();
 
   const alert = useToggle(); // INFO: 마이크 권한 체크
   const confirm = useToggle(); // INFO: 연습 중단 확인
@@ -45,14 +49,22 @@ export default function Page({ params }: { params: { id: string } }) {
   const title = data?.title ?? '';
 
   /** 슬라이드 페이징 문자열 */
-  const slidePaging = `${slideIdx + 1}/${data?.slides.length ?? 0}`;
+  const slidePaging = `${slideSeq + 1}/${data?.slides.length ?? 0}`;
 
   /** 마지막 슬라이드 여부 */
-  const isLastSlide = data?.slides.length === slideIdx + 1;
+  const isLastSlide = data?.slides.length === slideSeq + 1;
 
   /** 모달 노출 여부 */
   if (data && data.activateNextSlideModal !== isActiveModal) {
     setIsActiveModal(data.activateNextSlideModal);
+  }
+
+  /** 슬라이드 아이디 */
+  if (data && data.slides[slideSeq].id !== slideIdx) {
+    setSlideIdx(data.slides[slideSeq].id);
+
+    const memo = data.slides[slideSeq].memo ?? '';
+    setMemos([...memos, memo]);
   }
   // #endregion
 
@@ -64,13 +76,31 @@ export default function Page({ params }: { params: { id: string } }) {
       console.log(error.message);
     },
   });
+
+  const slideMutation = useMutation({
+    mutationKey: ['slide', slideIdx],
+    mutationFn: ({ id, data }: { id: number; data: SavePracticeParams }) =>
+      PracticeService.patchSlide(id, data),
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
   // #endregion
 
   useEffect(() => {
-    modal.onOpen();
+    alert.onOpen();
     recorder.getMedia();
     recorder.processPermission();
   }, []);
+
+  useEffect(() => {
+    // recorder.getMedia();
+    recorder.startRecording();
+  }, [slideSeq]);
+
+  useEffect(() => {
+    savePractice();
+  }, [recorder.audioBlob]);
 
   // #region event-handler
   /** 마이크 권한 체크 얼럿 액션 핸들러 */
@@ -120,12 +150,39 @@ export default function Page({ params }: { params: { id: string } }) {
 
     if (modal.isOpen) modal.onClose();
 
-    setSlideIdx((prev) => prev + 1);
+    recorder.stopRecording();
+    // savePractice();
+
+    setSlideSeq((prev) => prev + 1);
   };
 
   /** 발표 목록 페이지 이동 함수 */
   const goToPresentationsPage = () => {
     router.push('/home');
+  };
+
+  /** 발표 연습 저장 함수 (슬라이드 별) */
+  const savePractice = async () => {
+    console.log('savePractice');
+    // 오디오 파일 업로드 해서
+    const audioBlob = recorder.audioBlob;
+    setTest(audioBlob);
+    console.log('page : ', audioBlob);
+
+    if (audioBlob?.size) {
+      const { id, path } = await FileService.fileUpload(audioBlob as Blob, 'practice.mp3');
+      console.log(id);
+
+      const param = {
+        memo: memos[slideSeq],
+        audioFileId: id,
+      };
+
+      slideMutation.mutate({
+        id: slideIdx,
+        data: param,
+      });
+    }
   };
   // #endregion
 
@@ -139,12 +196,17 @@ export default function Page({ params }: { params: { id: string } }) {
         handleRecording={handleRecordingPause}
         onCloseClick={onClickClose}
       />
+      {test && (
+        <audio controls>
+          <source src={URL.createObjectURL(test)} type="audio/mp3" />
+        </audio>
+      )}
       <div className={styles.container}>
         <div className={styles.contents}>
           <section className={styles.presentation__box}>
             <article className={styles.presentation}>
               <Image
-                src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[slideIdx].imageFilePath}`}
+                src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[slideSeq].imageFilePath}`}
                 alt={`slide-${0}`}
                 width={900}
                 height={510}
@@ -164,7 +226,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     <div>last ... </div>
                   ) : (
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[slideIdx + 1]
+                      src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${data?.slides[slideSeq + 1]
                         .imageFilePath}`}
                       alt={`slide-${0}`}
                       width={370}
@@ -190,7 +252,7 @@ export default function Page({ params }: { params: { id: string } }) {
             </section>
           </section>
           <article className={styles.script__box}>
-            <p className={styles.script}>{data?.slides[slideIdx].script ?? ''}</p>
+            <p className={styles.script}>{data?.slides[slideSeq].script ?? ''}</p>
           </article>
         </div>
       </div>
