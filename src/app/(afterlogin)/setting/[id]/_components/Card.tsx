@@ -9,12 +9,12 @@ interface CardProps {
   setDevice?: () => void;
   setMode?: () => void;
   selected: boolean;
-  image: string;
+  imageSrc: string;
 }
 
 const cx = classNames.bind(styles);
 
-const Card = ({ title, content, setDevice, setMode, selected, image }: CardProps) => {
+const Card = ({ title, content, setDevice, setMode, selected, imageSrc }: CardProps) => {
   return (
     <div
       className={cx(['container', selected && 'selected'])}
@@ -25,7 +25,7 @@ const Card = ({ title, content, setDevice, setMode, selected, image }: CardProps
     >
       <div className={styles.image}>
         <Image
-          src={image}
+          src={imageSrc}
           width={440}
           height={247}
           style={{ borderRadius: '16px' }}
