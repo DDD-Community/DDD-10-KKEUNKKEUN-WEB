@@ -45,7 +45,7 @@ const GuideContent = () => {
           </ul>
         </div>
       </div>
-      <button className={cx(['startButton'])} onClick={() => router.replace('/upload/new')}>
+      <button className={cx(['startButton'])} onClick={() => router.push('/upload/new')}>
         시작하기
       </button>
     </>
