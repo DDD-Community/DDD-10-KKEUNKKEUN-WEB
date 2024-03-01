@@ -22,7 +22,7 @@ const SelectCardSection = ({
 }: SelectCardSectionProps) => {
   const firstStepCardInfo = [
     {
-      image: 'image',
+      image: '/images/show.png',
       title: '모든 문장 보기',
       content: [
         '발표문 암기를 못 했을 때 추천드려요!',
@@ -30,7 +30,7 @@ const SelectCardSection = ({
       ],
     },
     {
-      image: 'image',
+      image: '/images/hide.png',
       title: '외울 문장 가리기',
       content: [
         '대본 암기를 잘 했는지 확인할 때 추천드려요!',
@@ -41,12 +41,12 @@ const SelectCardSection = ({
 
   const thirdStepCardInfo = [
     {
-      image: 'image',
+      image: '/images/desktop.png',
       title: '데스크탑',
       content: ['PPT 슬라이드, 타이머, 그리고 발표문을', ' 테스크탑에서 보실 수 있어요.'],
     },
     {
-      image: 'image',
+      image: '/images/both.png',
       title: '데스트탑과 모바일',
       content: [
         '모바일에서는 타이머와 발표문, 그리고 리모콘 기능을 제공해요.',
@@ -60,12 +60,14 @@ const SelectCardSection = ({
       {currentStep === 0 && (
         <>
           <Card
+            image={firstStepCardInfo[0].image}
             title={firstStepCardInfo[0].title}
             content={firstStepCardInfo[0].content}
             setMode={() => onChangePracticeMode('SHOW')}
             selected={settingInfo.practiceMode === 'SHOW'}
           />
           <Card
+            image={firstStepCardInfo[0].image}
             title={firstStepCardInfo[1].title}
             content={firstStepCardInfo[1].content}
             setMode={() => onChangePracticeMode('HIDE')}
@@ -76,12 +78,14 @@ const SelectCardSection = ({
       {currentStep === 2 && (
         <>
           <Card
+            image={firstStepCardInfo[0].image}
             title={thirdStepCardInfo[0].title}
             content={thirdStepCardInfo[0].content}
             setDevice={() => setSelectedDevice('DESKTOP')}
             selected={selectedDevice === 'DESKTOP'}
           />
           <Card
+            image={firstStepCardInfo[0].image}
             title={thirdStepCardInfo[1].title}
             content={thirdStepCardInfo[1].content}
             setDevice={() => setSelectedDevice('BOTH')}
