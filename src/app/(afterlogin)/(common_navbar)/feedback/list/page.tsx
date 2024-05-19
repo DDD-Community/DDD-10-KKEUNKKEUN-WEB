@@ -27,7 +27,7 @@ export default async function Page() {
       ) : (
         <div className={styles.container}>
           <HydrationBoundary state={dehydratedState}>
-            <CardList usage="feedback" />
+            <CardList />
           </HydrationBoundary>
         </div>
       )}

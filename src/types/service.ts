@@ -270,7 +270,7 @@ export interface FeedbackListType {
     content: {
       id: number;
       title: string;
-      practiceDate: Date;
+      practiceDate: string;
       totalScore: number;
       status: 'IN_PROGRESS' | 'DONE';
       thumbnailPath: string; // 임시

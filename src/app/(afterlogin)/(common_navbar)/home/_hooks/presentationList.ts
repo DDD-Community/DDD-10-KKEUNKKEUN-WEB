@@ -18,7 +18,7 @@ export const useDeletePresentation = (id: number) => {
   const response = useMutation({
     mutationKey: ['delete', id],
     mutationFn: async () => {
-      const response = await clientHomeApi.deletePresentationList({ presentationIds: [id] });
+      await clientHomeApi.deletePresentationList({ presentationIds: [id] });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['home', 'list'] });
