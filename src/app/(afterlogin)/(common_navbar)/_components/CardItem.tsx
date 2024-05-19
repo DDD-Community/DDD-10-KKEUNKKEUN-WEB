@@ -41,17 +41,23 @@ const CardItem = ({ listInfo, usage }: Props) => {
     mutate();
   };
 
+  const thumbnailImage = listInfo.thumbnailPath ? (
+    <Image
+      src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${listInfo.thumbnailPath}`}
+      alt={`${listInfo.id} 썸네일`}
+      width={440}
+      height={250}
+      style={{ borderRadius: '16px' }}
+    />
+  ) : (
+    <div className={styles.dummyImg} />
+  );
+
   return (
     <>
       <article className={styles.container}>
         <div className={styles.thumbnail}>
-          <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_URL_CDN}/${listInfo.thumbnailPath}`}
-            alt={`${listInfo.id} 썸네일`}
-            width={440}
-            height={250}
-            style={{ borderRadius: '16px' }}
-          />
+          {thumbnailImage}
           <div className={styles.menu__box}>
             {/* TODO: 피드백에 맞는 버튼 로직 생성 필요 */}
             <FlyoutMenu context={flyout}>

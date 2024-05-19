@@ -1,6 +1,6 @@
 'use client';
 
-import { EventHandler, MouseEventHandler, useMemo, useState } from 'react';
+import { MouseEventHandler, useMemo } from 'react';
 
 import styles from './Navbar.module.scss';
 import classNames from 'classnames';
@@ -10,12 +10,6 @@ import { ERROR_MESSAGE } from '@/config/const';
 import { usePathname, useRouter } from 'next/navigation';
 import useToggle from '@/app/_hooks/useToggle';
 import Confirm from '@/app/_components/_modules/_modal/Confirm';
-
-type ClickedList = 'presentationList' | 'report';
-
-const isClickedList = (name: string): name is ClickedList => {
-  return name === 'presentationList' || name === 'report';
-};
 
 const NavMenu = () => {
   const pathName = usePathname();
@@ -65,10 +59,12 @@ const NavMenu = () => {
     }
 
     if (name === 'home') {
+      router.refresh();
       router.push('/home');
       return;
     }
     if (name === 'feedback') {
+      router.refresh();
       router.push('/feedback/list');
       return;
     }

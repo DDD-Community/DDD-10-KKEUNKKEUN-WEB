@@ -15,6 +15,13 @@
   border-radius: 16px;
 }
 
+.dummyImg {
+  width: 440px;
+  height: 250px;
+  border-radius: 16px;
+  background-color: black;
+}
+
 .menu {
   @include pure-button;
 
