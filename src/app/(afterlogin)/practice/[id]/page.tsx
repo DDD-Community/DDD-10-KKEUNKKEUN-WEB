@@ -112,7 +112,8 @@ export default function Page({ params }: { params: { id: string } }) {
   /** '다음 페이지' 버튼 클릭 이벤트 */
   const onClickNextPage = () => {
     if (isLastSlide) {
-      router.push(`/feedback/${id}`);
+      // router.push(`/feedback/${id}`);
+      router.push(`/feedback/list`);
     }
 
     if (isActiveModal) {

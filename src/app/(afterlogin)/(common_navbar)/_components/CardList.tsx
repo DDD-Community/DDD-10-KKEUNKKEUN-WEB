@@ -28,6 +28,8 @@ const CardList = () => {
         return await response.json();
       }
     },
+    staleTime: 0,
+    gcTime: 0,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
       if (lastPage && pages) {
