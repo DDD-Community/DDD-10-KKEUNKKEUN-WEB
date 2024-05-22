@@ -18,14 +18,14 @@ export default async function Page() {
 
   const isEmpty = listResponse.pages[0].page.empty;
 
-  // const latestResponse = await queryClient.fetchQuery({
-  //   queryKey: ['home', 'latest'],
-  //   queryFn: async () => {
-  //     const latestResponse = await serverHomeApi.getLatestPresentation();
-  //     if (latestResponse.status === 204) return 'empty';
-  //     return await latestResponse.json();
-  //   },
-  // });
+  const latestResponse = await queryClient.fetchQuery({
+    queryKey: ['home', 'latest'],
+    queryFn: async () => {
+      const latestResponse = await serverHomeApi.getLatestPresentation();
+      if (latestResponse.status === 204) return 'empty';
+      return await latestResponse.json();
+    },
+  });
 
   const dehydratedState = dehydrate(queryClient);
   return (
@@ -35,7 +35,7 @@ export default async function Page() {
       ) : (
         <div className={styles.container}>
           <HydrationBoundary state={dehydratedState}>
-            {/* {latestResponse !== 'empty' && <HistoryBanner presentation={latestResponse} />} */}
+            {latestResponse !== 'empty' && <HistoryBanner presentation={latestResponse} />}
             {/* <ExerciseList /> */}
             <CardList />
           </HydrationBoundary>
