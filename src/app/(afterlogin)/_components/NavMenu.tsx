@@ -73,14 +73,14 @@ const NavMenu = () => {
   return (
     <>
       <button
-        className={classNames([pageName === 'home' && styles.clicked])}
+        className={classNames([styles.menuButtons, pageName === 'home' && styles.clicked])}
         name="home"
         onClick={onClick}
       >
         발표 목록
       </button>
       <button
-        className={classNames([pageName === 'feedback' && styles.clicked])}
+        className={classNames([styles.menuButtons, pageName === 'feedback' && styles.clicked])}
         name="feedback"
         onClick={onClick}
       >
