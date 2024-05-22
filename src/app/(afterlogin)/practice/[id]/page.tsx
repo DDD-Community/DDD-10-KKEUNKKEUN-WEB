@@ -113,6 +113,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const onClickNextPage = () => {
     if (isLastSlide) {
       // router.push(`/feedback/${id}`);
+      savePractice();
       router.push(`/feedback/list`);
     }
 
