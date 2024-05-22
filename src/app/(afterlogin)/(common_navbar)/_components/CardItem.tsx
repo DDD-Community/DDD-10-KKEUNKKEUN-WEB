@@ -89,11 +89,12 @@ const CardItem = ({ listInfo }: Props) => {
           <CardInfo listInfo={listInfo} />
           <div>
             {usage === 'home' && PresentationListTypeGuard(listInfo) && (
-              <PracticeButton onClick={() => router.push(`/setting/${listInfo.id}`)} />
+              <PracticeButton id={listInfo.id} />
             )}
             {usage === 'feedback' && FeedbackListTypeGuard(listInfo) && (
               <FeedbackScoreButton
-                score={listInfo.status === 'IN_PROGRESS' ? '채점중' : listInfo.totalScore}
+                status={listInfo.status}
+                score={listInfo.totalScore}
                 onClick={() => router.push(`/feedback/${listInfo.id}`)}
               />
             )}
