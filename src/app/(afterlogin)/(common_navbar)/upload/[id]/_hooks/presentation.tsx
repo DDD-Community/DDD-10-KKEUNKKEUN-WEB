@@ -37,10 +37,10 @@ export const usePostPresentationData = (submitAction: 'save' | 'start') => {
       const { presentationId } = await response.json();
       if (submitAction === 'start') {
         try {
-          queryClient.fetchQuery({
+          await queryClient.fetchQuery({
             queryKey: [presentationId, 'start'],
             queryFn: async () => {
-              await clientPptApi.getPracticeStart(presentationId);
+              return await clientPptApi.getPracticeStart(presentationId);
             },
           });
           router.push(`/setting/${presentationId}`);
@@ -86,6 +86,8 @@ export const usePatchPresentationData = (submitAction: 'save' | 'start', slug: n
             queryFn: async () => {
               return await clientPptApi.getPracticeStart(presentationId);
             },
+            staleTime: 0,
+            gcTime: 0,
           });
           router.push(`/setting/${presentationId}`);
         } catch (e) {

@@ -18,13 +18,9 @@ const CardInfo = ({ listInfo }: Props) => {
     <div className={styles.info}>
       <span className={styles.info__title}>{listInfo.title}</span>
       {usage === 'home' && PresentationListTypeGuard(listInfo) ? (
-        <>
-          <HomeCardDescription listInfo={listInfo} />
-        </>
+        <HomeCardDescription listInfo={listInfo} />
       ) : (
-        <>
-          <FeedbackCardDescription listInfo={listInfo} />
-        </>
+        <FeedbackCardDescription listInfo={listInfo} />
       )}
     </div>
   );
