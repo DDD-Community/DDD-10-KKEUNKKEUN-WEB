@@ -84,7 +84,7 @@ const NavMenu = () => {
         name="feedback"
         onClick={onClick}
       >
-        리포트
+        피드백
       </button>
 
       <Confirm
