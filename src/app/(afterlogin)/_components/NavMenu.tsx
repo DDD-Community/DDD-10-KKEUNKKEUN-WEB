@@ -59,12 +59,12 @@ const NavMenu = () => {
     }
 
     if (name === 'home') {
-      router.refresh();
+      // router.refresh();
       router.push('/home');
       return;
     }
     if (name === 'feedback') {
-      router.refresh();
+      // router.refresh();
       router.push('/feedback/list');
       return;
     }
