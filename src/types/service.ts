@@ -272,7 +272,7 @@ export interface FeedbackListType {
       title: string;
       practiceDate: string;
       totalScore: number;
-      status: 'IN_PROGRESS' | 'DONE';
+      status: 'IN_PROGRESS' | 'DONE' | 'FAIL';
       thumbnailPath: string; // 임시
       createdAt: Date; // 임시
       modifiedAt: Date; // 임시
