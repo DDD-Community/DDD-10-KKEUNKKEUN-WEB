@@ -73,14 +73,15 @@ const CardList = () => {
         statusInfo.push(...row);
       });
 
-      if (statusInfo.filter((i) => i !== 'FAIL').some((i) => i === 'IN_PROGRESS')) {
+      const shouldRefetch = statusInfo.some((status) => status === 'IN_PROGRESS');
+      if (shouldRefetch) {
         refetchInterval = setInterval(() => {
           refetch();
         }, 1000);
       }
     }
     return () => {
-      clearInterval(refetchInterval);
+      if (refetchInterval) clearInterval(refetchInterval);
     };
   }, [data, refetch, usage]);
 
