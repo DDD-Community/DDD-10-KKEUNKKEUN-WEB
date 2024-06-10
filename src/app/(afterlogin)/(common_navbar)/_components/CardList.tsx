@@ -18,7 +18,7 @@ const CardList = () => {
   const pathname = usePathname();
   const usage: 'feedback' | 'home' = pathname === `/feedback/list` ? 'feedback' : 'home';
 
-  let { data, fetchNextPage, hasNextPage, isFetching, refetch } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetching, refetch } = useInfiniteQuery({
     queryKey: [usage, 'list'],
     queryFn: async ({ pageParam = 0 }) => {
       if (usage === 'home') {
