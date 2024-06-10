@@ -45,6 +45,11 @@ const UploadPpt = ({
         setPresentationData((prev) => {
           const shallow = { ...prev };
           shallow.title = getValues('title');
+          shallow.timeLimit.hours = Number(getValues('timeLimit_hour'));
+          shallow.timeLimit.minutes = Number(getValues('timeLimit_minute'));
+          shallow.alertTime.hours = Number(getValues('alertTime_hour'));
+          shallow.alertTime.minutes = Number(getValues('alertTime_minute'));
+
           const shallowSlides = [...shallow.slides];
           shallowSlides[currentPageIndex] = {
             ...shallowSlides[currentPageIndex],
@@ -80,6 +85,11 @@ const UploadPpt = ({
     setPresentationData((prev) => {
       const shallow = { ...prev };
       shallow.title = getValues('title');
+      shallow.timeLimit.hours = Number(getValues('timeLimit_hour'));
+      shallow.timeLimit.minutes = Number(getValues('timeLimit_minute'));
+      shallow.alertTime.hours = Number(getValues('alertTime_hour'));
+      shallow.alertTime.minutes = Number(getValues('alertTime_minute'));
+
       const shallowSlides = [...shallow.slides];
       shallowSlides[currentPageIndex] = {
         ...shallowSlides[currentPageIndex],

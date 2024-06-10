@@ -80,6 +80,10 @@ const InputSection = ({
         script: presentationData.slides[currentPageIndex].script || '',
         memo: presentationData.slides[currentPageIndex].memo || '',
         deadlineDate: presentationData.deadlineDate,
+        timeLimit_hour: presentationData.timeLimit.hours || 0,
+        timeLimit_minute: presentationData.timeLimit.minutes || 0,
+        alertTime_hour: presentationData.alertTime.hours || 0,
+        alertTime_minute: presentationData.alertTime.minutes || 0,
       });
     };
     resetFormData();
@@ -179,11 +183,18 @@ const InputSection = ({
               // 1. 마지막 더미 페이지 제거
 
               const shallow = { ...presentationData };
+              console.log(shallow);
 
               const shallowSlides = [...shallow.slides.slice(0, -1)];
 
-              let presentationUploadInfo;
               shallow.title = data.title;
+              shallow.timeLimit.hours = data.timeLimit_hour;
+              shallow.timeLimit.minutes = data.timeLimit_minute;
+              shallow.alertTime.hours = data.alertTime_hour;
+              shallow.alertTime.minutes = data.alertTime_minute;
+
+              let presentationUploadInfo;
+
               if (currentPageIndex !== presentationData.slides.length - 1) {
                 // 2. 현재페이지의 title,script,memo를 getValue로 가져온 뒤 상태에 추가
                 shallowSlides[currentPageIndex] = {
@@ -253,6 +264,9 @@ const InputSection = ({
               setPresentationData={setPresentationData}
               currentPageIndex={currentPageIndex}
               getValues={getValues}
+              setValue={setValue}
+              register={register}
+              errors={errors}
             />
             <div className={styles.saveButtons}>
               <button
