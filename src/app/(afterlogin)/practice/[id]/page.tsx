@@ -204,7 +204,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const content = watch('content') || '';
 
   const onSubmit = (data: FieldValues) => {
-    console.log('??????', data);
+    // console.log('??????', data);
   };
 
   return (

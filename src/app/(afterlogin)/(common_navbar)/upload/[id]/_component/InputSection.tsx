@@ -183,7 +183,6 @@ const InputSection = ({
               // 1. 마지막 더미 페이지 제거
 
               const shallow = { ...presentationData };
-              console.log(shallow);
 
               const shallowSlides = [...shallow.slides.slice(0, -1)];
 
@@ -259,10 +258,6 @@ const InputSection = ({
               getValues={getValues}
             />
             <UploadTimer
-              timeLimit={presentationData.timeLimit}
-              alertTime={presentationData.alertTime}
-              setPresentationData={setPresentationData}
-              currentPageIndex={currentPageIndex}
               getValues={getValues}
               setValue={setValue}
               register={register}

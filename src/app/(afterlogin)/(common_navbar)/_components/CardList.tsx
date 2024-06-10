@@ -72,8 +72,7 @@ const CardList = () => {
         const row = i.page.content.map((i: FeedbackListType['page']['content'][0]) => i.status);
         statusInfo.push(...row);
       });
-      // console.log(statusInfo);
-      // // ['DONE', 'DONE', 'DONE', 'DONE']
+
       if (statusInfo.filter((i) => i !== 'FAIL').some((i) => i === 'IN_PROGRESS')) {
         refetchInterval = setInterval(() => {
           refetch();
