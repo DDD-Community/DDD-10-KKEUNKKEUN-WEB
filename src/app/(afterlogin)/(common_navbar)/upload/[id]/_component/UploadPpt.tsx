@@ -120,10 +120,8 @@ const UploadPpt = ({
               <Image
                 src={`${CDN_BASE_URL}/${pptInfo.imageFilePath}`}
                 alt={`${currentPageIndex + 1}페이지 ppt 이미지`}
-                width={503}
-                height={283}
-                // fill
-                style={{ objectFit: 'contain', borderRadius: '16px' }}
+                fill
+                style={{ borderRadius: '16px' }}
                 className={styles.pptImage}
               />
               <button className={styles.changePptImageButton} onClick={onClickButton}>

@@ -162,7 +162,7 @@ const ControlButtons = ({
                             src={`${CDN_BASE_URL}/${item.imageFilePath}`}
                             fill
                             alt="ppt이미지"
-                            style={{ objectFit: 'contain', borderRadius: '8px' }}
+                            style={{ borderRadius: '8px' }}
                           />
                           <button onClick={(e) => remove(e, index)} className={styles.closeButton}>
                             <PptImageSvgs>
