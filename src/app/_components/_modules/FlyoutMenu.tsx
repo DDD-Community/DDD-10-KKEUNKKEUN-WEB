@@ -63,8 +63,8 @@ const MenuList = ({ children, className }: ReactChildrenProps & { className?: st
   // ToggleButton은 계속 유지한 체, flyout의 메뉴들만 보여주거나 없애거나
   if (!context.isOpen) return null;
 
-  // 로그아웃 버튼의 flyout의 경우, 일부 스타일 오버라이딩을 위해 className 추가
-  return <ul className={cx(['flyout__list', `${className}`])}>{children}</ul>;
+  // 로그아웃의 flyout버튼은 위치가 조금 다르므로, 이에 대한 className을 조건부로 사용
+  return <ul className={cx([className ? `${className}` : 'flyout__list'])}>{children}</ul>;
 };
 
 const MenuItem = ({ children }: ReactChildrenProps) => {

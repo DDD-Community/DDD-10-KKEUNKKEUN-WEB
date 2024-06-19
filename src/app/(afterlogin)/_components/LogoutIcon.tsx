@@ -36,7 +36,7 @@ const LogoutIcon = () => {
             </svg>
           </i>
         </FlyoutMenu.ToggleButton>
-        <FlyoutMenu.MenuList className="logout">
+        <FlyoutMenu.MenuList className={styles.logoutList}>
           <FlyoutMenu.MenuItem>
             <button className={styles.menu} onClick={logout}>
               <span>로그아웃</span>
