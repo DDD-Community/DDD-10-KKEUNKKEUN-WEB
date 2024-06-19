@@ -27,3 +27,22 @@
     letter-spacing: 2px;
   }
 }
+
+.logoutList {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  left: auto;
+  z-index: 2;
+  width: 120px;
+  padding: 0;
+  background: $white;
+  border: 1px solid $gray-1;
+  border-radius: 8px;
+  box-shadow: 2px 2px 3px $gray-2;
+}
+
+// .logoutList {
+//   right: 0 !important;
+//   left: auto !important;
+// }

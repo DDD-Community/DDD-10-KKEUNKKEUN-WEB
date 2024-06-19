@@ -34,12 +34,6 @@
     box-shadow: 2px 2px 3px $gray-2;
   }
 
-  // 로그아웃 버튼일 경우, 버튼 위치 스타일 오버라이딩
-  &__list.logout {
-    right: 0;
-    left: auto; // 기존 left속성 초기화
-  }
-
   &__item {
     padding: 12px;
     border-bottom: 1px solid $gray-1;
