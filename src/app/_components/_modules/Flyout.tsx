@@ -1,5 +1,4 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import styles from './FlyoutMenu.module.scss';
 
 interface Props {
   toggleButton: ReactNode;
@@ -24,11 +23,10 @@ const Flyout = ({ toggleButton, children }: Props) => {
 
   return (
     <div ref={ref}>
-      <button className={styles.flyout__button} onClick={() => setIsOpen((prev) => !prev)}>
-        {toggleButton}
-      </button>
-      {/* {children}에서 ul, li형태로 감싸진 버튼을 주든, 단일 버튼을 주든 외부에서 자유롭게 주입 */}
-      {isOpen && <article className={styles.flyout}>{children}</article>}
+      {/* 메뉴 모달 토글 버튼 */}
+      {!isOpen && <div onClick={() => setIsOpen((prev) => !prev)}>{toggleButton}</div>}
+      {/* 수정 삭제 버튼 */}
+      {isOpen && children}
     </div>
   );
 };

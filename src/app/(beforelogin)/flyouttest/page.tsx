@@ -13,8 +13,10 @@ const page = () => {
           <div className={styles.dummyImg} />
           <div className={styles.menu__box}>
             <Flyout toggleButton={<MenuIcon />}>
-              <button>a</button>
-              <button>b</button>
+              <article className={styles.flyout}>
+                <button>수정하기</button>
+                <button>삭제하기</button>
+              </article>
             </Flyout>
           </div>
         </div>
@@ -25,8 +27,10 @@ const page = () => {
           <div className={styles.dummyImg} />
           <div className={styles.menu__box}>
             <Flyout toggleButton={<MenuIcon />}>
-              <button>a</button>
-              <button>b</button>
+              <article className={styles.flyout}>
+                <button>수정하기</button>
+                <button>삭제하기</button>
+              </article>
             </Flyout>
           </div>
         </div>
@@ -37,8 +41,10 @@ const page = () => {
           <div className={styles.dummyImg} />
           <div className={styles.menu__box}>
             <Flyout toggleButton={<MenuIcon />}>
-              <button>a</button>
-              <button>b</button>
+              <article className={styles.flyout}>
+                <button>수정하기</button>
+                <button>삭제하기</button>
+              </article>
             </Flyout>
           </div>
         </div>
@@ -49,8 +55,10 @@ const page = () => {
           <div className={styles.dummyImg} />
           <div className={styles.menu__box}>
             <Flyout toggleButton={<MenuIcon />}>
-              <button>a</button>
-              <button>b</button>
+              <article className={styles.flyout}>
+                <button>수정하기</button>
+                <button>삭제하기</button>
+              </article>
             </Flyout>
           </div>
         </div>
